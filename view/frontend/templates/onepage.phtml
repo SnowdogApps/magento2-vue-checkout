@@ -1,0 +1,28 @@
+<div id="checkout" class="checkout-container">
+    <img v-show="!message" src="<?= $block->getViewFileUrl('images/loader-1.gif'); ?>" >
+
+    <div class="content" v-show="message" style="display: none">
+        {{ message }}
+    </div>
+</div>
+
+<script>
+    window.checkout.baseUrl = "<?= $block->getBaseUrl() ?>";
+    window.checkout.jsLayout = <?= $block->getJsLayout() ?>;
+
+    window.checkoutConfig = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
+    // Create aliases for customer.js model from customer module
+    window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+    window.customerData = window.checkoutConfig.customerData;
+</script>
+
+<script >
+    require(['vue'], function(Vue) {
+        var app = new Vue({
+            el: '#checkout',
+            data: {
+                message: 'Hello Vue!'
+            }
+        })
+    });
+</script>
