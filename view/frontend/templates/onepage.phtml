@@ -1,14 +1,44 @@
 <div id="checkout" class="checkout-container">
-    <img v-show="!message" src="<?= $block->getViewFileUrl('images/loader-1.gif'); ?>" >
+    <section>
+        <button @click="createNewCart()">
+            Create new cart
+        </button>
+        CartId: {{ cartId }}
+    </section>
 
-    <div class="content" v-show="message" style="display: none">
-        {{ message }}
-    </div>
+    <section>
+        <h1>Cart</h1>
+        <ul>
+            <li v-for="item in cart.items">
+                {{ item.name }}
+                {{ item.qty }}
+                {{ item.price }}
+                Total: {{ item.qty * item.price }}
+            </li>
+        </ul>
+        Items Qty: {{ cart.items_qty }}
+        Items Count: {{ cart.items_count }}
+    </section>
+
+    <section>
+        <h1>Products list</h1>
+        <ul class="products">
+            <li v-for="product in products">
+                {{ product.name }}
+                {{ product.sku }}
+                {{ product.price }}
+                <button @click="addToCart(product.sku)">
+                    Add to cart
+                </button>
+            </li>
+        </ul>
+    </section>
 </div>
 
 <script>
-    window.checkout.baseUrl = "<?= $block->getBaseUrl() ?>";
-    window.checkout.jsLayout = <?= $block->getJsLayout() ?>;
+    window.snowdog = {};
+    window.snowdog.baseUrl = "<?= $block->getBaseUrl() ?>";
+    window.snowdog.jsLayout = <?= $block->getJsLayout() ?>;
 
     window.checkoutConfig = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
     // Create aliases for customer.js model from customer module
@@ -21,7 +51,70 @@
         var app = new Vue({
             el: '#checkout',
             data: {
-                message: 'Hello Vue!'
+                loaded: true,
+                products: [],
+                cartId: window.localStorage.cartId || false,
+                cart: {}
+            },
+            methods: {
+                fetchProducts() {
+                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/products?searchCriteria%5BpageSize%5D=20`)
+                        .then(response => response.json())
+                        .then(response => {
+                            this.products = response.items;
+                        })
+                },
+                createNewCart() {
+                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts`, { method: 'POST' })
+                        .then(response => response.json())
+                        .then(response => {
+                            window.localStorage.cartId = response;
+                            this.cartId = response;
+
+                            this.getCart();
+                        })
+                },
+                getCart() {
+                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}`)
+                        .then(response => response.json())
+                        .then(response => {
+                            this.cart = response;
+                        })
+                },
+                addToCart(sku) {
+                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts/id/items/addToCart`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "cart_item": {
+                                    "sku": sku,
+                                    "quote_id": this.cartId,
+                                    "qty": 1
+                                }
+                            })
+                        }
+                    )
+                        .then(response => response.json())
+                        .then(response => {
+                            let updated = false;
+                            this.cart.items.map(item => {
+                                if (item.item_id === response.item_id) {
+                                    item.qty = response.qty;
+                                    updated = true;
+                                }
+                            });
+
+                            if (!updated) {
+                                this.cart.items.push(response);
+                            }
+                        });
+                }
+            },
+            created() {
+                this.getCart();
+                this.fetchProducts();
             }
         })
     });
