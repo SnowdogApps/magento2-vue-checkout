@@ -1,6 +1,7 @@
 {
     "name": "snowdog/magento2-vue-checkout",
     "description": "Magento 2 Checkout module based on Vue.js",
+    "version": "0.1.0",
     "type": "magento2-module",
     "license": "MIT",
     "authors": [
