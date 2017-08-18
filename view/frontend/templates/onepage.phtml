@@ -1,120 +1,198 @@
 <div id="checkout" class="checkout-container">
-    <section>
-        <button @click="createNewCart()">
-            Create new cart
+    <section v-if="step !== 'success'">
+        <h1>Totals</h1>
+        <pre>{{ config.totalsData }}</pre>
+    </section>
+
+    <section v-if="step === 'shipping'">
+        <button type="button" @click="setShippingInformation">
+            Set shipping information
         </button>
-        CartId: {{ cartId }}
     </section>
 
-    <section>
-        <h1>Cart</h1>
-        <ul>
-            <li v-for="item in cart.items">
-                {{ item.name }}
-                {{ item.qty }}
-                {{ item.price }}
-                Total: {{ item.qty * item.price }}
-            </li>
-        </ul>
-        Items Qty: {{ cart.items_qty }}
-        Items Count: {{ cart.items_count }}
+    <section v-if="step === 'billing'">
+        <button @click="step = 'shipping'">
+            Back
+        </button>
+        <button type="button" @click="makeOrder">
+            Make order
+        </button>
     </section>
 
-    <section>
-        <h1>Products list</h1>
-        <ul class="products">
-            <li v-for="product in products">
-                {{ product.name }}
-                {{ product.sku }}
-                {{ product.price }}
-                <button @click="addToCart(product.sku)">
-                    Add to cart
-                </button>
-            </li>
-        </ul>
+    <section v-if="step === 'success'">
+        We did it!
+        <a href="/women/tops-women/jackets-women.html">
+            Back to category
+        </a>
     </section>
 </div>
 
 <script>
-    window.snowdog = {};
-    window.snowdog.baseUrl = "<?= $block->getBaseUrl() ?>";
-    window.snowdog.jsLayout = <?= $block->getJsLayout() ?>;
-
-    window.checkoutConfig = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
-    // Create aliases for customer.js model from customer module
-    window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
-    window.customerData = window.checkoutConfig.customerData;
-</script>
-
-<script >
     require(['vue'], function(Vue) {
         var app = new Vue({
             el: '#checkout',
             data: {
-                loaded: true,
-                products: [],
-                cartId: window.localStorage.cartId || false,
-                cart: {}
+                baseUrl: '<?= $block->getBaseUrl() ?>',
+                layout: <?= $block->getJsLayout() ?>,
+                config: <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>,
+                step: 'shipping'
+            },
+            computed: {
+                cartId() {
+                    return this.config.quoteData.entity_id
+                },
+                cart() {
+                    const cart = this.config.quoteData;
+                    cart.items = this.config.quoteItemData;
+                    return cart;
+                }
             },
             methods: {
-                fetchProducts() {
-                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/products?searchCriteria%5BpageSize%5D=20`)
-                        .then(response => response.json())
-                        .then(response => {
-                            this.products = response.items;
-                        })
+                parseJSON: function (response) {
+                    return new Promise(
+                        (resolve) => response.json()
+                            .then((json) => resolve({
+                                status: response.status,
+                                ok: response.ok,
+                                json
+                            }))
+                    )
                 },
-                createNewCart() {
-                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts`, { method: 'POST' })
-                        .then(response => response.json())
-                        .then(response => {
-                            window.localStorage.cartId = response;
-                            this.cartId = response;
-
-                            this.getCart();
-                        })
+                request: function (url, params = {}) {
+                    return new Promise((resolve, reject) => {
+                        fetch(url, params)
+                            .then(this.parseJSON)
+                            .then((response) => {
+                                if (response.ok) {
+                                    return resolve(response.json)
+                                }
+                                // extract the error from the server's json
+                                return reject(response.json)
+                            })
+                            .catch((error) => reject({
+                                networkError: error.message
+                            }));
+                    })
                 },
-                getCart() {
-                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}`)
-                        .then(response => response.json())
+                setShippingInformation() {
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "addressInformation": {
+                                    "shipping_address": {
+                                        "region": "string",
+                                        "region_id": 0,
+                                        "region_code": "string",
+                                        "country_id": "PL",
+                                        "street": [
+                                            "string"
+                                        ],
+                                        "company": "string",
+                                        "telephone": "string",
+                                        "fax": "string",
+                                        "postcode": "string",
+                                        "city": "string",
+                                        "firstname": "string",
+                                        "lastname": "string",
+                                        "middlename": "string",
+                                        "prefix": "string",
+                                        "suffix": "string",
+                                        "vat_id": "string",
+                                        "customer_id": 0,
+                                        "email": "test@test.com",
+                                        "same_as_billing": 0,
+                                        "customer_address_id": 0,
+                                        "save_in_address_book": 0,
+                                        "custom_attributes": [
+                                            {
+                                                "attribute_code": "string",
+                                                "value": "string"
+                                            }
+                                        ]
+                                    },
+                                    "billing_address": {
+                                        "region": "string",
+                                        "region_id": 0,
+                                        "region_code": "string",
+                                        "country_id": "PL",
+                                        "street": [
+                                            "string"
+                                        ],
+                                        "company": "string",
+                                        "telephone": "string",
+                                        "fax": "string",
+                                        "postcode": "string",
+                                        "city": "string",
+                                        "firstname": "string",
+                                        "lastname": "string",
+                                        "middlename": "string",
+                                        "prefix": "string",
+                                        "suffix": "string",
+                                        "vat_id": "string",
+                                        "customer_id": 0,
+                                        "email": "test@test.com",
+                                        "same_as_billing": 0,
+                                        "customer_address_id": 0,
+                                        "save_in_address_book": 0,
+                                        "custom_attributes": [
+                                            {
+                                                "attribute_code": "string",
+                                                "value": "string"
+                                            }
+                                        ]
+                                    },
+                                    "shipping_method_code": "flatrate",
+                                    "shipping_carrier_code": "flatrate",
+                                    "extension_attributes": {},
+                                    "custom_attributes": [
+                                        {
+                                            "attribute_code": "string",
+                                            "value": "string"
+                                        }
+                                    ]
+                                }
+                            })
+                        }
+                    )
                         .then(response => {
-                            this.cart = response;
-                        })
+                            this.config.paymentMethods = response.payment_methods;
+                            this.config.totalsData = response.totals;
+                            this.step = 'billing';
+                        });
                 },
-                addToCart(sku) {
-                    fetch(`${window.snowdog.baseUrl}index.php/rest/V1/guest-carts/id/items/addToCart`, {
+                makeOrder() {
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/order`,
+                        {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                "cart_item": {
-                                    "sku": sku,
-                                    "quote_id": this.cartId,
-                                    "qty": 1
+                                "paymentMethod": {
+                                    "po_number": "string",
+                                    "method": "checkmo",
+                                    "additional_data": [
+                                        "string"
+                                    ],
+                                    "extension_attributes": {
+                                        "agreement_ids": [
+                                            "string"
+                                        ]
+                                    }
                                 }
                             })
                         }
                     )
-                        .then(response => response.json())
                         .then(response => {
-                            let updated = false;
-                            this.cart.items.map(item => {
-                                if (item.item_id === response.item_id) {
-                                    item.qty = response.qty;
-                                    updated = true;
-                                }
-                            });
-
-                            if (!updated) {
-                                this.cart.items.push(response);
-                            }
-                        });
+                            this.step = 'success';
+                        })
                 }
-            },
-            created() {
-                this.getCart();
-                this.fetchProducts();
             }
         })
     });
