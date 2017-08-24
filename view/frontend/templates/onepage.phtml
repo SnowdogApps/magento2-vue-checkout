@@ -1,4 +1,24 @@
 <div id="checkout" class="checkout-container">
+
+    <section class="shipping-address">
+        <div v-for="field in shippingAddress.field">
+            <template v-if="field.type === 'input'">
+                <label :for="field.name">
+                    {{ field.label }}
+                </label>
+                <input type="text" :name="field.name">
+            </template>
+            <template v-if="field.type === 'select'">
+                <label :for="field.name">
+                    {{ field.label }}
+                </label>
+                <select :name="field.name">
+
+                </select>
+            </template>
+        </div>
+    </section>
+
     <section v-if="step !== 'success'">
         <h1>Totals</h1>
         <pre>{{ config.totalsData }}</pre>
@@ -35,6 +55,8 @@
                 baseUrl: '<?= $block->getBaseUrl() ?>',
                 layout: <?= $block->getJsLayout() ?>,
                 config: <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>,
+                shippingAddress: {},
+                billingAddress: {},
                 step: 'shipping'
             },
             computed: {
@@ -45,6 +67,12 @@
                     const cart = this.config.quoteData;
                     cart.items = this.config.quoteItemData;
                     return cart;
+                },
+                countryList() {
+                    return this.layout.checkout.checkoutProvider.dictionaries.country_id
+                },
+                regionList() {
+                    return this.layout.checkout.checkoutProvider.dictionaries.region_id
                 }
             },
             methods: {
@@ -73,6 +101,47 @@
                                 networkError: error.message
                             }));
                     })
+                },
+                prepareShippingAddress() {
+                    const addressFields = this.layout
+                            .components
+                            .checkout
+                            .children
+                            .steps
+                            .children
+                            ['shipping-step']
+                            .children
+                            .shippingAddress
+                            .children
+                            ['shipping-address-fieldset']
+                            .children;
+
+                    this.shippingAddress.field = [];
+
+                    Object.keys(addressFields).forEach(id => {
+                        const field = addressFields[id];
+                        if (field.config) {
+                            if (field.children) {
+                                field.children.forEach(child => {
+                                    this.shippingAddress.field.push({
+                                        type: child.config.elementTmpl.replace(/^.*\/(.*)$/, "$1"),
+                                        name: `${id}[${child.dataScope}]`,
+                                        label: field.label
+                                    })
+                                })
+                            }
+                            else {
+                                this.shippingAddress.field.push({
+                                    type: field.config.elementTmpl.replace(/^.*\/(.*)$/, "$1"),
+                                    name: id,
+                                    label: field.label
+                                })
+                            }
+                        }
+                        else {
+                            this.shippingAddress[id] = field;
+                        }
+                    });
                 },
                 setShippingInformation() {
                     this.request(
@@ -193,6 +262,9 @@
                             this.step = 'success';
                         })
                 }
+            },
+            created() {
+                this.prepareShippingAddress()
             }
         })
     });
