@@ -2,19 +2,23 @@
 
     <section class="shipping-address">
         <div v-for="field in shippingAddress.field">
-            <template v-if="field.type === 'input'">
-                <label :for="field.name">
-                    {{ field.label }}
-                </label>
-                <input type="text" :name="field.name">
+            <template v-if="field.type !== 'select'">
+                <inputfield 
+                    :label="field.label" 
+                    :name="field.name" 
+                    fieldclass="shipping-address__field"
+                    inputclass="input shipping-address__input"
+                />
             </template>
+            
             <template v-if="field.type === 'select'">
-                <label :for="field.name">
-                    {{ field.label }}
-                </label>
-                <select :name="field.name">
-
-                </select>
+                <selectfield
+                    :label="field.label"
+                    :name="field.name"
+                    fieldclass="shipping-address__field"
+                    selectclass="shipping-address__select"
+                    :options="field.options"
+                />
             </template>
         </div>
     </section>
@@ -48,7 +52,15 @@
 </div>
 
 <script>
-    require(['vue'], function(Vue) {
+    require([
+        'vue', 
+        'Snowdog_VueCheckout/js/components/input.babel',
+        'Snowdog_VueCheckout/js/components/select.babel',
+        'es6'
+    ], function(Vue, inputComponent, selectComponent, es6) {
+        new inputComponent();
+        new selectComponent();
+
         var app = new Vue({
             el: '#checkout',
             data: {
@@ -134,7 +146,17 @@
                                 this.shippingAddress.field.push({
                                     type: field.config.elementTmpl.replace(/^.*\/(.*)$/, "$1"),
                                     name: id,
-                                    label: field.label
+                                    label: field.label,
+                                    options: [
+                                        {
+                                            'value': 'option1', 
+                                            'text': 'Option One'
+                                        },
+                                        {
+                                            'value': 'option2', 
+                                            'text': 'Option Two'
+                                        }
+                                    ]
                                 })
                             }
                         }
