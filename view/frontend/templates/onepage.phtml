@@ -28,27 +28,39 @@
         <pre>{{ config.totalsData }}</pre>
     </section>
 
-    <section v-if="step === 'shipping'">
-        <button type="button" @click="setShippingInformation">
-            Set shipping information
-        </button>
-    </section>
+    <template v-if="step === 'shipping'">
+        <buttonelement
+            buttontype="button"
+            buttonclass="button"
+            text="Set shipping information"
+            @click.native="setShippingInformation"
+        />
+    </template>
 
-    <section v-if="step === 'billing'">
-        <button @click="step = 'shipping'">
-            Back
-        </button>
-        <button type="button" @click="makeOrder">
-            Make order
-        </button>
-    </section>
+    <template v-if="step === 'billing'">
+        <buttonelement
+            buttontype="button"
+            buttonclass="button"
+            text="Back"
+            @click.native="step = 'shipping'"
+        />
+    </template>
 
-    <section v-if="step === 'success'">
+    <template v-if="step === 'billing'">
+        <buttonelement
+            buttontype="button"
+            buttonclass="button"
+            text="Make Order"
+            @click.native="makeOrder"
+        />
+    </template>
+
+    <template v-if="step === 'success'">
         We did it!
-        <a href="/women/tops-women/jackets-women.html">
+        <a href="/what-is-new.html">
             Back to category
         </a>
-    </section>
+    </template>
 </div>
 
 <script>
@@ -56,10 +68,12 @@
         'vue', 
         'Snowdog_VueCheckout/js/components/input.babel',
         'Snowdog_VueCheckout/js/components/select.babel',
-        'es6'
-    ], function(Vue, inputComponent, selectComponent, es6) {
+        'Snowdog_VueCheckout/js/components/button.babel',
+        'Snowdog_VueCheckout/js/lib/babel.min'
+    ], function(Vue, inputComponent, selectComponent, buttonComponent, es6) {
         new inputComponent();
         new selectComponent();
+        new buttonComponent();
 
         var app = new Vue({
             el: '#checkout',
