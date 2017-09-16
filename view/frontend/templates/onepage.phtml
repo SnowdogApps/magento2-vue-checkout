@@ -1,5 +1,6 @@
-<div id="checkout" class="checkout-container">
+<?= $this->getChildHtml() ?>
 
+<div id="checkout" class="checkout-container">
     <section class="shipping-address">
         <div v-for="field in shippingAddress.field">
             <template v-if="field.type !== 'select'">
@@ -9,6 +10,12 @@
                     fieldclass="shipping-address__field"
                     inputclass="input shipping-address__input"
                 />
+        <div v-for="field in shippingAddress">
+            <template v-if="field.type !== 'select'">
+                <label :for="field.name">
+                    {{ field.label }}
+                </label>
+                <input :type="field.type" :name="field.name" :value="field.value">
             </template>
             
             <template v-if="field.type === 'select'">
@@ -19,6 +26,14 @@
                     selectclass="shipping-address__select"
                     :options="field.options"
                 />
+                <label :for="field.name">
+                    {{ field.label }}
+                </label>
+                <select :name="field.name">
+                    <option v-for="option in field.options" :value="option.value" :selected="option.selected" :disabled="option.disabled">
+                        {{ option.label }}
+                    </option>
+                </select>
             </template>
         </div>
     </section>
@@ -85,11 +100,24 @@
             el: '#checkout',
             data: {
                 baseUrl: '<?= $block->getBaseUrl() ?>',
-                layout: <?= $block->getJsLayout() ?>,
                 config: <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>,
-                shippingAddress: {},
+                shippingAddress: shippingAddress,
                 billingAddress: {},
-                step: 'shipping'
+                step: 'shipping',
+                type: [
+                    'checkbox',
+                    'date',
+                    'email',
+                    'hidden',
+                    'number',
+                    'password',
+                    'radio',
+                    'select',
+                    'multiselect',
+                    'tel',
+                    'text',
+                    'textarea'
+                ]
             },
             computed: {
                 cartId() {
@@ -99,12 +127,6 @@
                     const cart = this.config.quoteData;
                     cart.items = this.config.quoteItemData;
                     return cart;
-                },
-                countryList() {
-                    return this.layout.checkout.checkoutProvider.dictionaries.country_id
-                },
-                regionList() {
-                    return this.layout.checkout.checkoutProvider.dictionaries.region_id
                 }
             },
             methods: {
@@ -193,81 +215,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({
-                                "addressInformation": {
-                                    "shipping_address": {
-                                        "region": "string",
-                                        "region_id": 0,
-                                        "region_code": "string",
-                                        "country_id": "PL",
-                                        "street": [
-                                            "string"
-                                        ],
-                                        "company": "string",
-                                        "telephone": "string",
-                                        "fax": "string",
-                                        "postcode": "string",
-                                        "city": "string",
-                                        "firstname": "string",
-                                        "lastname": "string",
-                                        "middlename": "string",
-                                        "prefix": "string",
-                                        "suffix": "string",
-                                        "vat_id": "string",
-                                        "customer_id": 0,
-                                        "email": "test@test.com",
-                                        "same_as_billing": 0,
-                                        "customer_address_id": 0,
-                                        "save_in_address_book": 0,
-                                        "custom_attributes": [
-                                            {
-                                                "attribute_code": "string",
-                                                "value": "string"
-                                            }
-                                        ]
-                                    },
-                                    "billing_address": {
-                                        "region": "string",
-                                        "region_id": 0,
-                                        "region_code": "string",
-                                        "country_id": "PL",
-                                        "street": [
-                                            "string"
-                                        ],
-                                        "company": "string",
-                                        "telephone": "string",
-                                        "fax": "string",
-                                        "postcode": "string",
-                                        "city": "string",
-                                        "firstname": "string",
-                                        "lastname": "string",
-                                        "middlename": "string",
-                                        "prefix": "string",
-                                        "suffix": "string",
-                                        "vat_id": "string",
-                                        "customer_id": 0,
-                                        "email": "test@test.com",
-                                        "same_as_billing": 0,
-                                        "customer_address_id": 0,
-                                        "save_in_address_book": 0,
-                                        "custom_attributes": [
-                                            {
-                                                "attribute_code": "string",
-                                                "value": "string"
-                                            }
-                                        ]
-                                    },
-                                    "shipping_method_code": "flatrate",
-                                    "shipping_carrier_code": "flatrate",
-                                    "extension_attributes": {},
-                                    "custom_attributes": [
-                                        {
-                                            "attribute_code": "string",
-                                            "value": "string"
-                                        }
-                                    ]
-                                }
-                            })
+                            body: JSON.stringify(shippingInformation)
                         }
                     )
                         .then(response => {
@@ -304,9 +252,6 @@
                             this.step = 'success';
                         })
                 }
-            },
-            created() {
-                this.prepareShippingAddress()
             }
         })
     });

@@ -4,6 +4,27 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
-        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml" />
+        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="country-list"
+                   template="Snowdog_VueCheckout::data/country-list.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="region-list"
+                   template="Snowdog_VueCheckout::data/region-list.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="billing-address"
+                   template="Snowdog_VueCheckout::data/billing-address.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="shipping-address"
+                   template="Snowdog_VueCheckout::data/shipping-address.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="shipping-information"
+                   template="Snowdog_VueCheckout::data/shipping-information.phtml"
+            />
+        </referenceBlock>
     </body>
 </page>
