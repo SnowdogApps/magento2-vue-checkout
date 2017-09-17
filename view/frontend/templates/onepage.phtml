@@ -2,20 +2,16 @@
 
 <div id="checkout" class="checkout-container">
     <section class="shipping-address">
-        <div v-for="field in shippingAddress.field">
+        <div v-for="field in shippingAddress">
             <template v-if="field.type !== 'select'">
                 <inputfield 
                     :label="field.label" 
                     :name="field.name" 
+                    :type="field.type"
+                    :value="field.value"
                     fieldclass="shipping-address__field"
                     inputclass="input shipping-address__input"
                 />
-        <div v-for="field in shippingAddress">
-            <template v-if="field.type !== 'select'">
-                <label :for="field.name">
-                    {{ field.label }}
-                </label>
-                <input :type="field.type" :name="field.name" :value="field.value">
             </template>
             
             <template v-if="field.type === 'select'">
@@ -26,14 +22,6 @@
                     selectclass="shipping-address__select"
                     :options="field.options"
                 />
-                <label :for="field.name">
-                    {{ field.label }}
-                </label>
-                <select :name="field.name">
-                    <option v-for="option in field.options" :value="option.value" :selected="option.selected" :disabled="option.disabled">
-                        {{ option.label }}
-                    </option>
-                </select>
             </template>
         </div>
     </section>
@@ -155,57 +143,6 @@
                                 networkError: error.message
                             }));
                     })
-                },
-                prepareShippingAddress() {
-                    const addressFields = this.layout
-                            .components
-                            .checkout
-                            .children
-                            .steps
-                            .children
-                            ['shipping-step']
-                            .children
-                            .shippingAddress
-                            .children
-                            ['shipping-address-fieldset']
-                            .children;
-
-                    this.shippingAddress.field = [];
-
-                    Object.keys(addressFields).forEach(id => {
-                        const field = addressFields[id];
-                        if (field.config) {
-                            if (field.children) {
-                                field.children.forEach(child => {
-                                    this.shippingAddress.field.push({
-                                        type: child.config.elementTmpl.replace(/^.*\/(.*)$/, "$1"),
-                                        name: `${id}[${child.dataScope}]`,
-                                        label: field.label
-                                    })
-                                })
-                            }
-                            else {
-                                this.shippingAddress.field.push({
-                                    type: field.config.elementTmpl.replace(/^.*\/(.*)$/, "$1"),
-                                    name: id,
-                                    label: field.label,
-                                    options: [
-                                        {
-                                            'value': 'option1', 
-                                            'text': 'Option One'
-                                        },
-                                        {
-                                            'value': 'option2', 
-                                            'text': 'Option Two'
-                                        }
-                                    ]
-                                })
-                            }
-                        }
-                        else {
-                            this.shippingAddress[id] = field;
-                        }
-                    });
                 },
                 setShippingInformation() {
                     this.request(

@@ -29,8 +29,13 @@ define([
             </label>
             
             <select :name="name" :class="selectclass">
-                <option v-for="option in options" :value="option.value">
-                    {{ option.text }}
+                <option v-for="option in options" 
+                        :value="option.value" 
+                        :selected="option.selected" 
+                        :disabled="option.disabled"
+                        :data-countryid="option.country_id"
+                >
+                    {{ option.label }}
                 </option>
             </select>
         </div>

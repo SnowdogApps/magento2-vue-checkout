@@ -16,6 +16,12 @@ define([
             },
             inputclass: {
                 type: String
+            },
+            type: {
+                type: String
+            },
+            value: {
+                type: String
             }
         },
         template: 
@@ -25,7 +31,7 @@ define([
                 {{ label }}
             </label>
 
-            <input type="text" :name="name" :class="inputclass">
+            <input :type="type" :name="name" :class="inputclass" :value="value"/>
         </div>
         `
     });
