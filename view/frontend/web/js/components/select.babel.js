@@ -28,7 +28,7 @@ define([
                 {{ label }}
             </label>
             
-            <select :name="name" :class="selectclass">
+            <select :name="name" :id="name" :class="selectclass">
                 <option v-for="option in options" 
                         :value="option.value" 
                         :selected="option.selected" 

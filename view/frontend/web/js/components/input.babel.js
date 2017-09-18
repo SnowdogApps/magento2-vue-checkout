@@ -31,7 +31,12 @@ define([
                 {{ label }}
             </label>
 
-            <input :type="type" :name="name" :class="inputclass" :value="value"/>
+            <input :type="type" 
+                   :id="name" 
+                   :name="name" 
+                   :class="inputclass" 
+                   :value="value"
+            />
         </div>
         `
     });

@@ -21,6 +21,7 @@
                     fieldclass="shipping-address__field"
                     selectclass="shipping-address__select"
                     :options="field.options"
+                    @change.native="changeSelection"
                 />
             </template>
         </div>
@@ -188,6 +189,27 @@
                         .then(response => {
                             this.step = 'success';
                         })
+                },
+                changeSelection(event) {
+                    const countryId            = document.querySelector('#country_id'),
+                          eventSelectId        = event.srcElement.id,
+                          regionId             = document.querySelector('#region_id'),
+                          eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryId,
+                          eventOptionText      = event.srcElement.selectedOptions[0].text,
+                          eventOptionValue     = event.srcElement.selectedOptions[0].value;
+
+                    if (countryId === document.querySelector(`#${eventSelectId}`)) {
+                        let newRegionList = [];
+
+                        regionId.querySelectorAll('option').forEach(option => {
+                            if (option.dataset.countryid === eventOptionValue) {
+                                newRegionList.push(option);
+                                console.log(option)
+                            }
+                        });
+
+                        regionId.innerHTML = newRegionList;
+                    }
                 }
             }
         })
