@@ -24,12 +24,30 @@
                     @change.native="changeSelection"
                 />
             </template>
+
+            <template v-if="field.name === 'region_id'">
+                <inputfield 
+                    label="State/Province" 
+                    name="region" 
+                    type="text"
+                    fieldclass="shipping-address__field shipping-address--hidden"
+                    inputclass="input shipping-address__input"
+                />
+            </template>
         </div>
     </section>
 
     <section v-if="step !== 'success'">
         <h1>Totals</h1>
         <pre>{{ config.totalsData }}</pre>
+
+        <template>
+            <listelement 
+                ulclass="list"
+                liclass="list__item"
+                :items="config.totalsData.items"
+            />
+        </template>
     </section>
 
     <template v-if="step === 'shipping'">
@@ -71,17 +89,20 @@
     require([
         'vue', 
         'Snowdog_VueCheckout/js/components/input.babel',
+        'Snowdog_VueCheckout/js/components/list.babel',
         'Snowdog_VueCheckout/js/components/select.babel',
         'Snowdog_VueCheckout/js/components/button.babel',
         'Snowdog_VueCheckout/js/lib/babel.min'
     ], function(
         Vue, 
         inputComponent, 
+        listComponent,
         selectComponent, 
         buttonComponent, 
         es6
     ) {
         new inputComponent();
+        new listComponent();
         new selectComponent();
         new buttonComponent();
 
