@@ -2,6 +2,8 @@
 
 <div id="checkout" class="checkout-container">
     <section class="shipping-address">
+        <h1>Shipping Address</h1>
+        
         <div v-for="field in shippingAddress">
             <template v-if="field.type !== 'select'">
                 <inputfield 
@@ -38,14 +40,25 @@
     </section>
 
     <section v-if="step !== 'success'">
-        <h1>Totals</h1>
-        <pre>{{ config.totalsData }}</pre>
-
+        <h1>Product List</h1>
         <template>
-            <listelement 
-                ulclass="list"
-                liclass="list__item"
-                :items="config.totalsData.items"
+            <products 
+                containerclass="grid"
+                itemclass="grid__columns"
+                :products="config.totalsData.items"
+                :currency="config.totalsData.base_currency_code"
+            />
+        </template>
+
+        <h1>Summary</h1>
+        <template>
+            <summation
+                :items="config.totalsData.total_segments"
+                :discountsubtotal="config.totalsData.subtotal_with_discount"
+                :discountamout="config.totalsData.discount_amount"
+                :couponcode="config.totalsData.coupon_code"
+                :itemsqty="config.totalsData.items_qty"
+                :currencycode="config.totalsData.base_currency_code"
             />
         </template>
     </section>
@@ -92,6 +105,8 @@
         'Snowdog_VueCheckout/js/components/list.babel',
         'Snowdog_VueCheckout/js/components/select.babel',
         'Snowdog_VueCheckout/js/components/button.babel',
+        'Snowdog_VueCheckout/js/components/product.babel',
+        'Snowdog_VueCheckout/js/components/summation.babel',
         'Snowdog_VueCheckout/js/lib/babel.min'
     ], function(
         Vue, 
@@ -99,12 +114,16 @@
         listComponent,
         selectComponent, 
         buttonComponent, 
+        productsComponent,
+        summationComponent,
         es6
     ) {
         new inputComponent();
         new listComponent();
         new selectComponent();
         new buttonComponent();
+        new productsComponent();
+        new summationComponent();
 
         var app = new Vue({
             el: '#checkout',
