@@ -1,7 +1,8 @@
 define([
     'vue',
+    'Snowdog_VueCheckout/js/filters/currency.babel',    
     'Snowdog_VueCheckout/js/filters/trimZero.babel'
-], function(Vue, trimZero) {
+], function(Vue, trimZero, currency) {
     'use strict'
    
     return Vue.component('summation', {
@@ -55,7 +56,7 @@ define([
                     <p class="summary__text">
                         Discount amount: 
                         <strong>
-                            {{ discountamout | trimZero }}
+                            {{ discountamout | currency }}
                         </strong>
                     </p>
 
@@ -65,14 +66,11 @@ define([
             <div class="summary__item" :class="itemclass" v-for="item in items">
                 <p class="summary__name">
                     {{ item.title }}
-                </p>
 
-                <span class="summary__value">
-                    Value: 
                     <strong>
-                        {{ item.value | trimZero }} {{ currencycode }}
+                        {{ item.value | currency }} {{ currencycode }}
                     </strong>
-                </span>
+                </p>
             </div>
         </div>
         `

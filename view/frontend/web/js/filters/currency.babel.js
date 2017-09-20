@@ -3,8 +3,8 @@ define([
 ], function(Vue) {
     'use strict'
    
-    Vue.filter('trimZero', function(value) {
+    Vue.filter('currency', function(value) {
         var number =+ value.replace(/[^\d.]/g, '');
-        return parseInt(number);
+        return parseFloat(number).toFixed(2);
     });
 });
