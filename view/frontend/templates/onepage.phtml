@@ -23,6 +23,7 @@
                     fieldclass="shipping-address__field"
                     selectclass="shipping-address__select"
                     :options="field.options"
+                    @change.native="changeSelection"
                 />
             </template>
 
@@ -97,6 +98,12 @@
     </template>
 </div>
 
+<style>
+.shipping-address--hidden {
+    display: none;
+}
+</style>
+
 <script>
     require([
         'vue', 
@@ -131,6 +138,7 @@
                 config: <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>,
                 shippingAddress: shippingAddress,
                 billingAddress: {},
+                regionList: regionList,
                 step: 'shipping',
                 type: [
                     'checkbox',
@@ -228,6 +236,59 @@
                         .then(response => {
                             this.step = 'success';
                         })
+                },
+                changeSelection(event) {
+                    const countryId      = document.getElementById('country_id'),
+                          eventSelectId  = event.srcElement.id,
+                          inputRegion    = document.getElementById('region'),
+                          regionId       = document.getElementById('region_id');
+
+                    if ( countryId == document.getElementById(eventSelectId)) {
+                        const eventOptionValue = event.srcElement.selectedOptions[0].value,
+                              propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
+
+                        if(propertyRegions.length > 0) {
+                            regionId.innerHTML = propertyRegions.join(" ");
+
+                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'shipping-address--hidden');
+                        }
+                        else {
+                            inputRegion.value = "";
+
+                            this.regionToggle(regionId.parentNode, inputRegion.parentNode, 'shipping-address--hidden');
+                        }
+                    }
+                    else if (regionId == document.getElementById(eventSelectId)) {
+                        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid;
+
+                        if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
+                            const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
+
+                            regionId.innerHTML = propertyRegions.join(" ");
+                            countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
+
+                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'shipping-address--hidden');
+                        }
+                    }
+                },
+                returnCountryRegions(regions, optionToCompare) {
+                    let newRegionList = [];
+
+                    regions.forEach(region => {
+                        if (region.country_id === optionToCompare) {
+                            newRegionList.push(`
+                                <option value="${region.value}" data-countryid="${region.country_id}">
+                                    ${region.label}
+                                </option>
+                            `);
+                        }
+                    });
+
+                    return newRegionList;
+                },
+                regionToggle(elementToHide, elementToShow, classToToggle) {
+                    elementToHide.classList.add(classToToggle);
+                    elementToShow.classList.remove(classToToggle);
                 }
             }
         })
