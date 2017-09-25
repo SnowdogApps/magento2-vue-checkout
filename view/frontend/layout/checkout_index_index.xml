@@ -15,6 +15,10 @@
             />
             <block class="Magento\Framework\View\Element\Template"
                    name="billing-address"
+                   template="Snowdog_VueCheckout::data/payment-methods.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="billing-address"
                    template="Snowdog_VueCheckout::data/billing-address.phtml"
             />
             <block class="Magento\Framework\View\Element\Template"
