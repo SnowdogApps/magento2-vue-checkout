@@ -4,7 +4,6 @@ define([
     'use strict'
    
     Vue.filter('trimZero', function(value) {
-        var number =+ value.replace(/[^\d.]/g, '');
-        return parseInt(number);
+        return parseInt(value);
     });
 });

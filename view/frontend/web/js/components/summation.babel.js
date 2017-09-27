@@ -16,9 +16,6 @@ define([
             items: {
                 type: Array
             },
-            discountsubtotal: {
-                type: String
-            },
             discountamout: {
                 type: String
             },

@@ -33,7 +33,7 @@ define([
                 <span class="product__price">
                     Price: 
                     <strong>
-                        {{ product.price | trimZero }} {{ currency }}
+                        {{ product.price | currency }} {{ currency }}
                     </strong>
                 </span>
 

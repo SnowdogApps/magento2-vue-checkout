@@ -14,7 +14,7 @@
                    template="Snowdog_VueCheckout::data/region-list.phtml"
             />
             <block class="Magento\Framework\View\Element\Template"
-                   name="billing-address"
+                   name="payment-methods"
                    template="Snowdog_VueCheckout::data/payment-methods.phtml"
             />
             <block class="Magento\Framework\View\Element\Template"

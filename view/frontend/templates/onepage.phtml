@@ -54,7 +54,6 @@
         <template>
             <summation
                 :items="config.totalsData.total_segments"
-                :discountsubtotal="config.totalsData.subtotal_with_discount"
                 :discountamout="config.totalsData.discount_amount"
                 :couponcode="config.totalsData.coupon_code"
                 :itemsqty="config.totalsData.items_qty"
@@ -139,21 +138,8 @@
                 shippingAddress: shippingAddress,
                 billingAddress: {},
                 regionList: regionList,
-                step: 'shipping',
-                type: [
-                    'checkbox',
-                    'date',
-                    'email',
-                    'hidden',
-                    'number',
-                    'password',
-                    'radio',
-                    'select',
-                    'multiselect',
-                    'tel',
-                    'text',
-                    'textarea'
-                ]
+                paymentMethods: paymentMethods,
+                step: 'shipping'
             },
             computed: {
                 cartId() {
