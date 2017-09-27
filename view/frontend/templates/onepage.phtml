@@ -2,7 +2,7 @@
 
 <div id="checkout" class="checkout-container">
     <section class="shipping-address">
-        <h1>Shipping Address</h1>
+        <h1><?= /* @escapeNotVerified */ __('Shipping Address'); ?></h1>
         
         <div v-for="field in shippingAddress">
             <template v-if="field.type !== 'select'">
@@ -39,8 +39,26 @@
         </div>
     </section>
 
+    <section class="payment-methods">
+        <h1><?= /* @escapeNotVerified */ __('Choose payment method'); ?></h1>
+
+        <template v-for="payment in paymentMethods">
+            <radiofield
+                :label="payment.title" 
+                :value="payment.code"
+                name="payment"
+                labelclass="label"
+                fieldclass="radio payment-methods__radio"
+                inputclass="payment-methods__field"
+            />
+        </template>
+
+        My billing and shipping address are the same
+    </section>
+
     <section v-if="step !== 'success'">
-        <h1>Product List</h1>
+        <h1><?= /* @escapeNotVerified */ __('Product List'); ?></h1>
+
         <template>
             <products 
                 containerclass="grid"
@@ -50,7 +68,8 @@
             />
         </template>
 
-        <h1>Summary</h1>
+        <h1><?= /* @escapeNotVerified */ __('Summary'); ?></h1>
+
         <template>
             <summation
                 :items="config.totalsData.total_segments"
@@ -90,9 +109,9 @@
     </template>
 
     <template v-if="step === 'success'">
-        We did it!
+        <?= /* @escapeNotVerified */ __('We did it!'); ?>
         <a href="/what-is-new.html">
-            Back to category
+            <?= /* @escapeNotVerified */ __('Back to category'); ?>
         </a>
     </template>
 </div>
@@ -107,6 +126,7 @@
     require([
         'vue', 
         'Snowdog_VueCheckout/js/components/input.babel',
+        'Snowdog_VueCheckout/js/components/radio.babel',
         'Snowdog_VueCheckout/js/components/list.babel',
         'Snowdog_VueCheckout/js/components/select.babel',
         'Snowdog_VueCheckout/js/components/button.babel',
@@ -116,6 +136,7 @@
     ], function(
         Vue, 
         inputComponent, 
+        radioComponent,
         listComponent,
         selectComponent, 
         buttonComponent, 
@@ -124,6 +145,7 @@
         es6
     ) {
         new inputComponent();
+        new radioComponent();
         new listComponent();
         new selectComponent();
         new buttonComponent();
