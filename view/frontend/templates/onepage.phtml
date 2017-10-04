@@ -2,62 +2,135 @@
 
 <div id="checkout" class="checkout-container">
     <section class="shipping-address">
-        <h1><?= /* @escapeNotVerified */ __('Shipping Address'); ?></h1>
+        <h1>
+            <?= /* @escapeNotVerified */ __('Shipping Address'); ?>
+        </h1>
         
-        <div v-for="field in shippingAddress">
-            <template v-if="field.type !== 'select'">
-                <inputfield 
-                    :label="field.label" 
-                    :name="field.name" 
-                    :type="field.type"
-                    :value="field.value"
-                    fieldclass="shipping-address__field"
-                    inputclass="input shipping-address__input"
-                />
-            </template>
-            
-            <template v-if="field.type === 'select'">
-                <selectfield
-                    :label="field.label"
-                    :name="field.name"
-                    fieldclass="shipping-address__field"
-                    selectclass="shipping-address__select"
-                    :options="field.options"
-                    @change.native="changeSelection"
-                />
-            </template>
+        <form class="shipping-address__form">
+            <template v-for="field in shippingAddress">
+                <template v-if="field.type !== 'select'">
+                    <inputfield 
+                        :label="field.label" 
+                        :name="field.name" 
+                        :type="field.type"
+                        :value="field.value"
+                        fieldclass="shipping-address__field"
+                        inputclass="input shipping-address__input"
+                    />
+                </template>
+                
+                <template v-if="field.type === 'select'">
+                    <selectfield
+                        :label="field.label"
+                        :name="field.name"
+                        :options="field.options"
+                        fieldclass="shipping-address__field"
+                        selectclass="shipping-address__select"
+                        @change.native="changeSelection"
+                    />
+                </template>
 
-            <template v-if="field.name === 'region_id'">
-                <inputfield 
-                    label="State/Province" 
-                    name="region" 
-                    type="text"
-                    fieldclass="shipping-address__field shipping-address--hidden"
-                    inputclass="input shipping-address__input"
-                />
+                <template v-if="field.name === 'region_id'">
+                    <inputfield 
+                        label="State/Province" 
+                        name="region" 
+                        type="text"
+                        fieldclass="shipping-address__field address--hidden"
+                        inputclass="input shipping-address__input"
+                    />
+                </template>
             </template>
-        </div>
+        </form>
     </section>
 
     <section class="payment-methods">
-        <h1><?= /* @escapeNotVerified */ __('Choose payment method'); ?></h1>
+        <h1>
+            <?= /* @escapeNotVerified */ __('Choose payment method'); ?>
+        </h1>
 
-        <template v-for="payment in paymentMethods">
+        <template>
             <radiofield
-                :label="payment.title" 
-                :value="payment.code"
+                :options="paymentMethods"
                 name="payment"
-                labelclass="label"
-                fieldclass="radio payment-methods__radio"
-                inputclass="payment-methods__field"
+                labelclass="labels"
+                containerclass="payment-methods__handler"
+                fieldclass="radio payment-methods__field"
+                inputclass="payment-methods__radio"
             />
         </template>
 
-        My billing and shipping address are the same
+        <template>
+            <checkboxfield 
+                id="paymentAddress"
+                labelclass="label"
+                fieldclass="checkbox payment-methods__field"
+                inputclass="payment-methods__checkbox"
+                checked="true"
+                name="paymentAddress"
+                text="My billing and shipping address are the same"
+                @change.native="toggleBillingAddress"
+            />
+        </template>
+
+        <form class="payment-methods__form payment-methods--hidden">
+            <template v-for="field in billingAddress">
+                <template v-if="field.type !== 'select'">
+                    <inputfield 
+                        :label="field.label" 
+                        :name="field.name" 
+                        :type="field.type"
+                        :value="field.value"
+                        fieldclass="shipping-address__field"
+                        inputclass="input shipping-address__input"
+                    />
+                </template>
+
+                <template v-if="field.type === 'select'">
+                    <selectfield
+                        :label="field.label"
+                        :name="field.name"
+                        :options="field.options"
+                        fieldclass="shipping-address__field"
+                        selectclass="shipping-address__select"
+                        @change.native="changeSelection"
+                    />
+                </template>
+
+                <template v-if="field.name === 'region_id'">
+                    <inputfield 
+                        label="State/Province" 
+                        name="region" 
+                        type="text"
+                        fieldclass="shipping-address__field address--hidden"
+                        inputclass="input shipping-address__input"
+                    />
+                </template>
+            </template>
+
+            <template>
+                <buttonelement
+                    buttontype="button"
+                    buttonclass="button"
+                    text="Cancel"
+                    @click.native="cancelBillingInformations"
+                />
+            </template>
+
+            <template>
+                <buttonelement
+                    buttontype="button"
+                    buttonclass="button"
+                    text="Update"
+                    @click.native="updateBillingInformations"
+                />
+            </template>
+        </form>
     </section>
 
     <section v-if="step !== 'success'">
-        <h1><?= /* @escapeNotVerified */ __('Product List'); ?></h1>
+        <h1>
+            <?= /* @escapeNotVerified */ __('Product List'); ?>
+        </h1>
 
         <template>
             <products 
@@ -68,7 +141,9 @@
             />
         </template>
 
-        <h1><?= /* @escapeNotVerified */ __('Summary'); ?></h1>
+        <h1>
+            <?= /* @escapeNotVerified */ __('Summary'); ?>
+        </h1>
 
         <template>
             <summation
@@ -110,6 +185,7 @@
 
     <template v-if="step === 'success'">
         <?= /* @escapeNotVerified */ __('We did it!'); ?>
+
         <a href="/what-is-new.html">
             <?= /* @escapeNotVerified */ __('Back to category'); ?>
         </a>
@@ -117,7 +193,8 @@
 </div>
 
 <style>
-.shipping-address--hidden {
+.address--hidden,
+.payment-methods--hidden {
     display: none;
 }
 </style>
@@ -127,6 +204,7 @@
         'vue', 
         'Snowdog_VueCheckout/js/components/input.babel',
         'Snowdog_VueCheckout/js/components/radio.babel',
+        'Snowdog_VueCheckout/js/components/checkbox.babel',
         'Snowdog_VueCheckout/js/components/list.babel',
         'Snowdog_VueCheckout/js/components/select.babel',
         'Snowdog_VueCheckout/js/components/button.babel',
@@ -135,7 +213,8 @@
         'Snowdog_VueCheckout/js/lib/babel.min'
     ], function(
         Vue, 
-        inputComponent, 
+        inputComponent,
+        checkboxComponent, 
         radioComponent,
         listComponent,
         selectComponent, 
@@ -145,6 +224,7 @@
         es6
     ) {
         new inputComponent();
+        new checkboxComponent();
         new radioComponent();
         new listComponent();
         new selectComponent();
@@ -246,41 +326,50 @@
                         })
                 },
                 changeSelection(event) {
-                    const countryId      = document.getElementById('country_id'),
+                    const getForm        = event.srcElement.parentElement.parentElement,
+                          countryId      = getForm.querySelector('#country_id'),
                           eventSelectId  = event.srcElement.id,
-                          inputRegion    = document.getElementById('region'),
-                          regionId       = document.getElementById('region_id');
+                          inputRegion    = getForm.querySelector('#region'),
+                          regionId       = getForm.querySelector('#region_id');
 
-                    if ( countryId == document.getElementById(eventSelectId)) {
+                    if ( countryId == getForm.querySelector("#"+eventSelectId)) {
                         const eventOptionValue = event.srcElement.selectedOptions[0].value,
                               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
 
                         if(propertyRegions.length > 0) {
                             regionId.innerHTML = propertyRegions.join(" ");
 
-                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'shipping-address--hidden');
+                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
                         }
                         else {
                             inputRegion.value = "";
 
-                            this.regionToggle(regionId.parentNode, inputRegion.parentNode, 'shipping-address--hidden');
+                            this.regionToggle(regionId.parentNode, inputRegion.parentNode, 'region--hidden');
                         }
                     }
-                    else if (regionId == document.getElementById(eventSelectId)) {
-                        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid;
+                    else if (regionId == getForm.querySelector("#"+eventSelectId)) {
+                        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
+                              eventOptionValue     = event.srcElement.selectedOptions[0].value;
 
                         if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
                             const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
 
                             regionId.innerHTML = propertyRegions.join(" ");
+                            regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
                             countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
 
-                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'shipping-address--hidden');
+                            this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
                         }
                     }
                 },
                 returnCountryRegions(regions, optionToCompare) {
                     let newRegionList = [];
+
+                    newRegionList.push(`
+                        <option value="">
+                            <?= /* @escapeNotVerified */ __('Please select a region, state or province.'); ?>
+                        </option>
+                    `);
 
                     regions.forEach(region => {
                         if (region.country_id === optionToCompare) {
@@ -297,6 +386,37 @@
                 regionToggle(elementToHide, elementToShow, classToToggle) {
                     elementToHide.classList.add(classToToggle);
                     elementToShow.classList.remove(classToToggle);
+                },
+                toggleBillingAddress(event) {
+                    const element     = event.srcElement,
+                          paymentForm = document.querySelector('.payment-methods__form');
+
+                    if (element.checked) {
+                        this.billingAddress = {};
+
+                        if (!paymentForm.classList.contains('payment-methods--hidden')) {
+                            paymentForm.classList.add('payment-methods--hidden');
+                        }
+                    }
+                    else {
+                        this.billingAddress = billingAddress;
+
+                        if (paymentForm.classList.contains('payment-methods--hidden')) {
+                            paymentForm.classList.remove('payment-methods--hidden');
+                        }
+                         
+                    }
+                },
+                cancelBillingInformations() {
+                    const paymentCheckbox = document.getElementById('paymentAddress'),
+                          paymentForm     = document.querySelector('.payment-methods__form');
+
+                    this.billingAddress = {};
+                    paymentForm.classList.add('payment-methods--hidden');
+                    paymentCheckbox.checked = true;
+                },
+                updateBillingInformations() {
+                    
                 }
             }
         })
