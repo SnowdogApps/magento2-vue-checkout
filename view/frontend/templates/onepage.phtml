@@ -35,7 +35,7 @@
                         label="State/Province" 
                         name="region" 
                         type="text"
-                        fieldclass="shipping-address__field address--hidden"
+                        fieldclass="shipping-address__field region--hidden"
                         inputclass="input shipping-address__input"
                     />
                 </template>
@@ -73,6 +73,10 @@
         </template>
 
         <form class="payment-methods__form payment-methods--hidden">
+            <h1>
+                <?= /* @escapeNotVerified */ __('Billing address'); ?>
+            </h1>
+            
             <template v-for="field in billingAddress">
                 <template v-if="field.type !== 'select'">
                     <inputfield 
@@ -101,7 +105,7 @@
                         label="State/Province" 
                         name="region" 
                         type="text"
-                        fieldclass="shipping-address__field address--hidden"
+                        fieldclass="shipping-address__field region--hidden"
                         inputclass="input shipping-address__input"
                     />
                 </template>
@@ -193,7 +197,7 @@
 </div>
 
 <style>
-.address--hidden,
+.region--hidden,
 .payment-methods--hidden {
     display: none;
 }
@@ -288,7 +292,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(shippingInformation)
+                            body: JSON.stringify(this.getShippingInformation())
                         }
                     )
                         .then(response => {
@@ -325,18 +329,68 @@
                             this.step = 'success';
                         })
                 },
+                getShippingInformation() {
+                    let response = shippingInformation;
+
+                    const shippingAddresForm    = document.querySelector('.shipping-address__form'),
+                          billingAddresCheckbox = document.getElementById('paymentAddress'),
+                          billingAddressForm    = document.querySelector('.payment-methods__form');
+
+                    shippingAddresForm.querySelectorAll('input, select, textarea').forEach(input => {
+                        if (input.id === 'region_id') {
+                            response.addressInformation.shipping_address[input.id] = parseInt(input.value);
+                            response.addressInformation.shipping_address['region'] = input.selectedOptions[0].innerHTML.trim();
+                        }
+                        else if (input.id === 'street[0]') {
+                            response.addressInformation.shipping_address.street = [input.value];
+                        }
+                        else if (input.id === 'street[1]') {
+                            if (input.value.length > 0) {
+                                response.addressInformation.shipping_address.street.push(input.value);
+                            }
+                        }
+                        else {
+                            response.addressInformation.shipping_address[input.id] = input.value;
+                        }
+                    });
+
+                    if (billingAddresCheckbox.checked) {
+                        response.addressInformation.billing_address = response.addressInformation.shipping_address;
+                    }
+                    else {
+                        billingAddressForm.querySelectorAll('input, select, textarea').forEach(input => {
+                            if (input.id === 'region_id') {
+                                response.addressInformation.shipping_address[input.id] = parseInt(input.value);
+                                response.addressInformation.shipping_address['region'] = input.selectedOptions[0].innerHTML.trim();
+                            }
+                            else if (input.id === 'street[0]') {
+                                response.addressInformation.shipping_address.street = [input.value];
+                            }
+                            else if (input.id === 'street[1]') {
+                                if (input.value.length > 0) {
+                                    response.addressInformation.shipping_address.street.push(input.value);
+                                }
+                            }
+                            else {
+                                response.addressInformation.shipping_address[input.id] = input.value;
+                            }
+                        });
+                    }
+                    
+                    return response;
+                },
                 changeSelection(event) {
                     const getForm        = event.srcElement.parentElement.parentElement,
                           countryId      = getForm.querySelector('#country_id'),
                           eventSelectId  = event.srcElement.id,
                           inputRegion    = getForm.querySelector('#region'),
                           regionId       = getForm.querySelector('#region_id');
-
+                          
                     if ( countryId == getForm.querySelector("#"+eventSelectId)) {
                         const eventOptionValue = event.srcElement.selectedOptions[0].value,
                               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
 
-                        if(propertyRegions.length > 0) {
+                        if(propertyRegions.length > 1) {
                             regionId.innerHTML = propertyRegions.join(" ");
 
                             this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
