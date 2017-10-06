@@ -1,7 +1,7 @@
 <?= $this->getChildHtml() ?>
 
 <div id="checkout" class="checkout-container">
-    <section class="billing-address">
+    <section class="billing-address" v-if="step === 'billing'">
         <h1>
             <?= /* @escapeNotVerified */ __('Billing Address'); ?>
         </h1>
@@ -311,7 +311,16 @@
                 },
                 getBillingInformations() {
                     // getting billing informations from form
-                }
+
+                    const response           = shippingInformation,
+                          billingAddressForm = document.querySelector('.billing-address__form').querySelectorAll('input, select, textarea');
+
+                    this.settingData(billingAddressForm, 'billing_address', response);
+
+                    const address = {"address": response.addressInformation.billing_address};
+
+                    return address;
+                },
                 getShippingMethods() {
                     //getting shipping methods - step 'shipping'
                     this.request(
@@ -372,19 +381,19 @@
                         })
                 },
                 getShippingInformation() {
-                    const response = shippingInformation,
+                    const response                = shippingInformation,
                           billingAddressForm      = document.querySelector('.billing-address__form').querySelectorAll('input, select, textarea'),
                           shippingAddressCheckbox = document.getElementById('paymentAddress'),
                           shippingAddressForm     = document.querySelector('.payment-methods__form').querySelectorAll('input, select, textarea');
 
-                    this.settingData(shippingAddressForm, 'shipping_address', response);
+                    this.settingData(billingAddressForm, 'billing_address', response);
                     
                     if (shippingAddressCheckbox.checked) {
                         response.addressInformation.billing_address = response.addressInformation.shipping_address;
                         response.addressInformation.shipping_address['same_as_billing'] = 1;
                     }
                     else {
-                        this.settingData(shippingAddressForm, 'billing_address', response);
+                        this.settingData(shippingAddressForm, 'shipping_address', response);
                     }
 
                     return response;
