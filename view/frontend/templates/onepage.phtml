@@ -176,11 +176,10 @@
 
         <template>
             <summation
-                :items="config.totalsData.total_segments"
-                :discountamout="config.totalsData.discount_amount"
-                :couponcode="config.totalsData.coupon_code"
-                :itemsqty="config.totalsData.items_qty"
-                :currencycode="config.totalsData.base_currency_code"
+                :items="totals.total_segments"
+                :discountamout="totals.discount_amount"
+                :itemsqty="totals.items_qty"
+                :currencycode="totals.base_currency_code"
             />
         </template>
 
@@ -286,7 +285,7 @@
             },
             computed: {
                 cartId() {
-                    return this.config.quoteData.entity_id
+                    return this.config.quoteData.entity_id;
                 },
                 cart() {
                     const cart = this.config.quoteData;
@@ -383,7 +382,7 @@
                         }
                     )
                         .then(response => {
-                            this.totals = response.totals;
+                            this.totals = response;
                             this.getSummary();
                             this.step = 'summary';
                         });
@@ -451,7 +450,40 @@
                         });
                 },
                 getSummary() {
+                    const shippingMethodCode = this.shippingInformation;
 
+                    /**
+                     * Update static shipping method - now it's choosen
+                     * Must use this endpoint again
+                     * 
+                     */
+                    shippingMethodCode.addressInformation.shipping_method_code = this.selectedMethods.shippingMethodCode;
+                    shippingMethodCode.addressInformation.shipping_carrier_code = this.selectedMethods.shippingCarrierCode;
+
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(shippingMethodCode)
+                        }
+                    )
+                        .then(response => {
+                            this.request(
+                                `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/totals`,
+                                {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                }
+                            )
+                            .then(response => {
+                                this.totals = response;
+                            });
+                        });
                 },
                 makeOrder() {
                     this.request(

@@ -19,9 +19,6 @@ define([
             discountamout: {
                 type: Number
             },
-            couponcode: {
-                type: String
-            },
             itemsqty: {
                 type: Number
             },
@@ -41,22 +38,14 @@ define([
                 </p>
             </div>
 
-            <template v-if="couponcode">
+            <template v-if="discountamout">
                 <div class="summary__item">
-                    <p class="summary__text">
-                        Coupon code: 
-                        <strong>
-                            {{ couponcode }}
-                        </strong>
-                    </p>
-
                     <p class="summary__text">
                         Discount amount: 
                         <strong>
                             {{ discountamout | currency }}
                         </strong>
                     </p>
-
                 </div>
             </template>
 

@@ -43,7 +43,7 @@ define([
 
                         <label :class="labelclass" :for="option.carrier_code">
                             <span class="label__text">
-                                {{ option.carrier_title }}
+                                {{ option.carrier_title }} - {{ option.method_title }}
                             </span>
 
                             <span class="label__price">
