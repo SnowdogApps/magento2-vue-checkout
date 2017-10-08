@@ -495,16 +495,7 @@
                             },
                             body: JSON.stringify({
                                 "paymentMethod": {
-                                    "po_number": "string",
-                                    "method": "checkmo",
-                                    "additional_data": [
-                                        "string"
-                                    ],
-                                    "extension_attributes": {
-                                        "agreement_ids": [
-                                            "string"
-                                        ]
-                                    }
+                                    "method": this.selectedMethods.paymentMethod.method,
                                 }
                             })
                         }
