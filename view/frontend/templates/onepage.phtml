@@ -215,34 +215,34 @@
 <script>
     require([
         'vue', 
-        'Snowdog_VueCheckout/js/components/input.babel',
-        'Snowdog_VueCheckout/js/components/radio.babel',
-        'Snowdog_VueCheckout/js/components/checkbox.babel',
-        'Snowdog_VueCheckout/js/components/list.babel',
-        'Snowdog_VueCheckout/js/components/select.babel',
-        'Snowdog_VueCheckout/js/components/button.babel',
-        'Snowdog_VueCheckout/js/components/product.babel',
-        'Snowdog_VueCheckout/js/components/summation.babel',
+        'Snowdog_VueCheckout/js/components/button',
+        'Snowdog_VueCheckout/js/components/checkbox',
+        'Snowdog_VueCheckout/js/components/input',
+        'Snowdog_VueCheckout/js/components/payment-methods',
+        'Snowdog_VueCheckout/js/components/product',
+        'Snowdog_VueCheckout/js/components/select',
+        'Snowdog_VueCheckout/js/components/shipping-methods',
+        'Snowdog_VueCheckout/js/components/summation',
         'Snowdog_VueCheckout/js/lib/babel.min'
     ], function(
         Vue, 
+        buttonComponent,
+        checkboxComponent,
         inputComponent,
-        checkboxComponent, 
-        radioComponent,
-        listComponent,
-        selectComponent, 
-        buttonComponent, 
+        paymentMethodsComponent,
         productsComponent,
+        selectComponent,
+        shippingMethodsComponent,
         summationComponent,
         es6
     ) {
-        new inputComponent();
-        new checkboxComponent();
-        new radioComponent();
-        new listComponent();
-        new selectComponent();
         new buttonComponent();
+        new checkboxComponent();
+        new inputComponent();
+        new paymentMethodsComponent();
         new productsComponent();
+        new selectComponent();
+        new shippingMethodsComponent();
         new summationComponent();
 
         var app = new Vue({

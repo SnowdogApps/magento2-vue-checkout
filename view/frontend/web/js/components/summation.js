@@ -1,7 +1,7 @@
 define([
     'vue',
-    'Snowdog_VueCheckout/js/filters/currency.babel',    
-    'Snowdog_VueCheckout/js/filters/trimZero.babel'
+    'Snowdog_VueCheckout/js/filters/currency',    
+    'Snowdog_VueCheckout/js/filters/trimZero'
 ], function(Vue, trimZero, currency) {
     'use strict'
    
@@ -17,13 +17,13 @@ define([
                 type: Array
             },
             discountamout: {
-                type: String
+                type: Number
             },
             couponcode: {
                 type: String
             },
             itemsqty: {
-                type: String
+                type: Number
             },
             currencycode: {
                 type: String

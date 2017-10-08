@@ -3,7 +3,7 @@ define([
    ], function(Vue) {
        'use strict'
    
-    return Vue.component('radiofield', {
+    return Vue.component('payment-methods', {
         props: {
             options: {
                 type: Array

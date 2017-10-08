@@ -1,6 +1,6 @@
 define([
     'vue',
-    'Snowdog_VueCheckout/js/filters/trimZero.babel'    
+    'Snowdog_VueCheckout/js/filters/trimZero'    
 ], function(Vue, trimZero) {
     'use strict'
 
