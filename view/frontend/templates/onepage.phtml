@@ -1,7 +1,7 @@
 <?= $this->getChildHtml() ?>
 
 <div id="checkout" class="checkout-container">
-    <section class="billing-address" v-if="step === 'billing'">
+    <section class="shipping-information" v-if="step === 'addresses'">
         <h1>
             <?= /* @escapeNotVerified */ __('Billing Address'); ?>
         </h1>
@@ -41,42 +41,25 @@
                 </template>
             </template>
         </form>
-    </section>
 
-    <section class="payment-methods" v-if="step === 'shipping'">
         <h1>
-            <?= /* @escapeNotVerified */ __('Choose payment method'); ?>
+            <?= /* @escapeNotVerified */ __('Shipping address'); ?>
         </h1>
 
         <template>
-            <radiofield
-                :options="paymentMethods"
-                name="payment"
-                labelclass="labels"
-                containerclass="payment-methods__handler"
-                fieldclass="radio payment-methods__field"
-                inputclass="payment-methods__radio"
-            />
-        </template>
-
-        <template>
             <checkboxfield 
-                id="paymentAddress"
+                id="shippingAddress"
                 labelclass="label"
-                fieldclass="checkbox payment-methods__field"
-                inputclass="payment-methods__checkbox"
+                fieldclass="checkbox shipping-address__field"
+                inputclass="shipping-address__checkbox"
                 checked="true"
-                name="paymentAddress"
+                name="shippingAddress"
                 text="My billing and shipping address are the same"
                 @change.native="toggleShippingAddress"
             />
         </template>
 
-        <form class="payment-methods__form payment-methods--hidden">
-            <h1>
-                <?= /* @escapeNotVerified */ __('Shipping address'); ?>
-            </h1>
-            
+        <form class="shipping-address__form shipping-address--hidden">
             <template v-for="field in shippingAddress">
                 <template v-if="field.type !== 'select'">
                     <inputfield 
@@ -119,32 +102,74 @@
                     @click.native="cancelShippingInformations"
                 />
             </template>
-
-            <template>
-                <buttonelement
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Update"
-                    @click.native="updateShippingInformations"
-                />
-            </template>
         </form>
-    </section>
-
-    <section v-if="step === 'shipping'">
-        <h1>
-            <?= /* @escapeNotVerified */ __('Product List'); ?>
-        </h1>
 
         <template>
-            <products 
-                containerclass="grid"
-                itemclass="grid__columns"
-                :products="config.totalsData.items"
-                :currency="config.totalsData.base_currency_code"
+            <buttonelement
+                buttontype="button"
+                buttonclass="button"
+                text="Set Shipping Informations"
+                @click.native="setShippingInformation"
+            />
+        </template>
+    </section>
+
+    <section class="methods" v-if="step === 'methods'">
+        <h1>
+            <?= /* @escapeNotVerified */ __('Choose shipping and payment methods'); ?>
+        </h1>
+
+        <h2>
+            <?= /* @escapeNotVerified */ __('Shipping methods'); ?>
+        </h2>
+
+        <template>
+            <shipping-methods
+                :options="shippingMethods"
+                :currencycode="totals.base_currency_code"
+                name="shipping"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
             />
         </template>
 
+        <h2>
+            <?= /* @escapeNotVerified */ __('Payment methods'); ?>
+        </h2>
+
+        <template>
+            <payment-methods
+                :options="paymentMethods"
+                name="payment"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
+            />
+        </template>
+
+        <template>
+            <buttonelement
+                buttontype="button"
+                buttonclass="button"
+                text="Go to summary"
+                @click.native="setMethods"
+            />
+        </template>
+
+        <template>
+            <buttonelement
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'summary'"
+            />
+        </template>
+    </section>
+
+    <section v-if="step === 'summary'">
         <h1>
             <?= /* @escapeNotVerified */ __('Summary'); ?>
         </h1>
@@ -158,56 +183,55 @@
                 :currencycode="config.totalsData.base_currency_code"
             />
         </template>
+
+        <template>
+            <buttonelement
+                buttontype="button"
+                buttonclass="button"
+                text="Place order"
+                @click.native="makeOrder"
+            />
+        </template>
+        
+        <template>
+            <buttonelement
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'methods'"
+            />
+        </template>
     </section>
 
-    <template v-if="step === 'billing'">
-        <buttonelement
-            buttontype="button"
-            buttonclass="button"
-            text="Set billing address"
-            @click.native="setBillingAddress"
-        />
-    </template>
+    <section v-if="step === 'success'">
+        <template>
+            <?= /* @escapeNotVerified */ __('We did it!'); ?>
 
-    <template v-if="step === 'shipping'">
-        <buttonelement
-            buttontype="button"
-            buttonclass="button"
-            text="Set shipping information"
-            @click.native="setShippingInformation"
-        />
-    </template>
+            <a href="/what-is-new.html">
+                <?= /* @escapeNotVerified */ __('Back to category'); ?>
+            </a>
+        </template>
+    </section>
 
-    <template v-if="step === 'order'">
-        <buttonelement
-            buttontype="button"
-            buttonclass="button"
-            text="Back"
-            @click.native="step = 'shipping'"
-        />
-    </template>
+    <section>
+        <h1>
+            <?= /* @escapeNotVerified */ __('Product List'); ?>
+        </h1>
 
-    <template v-if="step === 'order'">
-        <buttonelement
-            buttontype="button"
-            buttonclass="button"
-            text="Make Order"
-            @click.native="makeOrder"
-        />
-    </template>
-
-    <template v-if="step === 'success'">
-        <?= /* @escapeNotVerified */ __('We did it!'); ?>
-
-        <a href="/what-is-new.html">
-            <?= /* @escapeNotVerified */ __('Back to category'); ?>
-        </a>
-    </template>
+        <template>
+            <products 
+                containerclass="grid"
+                itemclass="grid__columns"
+                :products="config.totalsData.items"
+                :currency="config.totalsData.base_currency_code"
+            />
+        </template>
+    </section>
 </div>
 
 <style>
 .region--hidden,
-.payment-methods--hidden {
+.shipping-address--hidden {
     display: none;
 }
 </style>
@@ -250,11 +274,15 @@
             data: {
                 baseUrl: '<?= $block->getBaseUrl() ?>',
                 config: <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>,
-                shippingAddress: {},
                 billingAddress: billingAddress,
+                shippingAddress: {},
+                paymentMethods: [],
+                shippingMethods: [],
+                shippingInformation: shippingInformation,
+                totals: {},
+                selectedMethods: selectedMethods,
                 regionList: regionList,
-                paymentMethods: paymentMethods,
-                step: 'billing'
+                step: 'addresses'
             },
             computed: {
                 cartId() {
@@ -293,48 +321,6 @@
                             }));
                     })
                 },
-                setBillingAddress() {
-                    //setting billing address here - 'billing'
-                    this.request(
-                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/billing-address`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(this.getBillingInformations())
-                        }
-                    )
-                        .then(response => {
-                            this.step = 'shipping';
-                        });
-                },
-                getBillingInformations() {
-                    // getting billing informations from form
-
-                    const response           = shippingInformation,
-                          billingAddressForm = document.querySelector('.billing-address__form').querySelectorAll('input, select, textarea');
-
-                    this.settingData(billingAddressForm, 'billing_address', response);
-
-                    const address = {"address": response.addressInformation.billing_address};
-
-                    return address;
-                },
-                getShippingMethods() {
-                    //getting shipping methods - step 'shipping'
-                    this.request(
-                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-methods`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    )
-                        .then(response => {
-                        });
-                },
                 setShippingInformation() {
                     this.request(
                         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
@@ -347,10 +333,125 @@
                         }
                     )
                         .then(response => {
-                            this.config.paymentMethods = response.payment_methods;
-                            this.config.totalsData = response.totals;
-                            this.step = 'order';
+                            this.totals = response.totals;
+                            this.getPaymentMethods();
+                            this.getShippingMethods();
+                            this.step = 'methods';
                         });
+                },
+                getShippingInformation() {
+                    const object                  = {},
+                          response                = this.shippingInformation.addressInformation,
+                          billingAddressForm      = document.querySelector('.billing-address__form')
+                                                            .querySelectorAll('input, select, textarea'),
+                          shippingAddressCheckbox = document.getElementById('shippingAddress'),
+                          shippingAddressForm     = document.querySelector('.shipping-address__form')
+                                                            .querySelectorAll('input, select, textarea');
+
+                    this.settingData(billingAddressForm, response.billing_address);
+                    
+                    if (shippingAddressCheckbox.checked) {
+                        response.shipping_address = response.billing_address;
+                        response.shipping_address['same_as_billing'] = 1;
+                    }
+                    else {
+                        this.settingData(shippingAddressForm, response.shipping_address);
+                    }
+
+                    /*
+                     * Must set it to static b/c can't set only shipping address
+                     * API don't have endpoint to ONLY shipping address
+                     * Endpoint with billing address are useless in guest cart
+                     *
+                    **/
+                    response.shipping_method_code = 'flatrate';
+                    response.shipping_carrier_code = 'flatrate';
+
+                    object.addressInformation = response;
+
+                    return object;
+                },
+                setMethods() {
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/collect-totals`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.getSelectedMethods())
+                        }
+                    )
+                        .then(response => {
+                            this.totals = response.totals;
+                            this.getSummary();
+                            this.step = 'summary';
+                        });
+                },
+                getSelectedMethods() {
+                    const returnObj      = this.selectedMethods,
+                          shippingMethod = document.querySelector('input[name="shipping"]:checked'),
+                          paymentMethod  = document.querySelector('input[name="payment"]:checked');
+
+                    if (shippingMethod.value.length > 0) {
+                        returnObj.shippingCarrierCode = shippingMethod.value;
+                        returnObj.shippingMethodCode = shippingMethod.dataset.methodCode;
+                    }
+                    else {
+                        this.returnError();
+                        return false;
+                    }
+                    
+                    if (paymentMethod.value.length > 0) {
+                        returnObj.paymentMethod.method = paymentMethod.value;                        
+                    }
+                    else {
+                        this.returnError();
+                        return false;
+                    }
+
+                    return returnObj;
+                },
+                getPaymentMethods() {
+                    /* 
+                     * Getting payment methods by our shipping information which
+                     * we was setting before
+                     * 
+                    **/ 
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                    )
+                        .then(response => {
+                            this.paymentMethods = response;
+                        });
+                },
+                getShippingMethods() {
+                    /* 
+                     * getting payment methods by our shipping information which
+                     * we was setting before
+                     * 
+                    **/ 
+                    this.request(
+                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-methods`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                    )
+                        .then(response => {
+                            this.shippingMethods = response;
+                        });
+                },
+                getSummary() {
+
                 },
                 makeOrder() {
                     this.request(
@@ -380,47 +481,28 @@
                             this.step = 'success';
                         })
                 },
-                getShippingInformation() {
-                    const response                = shippingInformation,
-                          billingAddressForm      = document.querySelector('.billing-address__form').querySelectorAll('input, select, textarea'),
-                          shippingAddressCheckbox = document.getElementById('paymentAddress'),
-                          shippingAddressForm     = document.querySelector('.payment-methods__form').querySelectorAll('input, select, textarea');
-
-                    this.settingData(billingAddressForm, 'billing_address', response);
-                    
-                    if (shippingAddressCheckbox.checked) {
-                        response.addressInformation.billing_address = response.addressInformation.shipping_address;
-                        response.addressInformation.shipping_address['same_as_billing'] = 1;
-                    }
-                    else {
-                        this.settingData(shippingAddressForm, 'shipping_address', response);
-                    }
-
-                    return response;
-                },
-                settingData(elements, whereToAdd, dataToReturn) {
+                settingData(elements, object) {
                     elements.forEach(element => {
                         const id    = element.id,
-                              obj   = dataToReturn.addressInformation[whereToAdd],
                               value = element.value;
 
                         if (element.tagName === "INPUT" && value.length > 0) {
                             if (id === 'street[0]') {
-                                obj.street = [value];
+                                object.street = [value];
                             }
                             else if (id === 'street[1]') {
-                                obj.street.push(value);
+                                object.street.push(value);
                             }
                             else {
-                                obj[id] = value;
+                                object[id] = value;
                             }
                         }
                         else if (id === 'region_id' && value.length > 0) {
-                            obj[id] = parseInt(value);
-                            obj['region'] = element.selectedOptions[0].innerHTML.trim();
+                            object[id] = parseInt(value);
+                            object['region'] = element.selectedOptions[0].innerHTML.trim();
                         }
                         else if (id === 'country_id' && value.length > 0) {
-                            obj[id] = value;
+                            object[id] = value;
                         }
                         else {
                             this.returnError();
@@ -428,7 +510,7 @@
                         }
                     });
 
-                    return dataToReturn;
+                    return object;
                 },
                 returnError(element, cssClass, text) {
 
@@ -446,7 +528,7 @@
 
                         inputRegion.value = "";
 
-                        if(propertyRegions.length > 1) {
+                        if (propertyRegions.length > 1) {
                             regionId.innerHTML = propertyRegions.join(" ");
 
                             this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
@@ -496,35 +578,32 @@
                     elementToShow.classList.remove(classToToggle);
                 },
                 toggleShippingAddress(event) {
-                    const element     = event.srcElement,
-                          paymentForm = document.querySelector('.payment-methods__form');
+                    const element      = event.srcElement,
+                          shippingForm = document.querySelector('.shipping-address__form');
 
                     if (element.checked) {
                         this.shippingAddress = {};
 
-                        if (!paymentForm.classList.contains('payment-methods--hidden')) {
-                            paymentForm.classList.add('payment-methods--hidden');
+                        if (!shippingForm.classList.contains('shipping-address--hidden')) {
+                            shippingForm.classList.add('shipping-address--hidden');
                         }
                     }
                     else {
                         this.shippingAddress = shippingAddress;
 
-                        if (paymentForm.classList.contains('payment-methods--hidden')) {
-                            paymentForm.classList.remove('payment-methods--hidden');
+                        if (shippingForm.classList.contains('shipping-address--hidden')) {
+                            shippingForm.classList.remove('shipping-address--hidden');
                         }
                          
                     }
                 },
                 cancelShippingInformations() {
-                    const paymentCheckbox = document.getElementById('paymentAddress'),
-                          paymentForm     = document.querySelector('.payment-methods__form');
+                    const shippingCheckbox = document.getElementById('shippingAddress'),
+                          shippingForm     = document.querySelector('.shipping-address');
 
                     this.shippingAddress = {};
-                    paymentForm.classList.add('payment-methods--hidden');
-                    paymentCheckbox.checked = true;
-                },
-                updateShippingInformations() {
-                    
+                    shippingForm.classList.add('shipping-address--hidden');
+                    shippingCheckbox.checked = true;
                 }
             }
         })
