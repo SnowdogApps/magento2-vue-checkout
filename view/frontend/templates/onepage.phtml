@@ -212,7 +212,7 @@
         </template>
     </section>
 
-    <section>
+    <section v-if="step !== 'success'">
         <h1>
             <?= /* @escapeNotVerified */ __('Product List'); ?>
         </h1>
@@ -246,7 +246,6 @@
         'Snowdog_VueCheckout/js/components/select',
         'Snowdog_VueCheckout/js/components/shipping-methods',
         'Snowdog_VueCheckout/js/components/summation',
-        'Snowdog_VueCheckout/js/lib/babel.min'
     ], function(
         Vue, 
         buttonComponent,
@@ -256,8 +255,7 @@
         productsComponent,
         selectComponent,
         shippingMethodsComponent,
-        summationComponent,
-        es6
+        summationComponent
     ) {
         new buttonComponent();
         new checkboxComponent();
