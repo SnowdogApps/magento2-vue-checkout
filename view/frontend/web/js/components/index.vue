@@ -481,11 +481,11 @@ export default {
         },
         getShippingInformation() {
             const object                  = {},
-                response                = this.shippingInformation.addressInformation,
-                billingAddressForm      = document.querySelector('.billing-address__form')
+                  response                = this.shippingInformation.addressInformation,
+                  billingAddressForm      = document.querySelector('.billing-address__form')
                                                     .querySelectorAll('input, select, textarea'),
-                shippingAddressCheckbox = document.getElementById('shippingAddress'),
-                shippingAddressForm     = document.querySelector('.shipping-address__form')
+                  shippingAddressCheckbox = document.getElementById('shippingAddress'),
+                  shippingAddressForm     = document.querySelector('.shipping-address__form')
                                                     .querySelectorAll('input, select, textarea');
 
             this.settingData(billingAddressForm, response.billing_address);
