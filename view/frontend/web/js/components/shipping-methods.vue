@@ -48,6 +48,11 @@ export default {
         currencycode: {
             type: String
         }
+    },
+    filters: {
+        currency(value) {
+            return parseFloat(value).toFixed(2);
+        }
     }
 }
 </script>

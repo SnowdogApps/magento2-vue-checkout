@@ -274,14 +274,6 @@ export default {
             return cart;
         }
     },
-    filters: {
-        currency(value) {
-            return parseFloat(value).toFixed(2);
-        },
-        trimZero(value) {
-            return parseInt(value);
-        }
-    },
     methods: {
         parseJSON(response) {
             return new Promise(
