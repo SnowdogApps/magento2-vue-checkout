@@ -1,4 +1,4 @@
-import Vue from './lib/vue.js'
+import Vue from 'vue'
 import index from './components/index.vue'
 
 var app = new Vue({

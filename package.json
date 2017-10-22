@@ -6,11 +6,11 @@
     "build": "webpack"
   },
   "devDependencies": {
-    "webpack": "^3.7.1"
+    "webpack": "^3.7.1",
+    "vue": "^2.4.4"
   },
   "main": "webpack.config.js",
   "dependencies": {
-    "vue-cli": "^2.9.1",
     "vue-loader": "^13.3.0",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.7.1"
