@@ -46,11 +46,7 @@
             <div class="action">
                 <div class="action__handler">
                     <a href="#" class="link action__link">
-                        Edit
-                    </a>
-
-                    <a href="#" class="link action__link">
-                        Delete
+                        Go to product
                     </a>
                 </div>
             </div>
