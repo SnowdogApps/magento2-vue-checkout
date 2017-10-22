@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import index from './components/index.vue'
+import index from './index.vue'
 
 var app = new Vue({
     el: '#checkout',
