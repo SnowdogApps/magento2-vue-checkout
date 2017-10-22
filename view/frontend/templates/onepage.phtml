@@ -11,6 +11,7 @@
 
 <script>
     var config = <?= \Zend_Json::encode($block->getCheckoutConfig()); ?>;
+    var baseUrl = '<?= $block->getBaseUrl() ?>';
 </script>
 
 <script type="text/x-magento-init">

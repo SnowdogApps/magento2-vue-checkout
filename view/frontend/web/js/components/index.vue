@@ -45,18 +45,16 @@
                 Shipping address
             </h1>
 
-            <template>
-                <BaseCheckbox 
-                    id="shippingAddress"
-                    labelclass="label"
-                    fieldclass="checkbox shipping-address__field"
-                    inputclass="shipping-address__checkbox"
-                    checked="true"
-                    name="shippingAddress"
-                    text="My billing and shipping address are the same"
-                    @change.native="toggleShippingAddress"
-                />
-            </template>
+            <BaseCheckbox 
+                id="shippingAddress"
+                labelclass="label"
+                fieldclass="checkbox shipping-address__field"
+                inputclass="shipping-address__checkbox"
+                checked="true"
+                name="shippingAddress"
+                text="My billing and shipping address are the same"
+                @change.native="toggleShippingAddress"
+            />
 
             <form class="shipping-address__form shipping-address--hidden">
                 <template v-for="field in shippingAddress">
@@ -93,24 +91,20 @@
                     </template>
                 </template>
 
-                <template>
-                    <BaseButton
-                        buttontype="button"
-                        buttonclass="button"
-                        text="Cancel"
-                        @click.native="cancelShippingInformations"
-                    />
-                </template>
-            </form>
-
-            <template>
                 <BaseButton
                     buttontype="button"
                     buttonclass="button"
-                    text="Set Shipping Informations"
-                    @click.native="setShippingInformation"
+                    text="Cancel"
+                    @click.native="cancelShippingInformations"
                 />
-            </template>
+            </form>
+
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Set Shipping Informations"
+                @click.native="setShippingInformation"
+            />
         </section>
 
         <section class="methods" v-if="step === 'methods'">
@@ -122,50 +116,42 @@
                 Shipping methods
             </h2>
 
-            <template>
-                <BaseShippingMethods
-                    :options="shippingMethods"
-                    :currencycode="totals.base_currency_code"
-                    name="shipping"
-                    labelclass="labels"
-                    containerclass="methods__handler"
-                    fieldclass="radio methods__field"
-                    inputclass="methods__radio"
-                />
-            </template>
+            <BaseShippingMethods
+                :options="shippingMethods"
+                :currencycode="totals.base_currency_code"
+                name="shipping"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
+            />
 
             <h2>
                 Payment methods
             </h2>
 
-            <template>
-                <BasePaymentMethods
-                    :options="paymentMethods"
-                    name="payment"
-                    labelclass="labels"
-                    containerclass="methods__handler"
-                    fieldclass="radio methods__field"
-                    inputclass="methods__radio"
-                />
-            </template>
+            <BasePaymentMethods
+                :options="paymentMethods"
+                name="payment"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Go to summary"
-                    @click.native="setMethods"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Go to summary"
+                @click.native="setMethods"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Back"
-                    @click.native="step = 'summary'"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'summary'"
+            />
         </section>
 
         <section v-if="step === 'summary'">
@@ -173,42 +159,34 @@
                 Summary
             </h1>
 
-            <template>
-                <BaseSummary
-                    :items="totals.total_segments"
-                    :discountamout="totals.discount_amount"
-                    :itemsqty="totals.items_qty"
-                    :currencycode="totals.base_currency_code"
-                />
-            </template>
+            <BaseSummary
+                :items="totals.total_segments"
+                :discountamout="totals.discount_amount"
+                :itemsqty="totals.items_qty"
+                :currencycode="totals.base_currency_code"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Place order"
-                    @click.native="makeOrder"
-                />
-            </template>
-            
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Back"
-                    @click.native="step = 'methods'"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Place order"
+                @click.native="makeOrder"
+            />
+        
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'methods'"
+            />
         </section>
 
         <section v-if="step === 'success'">
-            <template>
-                We did it!
+            We did it!
 
-                <a href="/what-is-new.html">
-                    Back to category
-                </a>
-            </template>
+            <a href="/what-is-new.html">
+                Back to category
+            </a>
         </section>
 
         <section v-if="step !== 'success'">
@@ -216,14 +194,12 @@
                 Product List
             </h1>
 
-            <template>
-                <BaseProduct 
-                    containerclass="grid"
-                    itemclass="grid__columns"
-                    :products="config.totalsData.items"
-                    :currency="config.totalsData.base_currency_code"
-                />
-            </template>
+            <BaseProduct 
+                containerclass="grid"
+                itemclass="grid__columns"
+                :products="config.totalsData.items"
+                :currency="config.totalsData.base_currency_code"
+            />
         </section>
     </div>
 </template>
@@ -251,7 +227,7 @@ export default {
     },
     data() {
         return {
-            baseUrl: window.location.origin,
+            baseUrl: baseUrl,
             config: config,
             billingAddress: billingAddress,
             shippingAddress: {},
