@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <BaseShippingStep></BaseShippingStep>
+  <div>
+    <BaseShippingStep></BaseShippingStep>
 
-        <BasePaymentStep></BasePaymentStep>
+    <BasePaymentStep></BasePaymentStep>
 
-        <BaseSummaryStep></BaseSummaryStep>
+    <BaseSummaryStep></BaseSummaryStep>
 
-        <BaseSuccessStep></BaseSuccessStep>
+    <BaseSuccessStep></BaseSuccessStep>
 
-        <BaseItems></BaseItems>
-    </div>
+    <BaseItems></BaseItems>
+  </div>
 </template>
 
 <script>
@@ -20,26 +20,26 @@ import BaseSuccessStep from './components/steps/BaseSuccessStep.vue'
 import BaseItems from './components/BaseItems.vue'
 
 export default {
-    components: {
-        BaseShippingStep,
-        BasePaymentStep,
-        BaseSummaryStep,
-        BaseSuccessStep,
-        BaseItems
-    },
-    data() {
-        return {
-            baseUrl: baseUrl,
-            config: this.$store.state.config
-        }
-    },
-    methods: {
-        returnError(element, cssClass, text) {
-            // Initial validation in future
-        }
-    },
-    beforeMount() {
-        this.$store.commit('setCartId', this.config.quoteData.entity_id);     
+  components: {
+    BaseShippingStep,
+    BasePaymentStep,
+    BaseSummaryStep,
+    BaseSuccessStep,
+    BaseItems
+  },
+  data() {
+    return {
+      baseUrl: baseUrl,
+      config: this.$store.state.config
     }
+  },
+  methods: {
+    returnError(element, cssClass, text) {
+      // Initial validation in future
+    }
+  },
+  beforeMount() {
+    this.$store.commit('setCartId', this.config.quoteData.entity_id);
+  }
 }
 </script>
