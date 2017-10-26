@@ -3,7 +3,7 @@ import store from './store'
 import index from './index.vue'
 
 var app = new Vue({
-    el: '#checkout',
-    store,
-    render: h => h(index)
+  el: '#checkout',
+  store,
+  render: h => h(index)
 });
