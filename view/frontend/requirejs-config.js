@@ -1,5 +1,5 @@
 var config = {
     paths: {
-        vue: 'Snowdog_VueCheckout/js/lib/vue'
+        "vue"  : "Snowdog_VueCheckout/js/lib/vue"
     }
 };

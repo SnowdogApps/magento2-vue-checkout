@@ -1,53 +1,13 @@
 <script>
     var shippingAddress = [
         {
-            "type": "select",
-            "name": "region_id",
-            "label": "State/Province",
+            "type": "email",
+            "name": "email",
+            "label": "Email",
             "requried": "",
+            "placeholder": "",
+            "value": "",
             "order": 0,
-            "disabled": "",
-            "options": "regionList"
-        },
-        {
-            "type": "text",
-            "name": "postcode",
-            "label": "Zip/Postal Code",
-            "requried": "",
-            "placeholder": "",
-            "value": "",
-            "order": 10,
-            "disabled": ""
-        },
-        {
-            "type": "text",
-            "name": "company",
-            "label": "Company",
-            "requried": "",
-            "placeholder": "",
-            "value": "",
-            "order": 20,
-            "disabled": ""
-        },
-        {
-            "type": "select",
-            "name": "country_id",
-            "label": "Country",
-            "requried": "",
-            "placeholder": "",
-            "value": "",
-            "order": 30,
-            "disabled": "",
-            "options": "countryList"
-        },
-        {
-            "type": "tel",
-            "name": "telephone",
-            "label": "Phone Number",
-            "requried": "",
-            "placeholder": "",
-            "value": "",
-            "order": 40,
             "disabled": ""
         },
         {
@@ -57,7 +17,7 @@
             "requried": "",
             "placeholder": "",
             "value": "",
-            "order": 50,
+            "order": 10,
             "disabled": ""
         },
         {
@@ -67,7 +27,17 @@
             "requried": "",
             "placeholder": "",
             "value": "",
-            "order": 60,
+            "order": 20,
+            "disabled": ""
+        },
+        {
+            "type": "tel",
+            "name": "telephone",
+            "label": "Phone Number",
+            "requried": "",
+            "placeholder": "",
+            "value": "",
+            "order": 30,
             "disabled": ""
         },
         {
@@ -77,7 +47,7 @@
             "requried": "",
             "placeholder": "",
             "value": "",
-            "order": 70,
+            "order": 40,
             "disabled": ""
         },
         {
@@ -87,8 +57,19 @@
             "requried": "",
             "placeholder": "",
             "value": "",
-            "order": 80,
+            "order": 50,
             "disabled": ""
+        },
+        {
+            "type": "select",
+            "name": "country_id",
+            "label": "Country",
+            "requried": "",
+            "placeholder": "",
+            "value": "",
+            "order": 60,
+            "disabled": "",
+            "options": countryList
         },
         {
             "type": "text",
@@ -97,7 +78,37 @@
             "requried": "",
             "placeholder": "",
             "value": "",
+            "order": 70,
+            "disabled": ""
+        },
+        {
+            "type": "text",
+            "name": "postcode",
+            "label": "Zip/Postal Code",
+            "requried": "",
+            "placeholder": "",
+            "value": "",
+            "order": 80,
+            "disabled": ""
+        },
+        {
+            "type": "select",
+            "name": "region_id",
+            "label": "State/Province",
+            "requried": "",
             "order": 90,
+            "disabled": "",
+            "options": regionList
+        },
+        
+        {
+            "type": "text",
+            "name": "company",
+            "label": "Company",
+            "requried": "",
+            "placeholder": "",
+            "value": "",
+            "order": 100,
             "disabled": ""
         }
     ];
