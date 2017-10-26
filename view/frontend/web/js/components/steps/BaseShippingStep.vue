@@ -17,7 +17,7 @@
           />
         </template>
 
-        <template v-if="field.type === 'select'">
+        <template v-if="field.type === 'select' && field.name !== 'region_id'">
           <BaseSelect
             :label="field.label"
             :name="field.name"
@@ -29,11 +29,22 @@
         </template>
 
         <template v-if="field.name === 'region_id'">
+          <BaseSelect
+            :label="field.label"
+            :name="field.name"
+            :options="field.options"
+            fieldclass="billing-address__field"
+            :class="{ 'region--hidden': isRegionIdHidden }"
+            selectclass="billing-address__select"
+            @change.native="changeSelection"
+          />
+
           <BaseInput
             label="State/Province"
             name="region"
             type="text"
-            fieldclass="billing-address__field region--hidden"
+            fieldclass="billing-address__field"
+            :class="{ 'region--hidden': !isRegionIdHidden }"
             inputclass="input billing-address__input"
           />
         </template>
@@ -55,7 +66,9 @@
       @change.native="toggleShippingAddress"
     />
 
-    <form class="shipping-address__form shipping-address--hidden">
+    <form class="shipping-address__form"
+          :class="{ 'shipping-address--hidden': isShippingAddressHidden }"
+    >
       <template v-for="field in shippingAddress">
         <template v-if="field.type !== 'select'">
           <BaseInput
@@ -68,7 +81,7 @@
           />
         </template>
 
-        <template v-if="field.type === 'select'">
+        <template v-if="field.type === 'select' && field.name !== 'region_id'">
             <BaseSelect
               :label="field.label"
               :name="field.name"
@@ -80,13 +93,24 @@
         </template>
 
         <template v-if="field.name === 'region_id'">
-            <BaseInput
-              label="State/Province"
-              name="region"
-              type="text"
-              fieldclass="shipping-address__field region--hidden"
-              inputclass="input shipping-address__input"
-            />
+          <BaseSelect
+            :label="field.label"
+            :name="field.name"
+            :options="field.options"
+            fieldclass="billing-address__field"
+            :class="{ 'region--hidden': isRegionIdHidden }"
+            selectclass="billing-address__select"
+            @change.native="changeSelection"
+          />
+
+          <BaseInput
+            label="State/Province"
+            name="region"
+            type="text"
+            fieldclass="shipping-address__field"
+            :class="{ 'region--hidden': !isRegionIdHidden }"
+            inputclass="input shipping-address__input"
+          />
         </template>
       </template>
 
@@ -122,15 +146,17 @@ export default {
   },
   data() {
     return {
-      baseUrl: baseUrl,
-      config: this.$store.state.config,
-      billingAddress: billingAddress,
-      shippingAddress: {},
-      paymentMethods: this.$store.state.paymentMethods,
-      shippingMethods: this.$store.state.shippingMethods,
-      shippingInformation: this.$store.state.shippingInformation,
-      totals: this.$store.state.totals,
-      regionList: regionList
+      baseUrl                : baseUrl,
+      config                 : this.$store.state.config,
+      billingAddress         : billingAddress,
+      shippingAddress        : {},
+      paymentMethods         : this.$store.state.paymentMethods,
+      shippingMethods        : this.$store.state.shippingMethods,
+      shippingInformation    : this.$store.state.shippingInformation,
+      totals                 : this.$store.state.totals,
+      regionList             : regionList,
+      isShippingAddressHidden: true,
+      isRegionIdHidden       : false
     };
   },
   computed: {
@@ -301,9 +327,9 @@ export default {
         if (propertyRegions.length > 1) {
           regionId.innerHTML = propertyRegions.join(' ');
 
-          this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
+          this.isRegionIdHidden = false;
         } else {
-          this.regionToggle(regionId.parentNode, inputRegion.parentNode, 'region--hidden');
+          this.isRegionIdHidden = true;
         }
       } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
@@ -317,7 +343,7 @@ export default {
           regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
           countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
 
-          this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
+          this.isRegionIdHidden = false;
         }
       }
     },
@@ -342,37 +368,31 @@ export default {
 
       return newRegionList;
     },
-    regionToggle(elementToHide, elementToShow, classToToggle) {
-      elementToHide.classList.add(classToToggle);
-      elementToShow.classList.remove(classToToggle);
-    },
     returnError(element, cssClass, text) {
       // Initial validation in future
     },
     toggleShippingAddress(event) {
-      const element      = event.srcElement,
-            shippingForm = this.$el.querySelector('.shipping-address__form');
+      const element = event.srcElement;
 
       if (element.checked) {
         this.shippingAddress = {};
 
-        if (!shippingForm.classList.contains('shipping-address--hidden')) {
-          shippingForm.classList.add('shipping-address--hidden');
+        if (!this.isShippingAddressHidden) {
+          this.isShippingAddressHidden = true;
         }
       } else {
         this.shippingAddress = shippingAddress;
 
-        if (shippingForm.classList.contains('shipping-address--hidden')) {
-          shippingForm.classList.remove('shipping-address--hidden');
+        if (this.isShippingAddressHidden) {
+          this.isShippingAddressHidden = false;
         }
       }
     },
     cancelShippingInformations() {
-      const shippingCheckbox = this.$el.getElementById('shippingAddress'),
-            shippingForm     = this.$el.querySelector('.shipping-address');
+      const shippingCheckbox = this.$el.getElementById('shippingAddress');
 
       this.shippingAddress = {};
-      shippingForm.classList.add('shipping-address--hidden');
+      this.isShippingAddressHidden = true;
       shippingCheckbox.checked = true;
     }
   }
