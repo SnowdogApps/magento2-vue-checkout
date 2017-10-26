@@ -108,10 +108,10 @@
 </template>
 
 <script>
-import BaseButton from "../BaseButton.vue";
-import BaseCheckbox from "../BaseCheckbox.vue";
-import BaseInput from "../BaseInput.vue";
-import BaseSelect from "../BaseSelect.vue";
+import BaseButton from '../BaseButton.vue';
+import BaseCheckbox from '../BaseCheckbox.vue';
+import BaseInput from '../BaseInput.vue';
+import BaseSelect from '../BaseSelect.vue';
 
 export default {
   components: {
@@ -176,33 +176,33 @@ export default {
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this
           .cartId}/shipping-information`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(this.getShippingInformation())
         }
       ).then(response => {
-        this.$store.commit("updateTotals", response.totals);
+        this.$store.commit('updateTotals', response.totals);
         this.getPaymentMethods();
         this.getShippingMethods();
-        this.$store.commit("updateStep", "methods");
+        this.$store.commit('updateStep', 'methods');
       });
     },
     getShippingInformation() {
       const object                  = {},
             response                = this.shippingInformation.addressInformation,
-            billingAddressForm      = document.querySelector(".billing-address__form")
-                                         .querySelectorAll("input, select, textarea"),
-            shippingAddressCheckbox = document.getElementById("shippingAddress"),
-            shippingAddressForm     = document.querySelector(".shipping-address__form")
-                                          .querySelectorAll("input, select, textarea");
+            billingAddressForm      = document.querySelector('.billing-address__form')
+                                         .querySelectorAll('input, select, textarea'),
+            shippingAddressCheckbox = document.getElementById('shippingAddress'),
+            shippingAddressForm     = document.querySelector('.shipping-address__form')
+                                          .querySelectorAll('input, select, textarea');
 
       this.settingData(billingAddressForm, response.billing_address);
 
       if (shippingAddressCheckbox.checked) {
         response.shipping_address = response.billing_address;
-        response.shipping_address["same_as_billing"] = 1;
+        response.shipping_address['same_as_billing'] = 1;
       } else {
         this.settingData(shippingAddressForm, response.shipping_address);
       }
@@ -213,11 +213,11 @@ export default {
        * Endpoint with billing address are useless in guest cart
        *
       **/
-      response.shipping_method_code = "flatrate";
-      response.shipping_carrier_code = "flatrate";
+      response.shipping_method_code = 'flatrate';
+      response.shipping_carrier_code = 'flatrate';
 
       object.addressInformation = response;
-      this.$store.commit("updateShippingInformation", object);
+      this.$store.commit('updateShippingInformation', object);
 
       return object;
     },
@@ -226,18 +226,18 @@ export default {
         const id = element.id,
           value = element.value;
 
-        if (element.tagName === "INPUT" && value.length > 0) {
-          if (id === "street[0]") {
+        if (element.tagName === 'INPUT' && value.length > 0) {
+          if (id === 'street[0]') {
             object.street = [value];
-          } else if (id === "street[1]") {
+          } else if (id === 'street[1]') {
             object.street.push(value);
           } else {
             object[id] = value;
           }
-        } else if (id === "region_id" && value.length > 0) {
+        } else if (id === 'region_id' && value.length > 0) {
           object[id] = parseInt(value);
-          object["region"] = element.selectedOptions[0].innerHTML.trim();
-        } else if (id === "country_id" && value.length > 0) {
+          object['region'] = element.selectedOptions[0].innerHTML.trim();
+        } else if (id === 'country_id' && value.length > 0) {
           object[id] = value;
         } else {
           this.returnError();
@@ -257,13 +257,13 @@ export default {
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this
           .cartId}/payment-methods`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           }
         }
       ).then(response => {
-        this.$store.commit("updatePaymentMethods", response);
+        this.$store.commit('updatePaymentMethods', response);
       });
     },
     getShippingMethods() {
@@ -276,51 +276,43 @@ export default {
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this
           .cartId}/shipping-methods`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           }
         }
       ).then(response => {
-        this.$store.commit("updateShippingMethods", response);
+        this.$store.commit('updateShippingMethods', response);
       });
     },
     changeSelection(event) {
       const getForm       = event.srcElement.parentElement.parentElement,
-            countryId     = getForm.querySelector("#country_id"),
+            countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
-            inputRegion   = getForm.querySelector("#region"),
-            regionId      = getForm.querySelector("#region_id");
+            inputRegion   = getForm.querySelector('#region'),
+            regionId      = getForm.querySelector('#region_id');
 
-      if (countryId == getForm.querySelector("#" + eventSelectId)) {
+      if (countryId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionValue = event.srcElement.selectedOptions[0].value,
               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
 
-        inputRegion.value = "";
+        inputRegion.value = '';
 
         if (propertyRegions.length > 1) {
-          regionId.innerHTML = propertyRegions.join(" ");
+          regionId.innerHTML = propertyRegions.join(' ');
 
-          this.regionToggle(
-            inputRegion.parentNode,
-            regionId.parentNode,
-            "region--hidden"
-          );
+          this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
         } else {
-          this.regionToggle(
-            regionId.parentNode,
-            inputRegion.parentNode,
-            "region--hidden"
-          );
+          this.regionToggle(regionId.parentNode, inputRegion.parentNode, 'region--hidden');
         }
-      } else if (regionId == getForm.querySelector("#" + eventSelectId)) {
+      } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
               eventOptionValue     = event.srcElement.selectedOptions[0].value;
 
         if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
           const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
 
-          regionId.innerHTML = propertyRegions.join(" ");
+          regionId.innerHTML = propertyRegions.join(' ');
 
           regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
           countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
@@ -359,28 +351,28 @@ export default {
     },
     toggleShippingAddress(event) {
       const element      = event.srcElement,
-            shippingForm = document.querySelector(".shipping-address__form");
+            shippingForm = document.querySelector('.shipping-address__form');
 
       if (element.checked) {
         this.shippingAddress = {};
 
-        if (!shippingForm.classList.contains("shipping-address--hidden")) {
-          shippingForm.classList.add("shipping-address--hidden");
+        if (!shippingForm.classList.contains('shipping-address--hidden')) {
+          shippingForm.classList.add('shipping-address--hidden');
         }
       } else {
         this.shippingAddress = shippingAddress;
 
-        if (shippingForm.classList.contains("shipping-address--hidden")) {
-          shippingForm.classList.remove("shipping-address--hidden");
+        if (shippingForm.classList.contains('shipping-address--hidden')) {
+          shippingForm.classList.remove('shipping-address--hidden');
         }
       }
     },
     cancelShippingInformations() {
-      const shippingCheckbox = document.getElementById("shippingAddress"),
-            shippingForm     = document.querySelector(".shipping-address");
+      const shippingCheckbox = document.getElementById('shippingAddress'),
+            shippingForm     = document.querySelector('.shipping-address');
 
       this.shippingAddress = {};
-      shippingForm.classList.add("shipping-address--hidden");
+      shippingForm.classList.add('shipping-address--hidden');
       shippingCheckbox.checked = true;
     }
   }

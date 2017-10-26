@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import BaseButton from "../BaseButton.vue";
-import BasePaymentMethods from "../BasePaymentMethods.vue";
-import BaseShippingMethods from "../BaseShippingMethods.vue";
+import BaseButton from '../BaseButton.vue';
+import BasePaymentMethods from '../BasePaymentMethods.vue';
+import BaseShippingMethods from '../BaseShippingMethods.vue';
 
 export default {
   components: {
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     changeStep(newStep) {
-      this.$store.commit("updateStep", newStep);
+      this.$store.commit('updateStep', newStep);
     },
     parseJSON(response) {
       return new Promise(resolve =>
@@ -123,16 +123,16 @@ export default {
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this
           .cartId}/collect-totals`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(this.getSelectedMethods())
         }
       ).then(response => {
-        this.$store.commit("updateTotals", response);
+        this.$store.commit('updateTotals', response);
         this.getSummary();
-        this.$store.commit("updateStep", "summary");
+        this.$store.commit('updateStep', 'summary');
       });
     },
     getSelectedMethods() {
@@ -155,7 +155,7 @@ export default {
         return false;
       }
 
-      this.$store.commit("updateSelectedMethods", returnObj);
+      this.$store.commit('updateSelectedMethods', returnObj);
 
       return returnObj;
     },
@@ -170,15 +170,15 @@ export default {
       shippingMethodCode.addressInformation.shipping_method_code = this.selectedMethods.shippingMethodCode;
       shippingMethodCode.addressInformation.shipping_carrier_code = this.selectedMethods.shippingCarrierCode;
 
-      this.$store.commint("updateShippingInformation", shippingMethodCode);
+      this.$store.commint('updateShippingInformation', shippingMethodCode);
 
       this.request(
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this
           .cartId}/shipping-information`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(shippingMethodCode)
         }
@@ -186,13 +186,13 @@ export default {
         this.request(
           `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/totals`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json"
+              'Content-Type': 'application/json'
             }
           }
         ).then(response => {
-          this.$store.commit("updateTotals", response);
+          this.$store.commit('updateTotals', response);
         });
       });
     }
