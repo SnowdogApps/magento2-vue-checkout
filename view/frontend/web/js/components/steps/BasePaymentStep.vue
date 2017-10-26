@@ -60,8 +60,8 @@ export default {
   },
   data() {
     return {
-      baseUrl: baseUrl,
-      config: this.$store.state.config,
+      baseUrl        : baseUrl,
+      config         : this.$store.state.config,
       selectedMethods: this.$store.state.selectedMethods
     };
   },

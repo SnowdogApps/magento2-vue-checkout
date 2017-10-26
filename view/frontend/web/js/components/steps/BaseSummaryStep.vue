@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       baseUrl: baseUrl,
-      config: this.$store.state.config
+      config : this.$store.state.config
     }
   },
   computed: {
