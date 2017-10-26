@@ -12,15 +12,15 @@
     />
 
     <BaseButton
+      class="button"
       buttontype="button"
-      buttonclass="button"
       text="Place order"
       @click.native="makeOrder"
     />
 
     <BaseButton
+      class="button"
       buttontype="button"
-      buttonclass="button"
       text="Back"
       @click.native="changeStep('methods')"
     />

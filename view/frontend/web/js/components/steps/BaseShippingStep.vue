@@ -91,16 +91,16 @@
       </template>
 
       <BaseButton
+        class="button"
         buttontype="button"
-        buttonclass="button"
         text="Cancel"
         @click.native="cancelShippingInformations"
       />
     </form>
 
     <BaseButton
+      class="button"
       buttontype="button"
-      buttonclass="button"
       text="Set Shipping Informations"
       @click.native="setShippingInformation"
     />

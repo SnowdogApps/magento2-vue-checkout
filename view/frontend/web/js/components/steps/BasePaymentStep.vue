@@ -32,15 +32,15 @@
     />
 
     <BaseButton
+      class="button"
       buttontype="button"
-      buttonclass="button"
       text="Go to summary"
       @click.native="setMethods"
     />
 
     <BaseButton
+      class="button"
       buttontype="button"
-      buttonclass="button"
       text="Back"
       @click.native="changeStep('addresses')"
     />
