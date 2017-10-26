@@ -2,12 +2,9 @@ define([
     'vue'
 ], function(Vue) {
     'use strict'
-   
+
     return Vue.component('buttonelement', {
         props: {
-            buttonclass: {
-                type: String
-            },
             buttontype: {
                 type: String
             },
@@ -18,10 +15,9 @@ define([
                 type: String
             }
         },
-        template: 
+        template:
         `
-        <button :type="buttontype" 
-                :class="buttonclass"
+        <button :type="buttontype"
                 :title="buttontitle"
         >
             {{ text }}

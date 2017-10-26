@@ -5,20 +5,20 @@
         <h1>
             <?= /* @escapeNotVerified */ __('Billing Address'); ?>
         </h1>
-        
+
         <form class="billing-address__form">
             <template v-for="field in billingAddress">
                 <template v-if="field.type !== 'select'">
-                    <inputfield 
-                        :label="field.label" 
-                        :name="field.name" 
+                    <inputfield
+                        :label="field.label"
+                        :name="field.name"
                         :type="field.type"
                         :value="field.value"
                         fieldclass="billing-address__field"
                         inputclass="input billing-address__input"
                     />
                 </template>
-                
+
                 <template v-if="field.type === 'select'">
                     <selectfield
                         :label="field.label"
@@ -31,9 +31,9 @@
                 </template>
 
                 <template v-if="field.name === 'region_id'">
-                    <inputfield 
-                        label="State/Province" 
-                        name="region" 
+                    <inputfield
+                        label="State/Province"
+                        name="region"
                         type="text"
                         fieldclass="billing-address__field region--hidden"
                         inputclass="input billing-address__input"
@@ -47,7 +47,7 @@
         </h1>
 
         <template>
-            <checkboxfield 
+            <checkboxfield
                 id="shippingAddress"
                 labelclass="label"
                 fieldclass="checkbox shipping-address__field"
@@ -62,9 +62,9 @@
         <form class="shipping-address__form shipping-address--hidden">
             <template v-for="field in shippingAddress">
                 <template v-if="field.type !== 'select'">
-                    <inputfield 
-                        :label="field.label" 
-                        :name="field.name" 
+                    <inputfield
+                        :label="field.label"
+                        :name="field.name"
                         :type="field.type"
                         :value="field.value"
                         fieldclass="shipping-address__field"
@@ -84,9 +84,9 @@
                 </template>
 
                 <template v-if="field.name === 'region_id'">
-                    <inputfield 
-                        label="State/Province" 
-                        name="region" 
+                    <inputfield
+                        label="State/Province"
+                        name="region"
                         type="text"
                         fieldclass="shipping-address__field region--hidden"
                         inputclass="input shipping-address__input"
@@ -97,7 +97,7 @@
             <template>
                 <buttonelement
                     buttontype="button"
-                    buttonclass="button"
+                    class="button"
                     text="Cancel"
                     @click.native="cancelShippingInformations"
                 />
@@ -107,7 +107,7 @@
         <template>
             <buttonelement
                 buttontype="button"
-                buttonclass="button"
+                class="button"
                 text="Set Shipping Informations"
                 @click.native="setShippingInformation"
             />
@@ -153,7 +153,7 @@
         <template>
             <buttonelement
                 buttontype="button"
-                buttonclass="button"
+                class="button"
                 text="Go to summary"
                 @click.native="setMethods"
             />
@@ -162,7 +162,7 @@
         <template>
             <buttonelement
                 buttontype="button"
-                buttonclass="button"
+                class="button"
                 text="Back"
                 @click.native="step = 'summary'"
             />
@@ -186,16 +186,16 @@
         <template>
             <buttonelement
                 buttontype="button"
-                buttonclass="button"
+                class="button"
                 text="Place order"
                 @click.native="makeOrder"
             />
         </template>
-        
+
         <template>
             <buttonelement
                 buttontype="button"
-                buttonclass="button"
+                class="button"
                 text="Back"
                 @click.native="step = 'methods'"
             />
@@ -218,7 +218,7 @@
         </h1>
 
         <template>
-            <products 
+            <products
                 containerclass="grid"
                 itemclass="grid__columns"
                 :products="config.totalsData.items"
@@ -237,7 +237,7 @@
 
 <script>
     require([
-        'vue', 
+        'vue',
         'Snowdog_VueCheckout/js/components/button',
         'Snowdog_VueCheckout/js/components/checkbox',
         'Snowdog_VueCheckout/js/components/input',
@@ -247,7 +247,7 @@
         'Snowdog_VueCheckout/js/components/shipping-methods',
         'Snowdog_VueCheckout/js/components/summation',
     ], function(
-        Vue, 
+        Vue,
         buttonComponent,
         checkboxComponent,
         inputComponent,
@@ -346,7 +346,7 @@
                                                             .querySelectorAll('input, select, textarea');
 
                     this.settingData(billingAddressForm, response.billing_address);
-                    
+
                     if (shippingAddressCheckbox.checked) {
                         response.shipping_address = response.billing_address;
                         response.shipping_address['same_as_billing'] = 1;
@@ -398,9 +398,9 @@
                         this.returnError();
                         return false;
                     }
-                    
+
                     if (paymentMethod.value.length > 0) {
-                        returnObj.paymentMethod.method = paymentMethod.value;                        
+                        returnObj.paymentMethod.method = paymentMethod.value;
                     }
                     else {
                         this.returnError();
@@ -410,11 +410,11 @@
                     return returnObj;
                 },
                 getPaymentMethods() {
-                    /* 
+                    /*
                      * Getting payment methods by our shipping information which
                      * we was setting before
-                     * 
-                    **/ 
+                     *
+                    **/
                     this.request(
                         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
                         {
@@ -429,11 +429,11 @@
                         });
                 },
                 getShippingMethods() {
-                    /* 
+                    /*
                      * getting payment methods by our shipping information which
                      * we was setting before
-                     * 
-                    **/ 
+                     *
+                    **/
                     this.request(
                         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-methods`,
                         {
@@ -453,7 +453,7 @@
                     /**
                      * Update static shipping method - now it's choosen
                      * Must use this endpoint again
-                     * 
+                     *
                      */
                     shippingMethodCode.addressInformation.shipping_method_code = this.selectedMethods.shippingMethodCode;
                     shippingMethodCode.addressInformation.shipping_carrier_code = this.selectedMethods.shippingCarrierCode;
@@ -542,7 +542,7 @@
                           eventSelectId  = event.srcElement.id,
                           inputRegion    = getForm.querySelector('#region'),
                           regionId       = getForm.querySelector('#region_id');
-                          
+
                     if ( countryId == getForm.querySelector("#"+eventSelectId)) {
                         const eventOptionValue = event.srcElement.selectedOptions[0].value,
                               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
@@ -615,7 +615,7 @@
                         if (shippingForm.classList.contains('shipping-address--hidden')) {
                             shippingForm.classList.remove('shipping-address--hidden');
                         }
-                         
+
                     }
                 },
                 cancelShippingInformations() {
