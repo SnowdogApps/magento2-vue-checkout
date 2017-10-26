@@ -192,10 +192,10 @@ export default {
     getShippingInformation() {
       const object                  = {},
             response                = this.shippingInformation.addressInformation,
-            billingAddressForm      = document.querySelector(".billing-address__form")
+            billingAddressForm      = this.$el.querySelector(".billing-address__form")
                                          .querySelectorAll("input, select, textarea"),
-            shippingAddressCheckbox = document.getElementById("shippingAddress"),
-            shippingAddressForm     = document.querySelector(".shipping-address__form")
+            shippingAddressCheckbox = this.$el.getElementById("shippingAddress"),
+            shippingAddressForm     = this.$el.querySelector(".shipping-address__form")
                                           .querySelectorAll("input, select, textarea");
 
       this.settingData(billingAddressForm, response.billing_address);
@@ -359,7 +359,7 @@ export default {
     },
     toggleShippingAddress(event) {
       const element      = event.srcElement,
-            shippingForm = document.querySelector(".shipping-address__form");
+            shippingForm = this.$el.querySelector(".shipping-address__form");
 
       if (element.checked) {
         this.shippingAddress = {};
@@ -376,8 +376,8 @@ export default {
       }
     },
     cancelShippingInformations() {
-      const shippingCheckbox = document.getElementById("shippingAddress"),
-            shippingForm     = document.querySelector(".shipping-address");
+      const shippingCheckbox = this.$el.getElementById("shippingAddress"),
+            shippingForm     = this.$el.querySelector(".shipping-address");
 
       this.shippingAddress = {};
       shippingForm.classList.add("shipping-address--hidden");
