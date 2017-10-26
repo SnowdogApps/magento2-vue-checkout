@@ -137,8 +137,8 @@ export default {
     },
     getSelectedMethods() {
       const returnObj      = this.selectedMethods,
-            shippingMethod = document.querySelector('input[name = "shipping"]: checked'),
-            paymentMethod  = document.querySelector('input[name="payment"]:checked');
+            shippingMethod = this.$el.querySelector('input[name = "shipping"]: checked'),
+            paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
 
       if (shippingMethod.value.length > 0) {
         returnObj.shippingCarrierCode = shippingMethod.value;
