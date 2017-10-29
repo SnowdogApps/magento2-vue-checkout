@@ -1,15 +1,22 @@
 <template>
-  <div :class="containerclass">
+  <div :class="containerClass">
     <template v-for="option in options">
-      <div :class="fieldclass">
-        <input type="radio"
-               :id="option.code"
-               :name="name"
-               :value="option.code"
-               :class="inputclass"
+      <div
+        :class="fieldClass"
+        :key="option.id"
+      >
+        <input
+          type="radio"
+          :id="option.code"
+          :name="name"
+          :value="option.code"
+          :class="inputClass"
         />
 
-        <label :class="labelclass" :for="option.code">
+        <label
+          :class="labelClass"
+          :for="option.code"
+        >
           {{ option.title }}
         </label>
       </div>
@@ -23,19 +30,19 @@ export default {
     options: {
       type: Array
     },
-    labelclass: {
+    labelClass: {
       type: String
     },
     name: {
       type: String
     },
-    containerclass: {
+    containerClass: {
       type: String
     },
-    fieldclass: {
+    fieldClass: {
       type: String
     },
-    inputclass: {
+    inputClass: {
       type: String
     }
   }

@@ -1,6 +1,14 @@
 <template>
-  <div class="products" :class="containerclass">
-    <div class="products__item" :class="itemclass" v-for="product in products">
+  <div
+    class="products"
+    :class="containerClass"
+  >
+    <div
+      class="products__item"
+      :class="itemClass"
+      v-for="product in products"
+      :key="product.id"
+    >
       <p class="products__title">
         Product name:
         <strong>
@@ -21,7 +29,10 @@
         </p>
 
         <template v-for="detail in JSON.parse(product.options)">
-          <span class="products__detail">
+          <span
+            class="products__detail"
+            :key="detail.id"
+          >
             {{ detail.label }}:
             <strong>
               {{ detail.value }}
@@ -60,10 +71,10 @@ export default {
     products: {
         type: Array
     },
-    containerclass: {
+    containerClass: {
         type: String
     },
-    itemclass: {
+    itemClass: {
         type: String
     },
     currency: {

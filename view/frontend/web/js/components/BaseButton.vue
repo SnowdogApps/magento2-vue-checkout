@@ -1,6 +1,7 @@
 <template>
-  <button :type="buttontype"
-          :title="buttontitle"
+  <button
+    :type="buttonType"
+    :title="buttonTitle"
   >
     {{ text }}
   </button>
@@ -10,13 +11,13 @@
 <script>
 export default {
   props: {
-    buttontype: {
+    buttonType: {
         type: String
     },
     text: {
         type: String
     },
-    buttontitle: {
+    buttonTitle: {
         type: String
     }
   }

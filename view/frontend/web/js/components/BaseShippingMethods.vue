@@ -1,22 +1,30 @@
 <template>
-  <div :class="containerclass">
+  <div :class="containerClass">
     <template v-for="option in options">
-      <div :class="fieldclass" v-if="option.available">
-        <input type="radio"
-               :id="option.carrier_code"
-               :name="name"
-               :value="option.carrier_code"
-               :class="inputclass"
-               :data-method-code="option.method_code"
+      <div
+        v-if="option.available"
+        :key="option.id"
+        :class="fieldClass"
+      >
+        <input
+          type="radio"
+          :id="option.carrier_code"
+          :name="name"
+          :value="option.carrier_code"
+          :class="inputClass"
+          :data-method-code="option.method_code"
         />
 
-        <label :class="labelclass" :for="option.carrier_code">
+        <label
+          :class="labelClass"
+          :for="option.carrier_code"
+        >
           <span class="label__text">
             {{ option.carrier_title }} - {{ option.method_title }}
           </span>
 
           <span class="label__price">
-              {{ option.price_incl_tax | currency }} {{ currencycode }}
+              {{ option.price_incl_tax | currency }} {{ currencyCode }}
           </span>
         </label>
       </div>
@@ -30,22 +38,22 @@ export default {
     options: {
       type: Array
     },
-    labelclass: {
+    labelClass: {
       type: String
     },
     name: {
       type: String
     },
-    containerclass: {
+    containerClass: {
       type: String
     },
-    fieldclass: {
+    fieldClass: {
       type: String
     },
-    inputclass: {
+    inputClass: {
       type: String
     },
-    currencycode: {
+    currencyCode: {
       type: String
     }
   },
