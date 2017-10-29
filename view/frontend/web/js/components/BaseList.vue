@@ -1,6 +1,10 @@
 <template>
-  <ul :class="ulclass">
-    <li :class="liclass" v-for="item in items">
+  <ul :class="ulClass">
+    <li
+      :class="liClass"
+      v-for="item in items"
+      :key="item.id"
+    >
       Name: {{ item.name }}
       Qty: {{ item.qty }}
       Price: {{ item.price }}
@@ -12,10 +16,10 @@
 <script>
 export default {
   props: {
-    ulclass: {
+    ulClass: {
       type: String
     },
-    liclass: {
+    liClass: {
       type: String
     },
     items: {
