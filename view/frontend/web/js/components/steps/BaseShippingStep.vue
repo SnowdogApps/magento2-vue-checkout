@@ -4,79 +4,10 @@
     v-if="step === 'shipping'"
   >
     <h1>
-      Billing Address
-    </h1>
-
-    <form class="billing-address__form">
-      <template v-for="field in billingAddress">
-        <template v-if="field.type !== 'select'">
-          <BaseInput
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :type="field.type"
-            :value="field.value"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
-          />
-        </template>
-
-        <template v-if="field.type === 'select' && field.name !== 'region_id'">
-          <BaseSelect
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            @change.native="changeSelection"
-          />
-        </template>
-
-        <template v-if="field.name === 'region_id'">
-          <BaseSelect
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            :class="{ 'region--hidden': isRegionIdHidden }"
-            @change.native="changeSelection"
-          />
-
-          <BaseInput
-            :key="field.id"
-            label="State/Province"
-            name="region"
-            type="text"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
-            :class="{ 'region--hidden': !isRegionIdHidden }"
-          />
-        </template>
-      </template>
-    </form>
-
-    <h1>
       Shipping address
     </h1>
 
-    <BaseCheckbox
-      id="shippingAddress"
-      label-class="label"
-      field-class="checkbox shipping-address__field"
-      input-class="shipping-address__checkbox"
-      checked="true"
-      name="shippingAddress"
-      text="My billing and shipping address are the same"
-      @change.native="toggleShippingAddress"
-    />
-
-    <form
-      class="shipping-address__form"
-      :class="{ 'shipping-address--hidden': isShippingAddressHidden }"
-    >
+    <form class="shipping-address__form">
       <template v-for="field in shippingAddress">
         <template v-if="field.type !== 'select'">
           <BaseInput
@@ -125,14 +56,21 @@
           />
         </template>
       </template>
-
-      <BaseButton
-        class="button"
-        button-type="button"
-        text="Cancel"
-        @click.native="cancelShippingInformations"
-      />
     </form>
+
+    <h2>
+      Shipping methods
+    </h2>
+
+    <BaseShippingMethods
+      :options="shippingMethods"
+      :currency-code="totals.base_currency_code"
+      name="shipping"
+      label-class="labels"
+      container-class="methods__handler"
+      field-class="radio methods__field"
+      input-class="methods__radio"
+    />
 
     <BaseButton
       class="button"
@@ -148,27 +86,25 @@ import BaseButton from '../BaseButton.vue';
 import BaseCheckbox from '../BaseCheckbox.vue';
 import BaseInput from '../BaseInput.vue';
 import BaseSelect from '../BaseSelect.vue';
+import BaseShippingMethods from '../BaseShippingMethods.vue';
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BaseSelect
+    BaseSelect,
+    BaseShippingMethods
   },
   data() {
     return {
-      baseUrl                : baseUrl,
-      config                 : this.$store.state.config,
-      billingAddress         : billingAddress,
-      shippingAddress        : {},
-      paymentMethods         : this.$store.state.paymentMethods,
-      shippingMethods        : this.$store.state.shippingMethods,
-      shippingInformation    : this.$store.state.shippingInformation,
-      totals                 : this.$store.state.totals,
-      regionList             : regionList,
-      isShippingAddressHidden: true,
-      isRegionIdHidden       : false
+      baseUrl            : baseUrl,
+      config             : this.$store.state.config,
+      shippingAddress    : shippingAddress,
+      shippingInformation: this.$store.state.shippingInformation,
+      totals             : this.$store.state.totals,
+      regionList         : regionList,
+      isRegionIdHidden   : false
     };
   },
   computed: {
@@ -177,6 +113,9 @@ export default {
     },
     step() {
       return this.$store.state.step;
+    },
+    shippingMethods() {
+      return this.$store.state.shippingMethods;
     }
   },
   methods: {
@@ -210,54 +149,65 @@ export default {
       });
     },
     setShippingInformation() {
+      const object              = {},
+            response            = this.shippingInformation.addressInformation,
+            shippingAddressForm = this.$el.querySelector('.shipping-address__form')
+                                      .querySelectorAll('input, select, textarea'),
+            shippingMethod      = this.$el.querySelector('input[name="shipping"]:checked');
+
+      this.settingData(shippingAddressForm, response.shipping_address);
+
+      if (shippingMethod.value.length > 0) {
+        response.shipping_carrier_code = shippingMethod.value;
+        response.shipping_method_code = shippingMethod.dataset.methodCode;
+      } else {
+        this.returnError();
+        return false;
+      }
+
+      object.addressInformation = response;
+      this.$store.commit('updateShippingInformation', object);
+      this.getPaymentMethods();
+
+      return object;
+    },
+    getPaymentMethods() {
+      /*
+       * Getting payment methods by our shipping information which
+       * we was setting before
+       *
+      **/
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/shipping-information`,
+        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      ).then(response => {
+        this.$store.commit('updatePaymentMethods', response);
+      });
+    },
+    getShippingMethods(countryId) {
+      const conuntry = {
+              "address": {
+                "country_id": countryId
+              }
+            };
+
+      this.request(
+        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.getShippingInformation())
+          body: JSON.stringify(conuntry)
         }
       ).then(response => {
-        this.$store.commit('updateTotals', response.totals);
-        this.getPaymentMethods();
-        this.getShippingMethods();
-        this.$store.commit('updateStep', 'methods');
+        this.$store.commit('updatePaymentMethods', response);
       });
-    },
-    getShippingInformation() {
-      const object                  = {},
-            response                = this.shippingInformation.addressInformation,
-            billingAddressForm      = this.$el.querySelector('.billing-address__form')
-                                         .querySelectorAll('input, select, textarea'),
-            shippingAddressCheckbox = this.$el.getElementById('shippingAddress'),
-            shippingAddressForm     = this.$el.querySelector('.shipping-address__form')
-                                          .querySelectorAll('input, select, textarea');
-
-      this.settingData(billingAddressForm, response.billing_address);
-
-      if (shippingAddressCheckbox.checked) {
-        response.shipping_address = response.billing_address;
-        response.shipping_address['same_as_billing'] = 1;
-      } else {
-        this.settingData(shippingAddressForm, response.shipping_address);
-      }
-
-      /*
-       * Must set it to static b/c can't set only shipping address
-       * API don't have endpoint to ONLY shipping address
-       * Endpoint with billing address are useless in guest cart
-       *
-      **/
-      response.shipping_method_code = 'flatrate';
-      response.shipping_carrier_code = 'flatrate';
-
-      object.addressInformation = response;
-      this.$store.commit('updateShippingInformation', object);
-
-      return object;
     },
     settingData(elements, object) {
       elements.forEach(element => {
@@ -285,50 +235,14 @@ export default {
 
       return object;
     },
-    getPaymentMethods() {
-      /*
-       * Getting payment methods by our shipping information which
-       * we was setting before
-       *
-      **/
-      this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/payment-methods`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(response => {
-        this.$store.commit('updatePaymentMethods', response);
-      });
-    },
-    getShippingMethods() {
-      /*
-       * getting payment methods by our shipping information which
-       * we was setting before
-       *
-      **/
-      this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/shipping-methods`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(response => {
-        this.$store.commit('updateShippingMethods', response);
-      });
-    },
     changeSelection(event) {
       const getForm       = event.srcElement.parentElement.parentElement,
             countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
             inputRegion   = getForm.querySelector('#region'),
             regionId      = getForm.querySelector('#region_id');
+
+      this.getShippingMethods(countryId);
 
       if (countryId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionValue = event.srcElement.selectedOptions[0].value,
@@ -382,30 +296,6 @@ export default {
     },
     returnError(element, cssClass, text) {
       // Initial validation in future
-    },
-    toggleShippingAddress(event) {
-      const element = event.srcElement;
-
-      if (element.checked) {
-        this.shippingAddress = {};
-
-        if (!this.isShippingAddressHidden) {
-          this.isShippingAddressHidden = true;
-        }
-      } else {
-        this.shippingAddress = shippingAddress;
-
-        if (this.isShippingAddressHidden) {
-          this.isShippingAddressHidden = false;
-        }
-      }
-    },
-    cancelShippingInformations() {
-      const shippingCheckbox = this.$el.getElementById('shippingAddress');
-
-      this.shippingAddress = {};
-      this.isShippingAddressHidden = true;
-      shippingCheckbox.checked = true;
     }
   }
 };
