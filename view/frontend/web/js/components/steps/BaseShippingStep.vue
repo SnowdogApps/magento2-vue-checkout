@@ -1,5 +1,8 @@
 <template>
-  <section class="shipping-information" v-if="step === 'addresses'">
+  <section
+    class="shipping-information"
+    v-if="step === 'addresses'"
+  >
     <h1>
       Billing Address
     </h1>
@@ -8,44 +11,48 @@
       <template v-for="field in billingAddress">
         <template v-if="field.type !== 'select'">
           <BaseInput
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :type="field.type"
             :value="field.value"
-            fieldclass="billing-address__field"
-            inputclass="input billing-address__input"
+            field-class="billing-address__field"
+            input-class="input billing-address__input"
           />
         </template>
 
         <template v-if="field.type === 'select' && field.name !== 'region_id'">
           <BaseSelect
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :options="field.options"
-            fieldclass="billing-address__field"
-            selectclass="billing-address__select"
+            field-class="billing-address__field"
+            select-class="billing-address__select"
             @change.native="changeSelection"
           />
         </template>
 
         <template v-if="field.name === 'region_id'">
           <BaseSelect
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :options="field.options"
-            fieldclass="billing-address__field"
+            field-class="billing-address__field"
+            select-class="billing-address__select"
             :class="{ 'region--hidden': isRegionIdHidden }"
-            selectclass="billing-address__select"
             @change.native="changeSelection"
           />
 
           <BaseInput
+            :key="field.id"
             label="State/Province"
             name="region"
             type="text"
-            fieldclass="billing-address__field"
+            field-class="billing-address__field"
+            input-class="input billing-address__input"
             :class="{ 'region--hidden': !isRegionIdHidden }"
-            inputclass="input billing-address__input"
           />
         </template>
       </template>
@@ -57,66 +64,71 @@
 
     <BaseCheckbox
       id="shippingAddress"
-      labelclass="label"
-      fieldclass="checkbox shipping-address__field"
-      inputclass="shipping-address__checkbox"
+      label-class="label"
+      field-class="checkbox shipping-address__field"
+      input-class="shipping-address__checkbox"
       checked="true"
       name="shippingAddress"
       text="My billing and shipping address are the same"
       @change.native="toggleShippingAddress"
     />
 
-    <form class="shipping-address__form"
-          :class="{ 'shipping-address--hidden': isShippingAddressHidden }"
+    <form
+      class="shipping-address__form"
+      :class="{ 'shipping-address--hidden': isShippingAddressHidden }"
     >
       <template v-for="field in shippingAddress">
         <template v-if="field.type !== 'select'">
           <BaseInput
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :type="field.type"
             :value="field.value"
-            fieldclass="shipping-address__field"
-            inputclass="input shipping-address__input"
+            field-class="shipping-address__field"
+            input-class="input shipping-address__input"
           />
         </template>
 
         <template v-if="field.type === 'select' && field.name !== 'region_id'">
-            <BaseSelect
-              :label="field.label"
-              :name="field.name"
-              :options="field.options"
-              fieldclass="shipping-address__field"
-              selectclass="shipping-address__select"
-              @change.native="changeSelection"
-            />
+          <BaseSelect
+            :key="field.id"
+            :label="field.label"
+            :name="field.name"
+            :options="field.options"
+            field-class="shipping-address__field"
+            select-class="shipping-address__select"
+            @change.native="changeSelection"
+          />
         </template>
 
         <template v-if="field.name === 'region_id'">
           <BaseSelect
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :options="field.options"
-            fieldclass="billing-address__field"
+            field-class="billing-address__field"
+            select-class="billing-address__select"
             :class="{ 'region--hidden': isRegionIdHidden }"
-            selectclass="billing-address__select"
             @change.native="changeSelection"
           />
 
           <BaseInput
+            :key="field.id"
             label="State/Province"
             name="region"
             type="text"
-            fieldclass="shipping-address__field"
+            field-class="shipping-address__field"
+            input-class="input shipping-address__input"
             :class="{ 'region--hidden': !isRegionIdHidden }"
-            inputclass="input shipping-address__input"
           />
         </template>
       </template>
 
       <BaseButton
         class="button"
-        buttontype="button"
+        button-type="button"
         text="Cancel"
         @click.native="cancelShippingInformations"
       />
@@ -124,7 +136,7 @@
 
     <BaseButton
       class="button"
-      buttontype="button"
+      button-type="button"
       text="Set Shipping Informations"
       @click.native="setShippingInformation"
     />

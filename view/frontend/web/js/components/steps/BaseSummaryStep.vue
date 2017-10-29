@@ -6,21 +6,21 @@
 
     <BaseSummary
       :items="totals.total_segments"
-      :discountamout="totals.discount_amount"
-      :itemsqty="totals.items_qty"
-      :currencycode="totals.base_currency_code"
+      :discount-amout="totals.discount_amount"
+      :items-qty="totals.items_qty"
+      :currency-code="totals.base_currency_code"
     />
 
     <BaseButton
       class="button"
-      buttontype="button"
+      button-type="button"
       text="Place order"
       @click.native="makeOrder"
     />
 
     <BaseButton
       class="button"
-      buttontype="button"
+      button-type="button"
       text="Back"
       @click.native="changeStep('methods')"
     />

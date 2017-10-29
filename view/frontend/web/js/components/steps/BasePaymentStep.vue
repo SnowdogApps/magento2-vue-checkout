@@ -1,5 +1,8 @@
 <template>
-  <section class="methods" v-if="step === 'methods'">
+  <section
+    class="methods"
+    v-if="step === 'methods'"
+  >
     <h1>
       Choose shipping and payment methods
     </h1>
@@ -10,12 +13,12 @@
 
     <BaseShippingMethods
       :options="shippingMethods"
-      :currencycode="totals.base_currency_code"
+      :currency-code="totals.base_currency_code"
       name="shipping"
-      labelclass="labels"
-      containerclass="methods__handler"
-      fieldclass="radio methods__field"
-      inputclass="methods__radio"
+      label-class="labels"
+      container-class="methods__handler"
+      field-class="radio methods__field"
+      input-class="methods__radio"
     />
 
     <h2>
@@ -25,22 +28,22 @@
     <BasePaymentMethods
       :options="paymentMethods"
       name="payment"
-      labelclass="labels"
-      containerclass="methods__handler"
-      fieldclass="radio methods__field"
-      inputclass="methods__radio"
+      label-class="labels"
+      container-class="methods__handler"
+      field-class="radio methods__field"
+      input-class="methods__radio"
     />
 
     <BaseButton
       class="button"
-      buttontype="button"
+      button-type="button"
       text="Go to summary"
       @click.native="setMethods"
     />
 
     <BaseButton
       class="button"
-      buttontype="button"
+      button-type="button"
       text="Back"
       @click.native="changeStep('addresses')"
     />
