@@ -1,7 +1,7 @@
 <template>
   <section
     class="methods"
-    v-if="step === 'methods'"
+    v-if="step === 'payment'"
   >
     <h1>
       Choose shipping and payment methods
@@ -38,14 +38,14 @@
       class="button"
       button-type="button"
       text="Go to summary"
-      @click.native="setMethods"
+      @click.native="setShippingInformation"
     />
 
     <BaseButton
       class="button"
       button-type="button"
       text="Back"
-      @click.native="changeStep('addresses')"
+      @click.native="changeStep('shipping')"
     />
   </section>
 </template>

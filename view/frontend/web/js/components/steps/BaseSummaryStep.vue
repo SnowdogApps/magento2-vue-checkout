@@ -22,7 +22,7 @@
       class="button"
       button-type="button"
       text="Back"
-      @click.native="changeStep('methods')"
+      @click.native="changeStep('payment')"
     />
   </section>
 </template>

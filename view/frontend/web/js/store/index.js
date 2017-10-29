@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     config: config,
-    step: 'addresses',
+    step: 'shipping',
     cart: '',
     paymentMethods: [],
     shippingMethods: [],

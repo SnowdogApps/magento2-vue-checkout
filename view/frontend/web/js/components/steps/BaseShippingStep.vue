@@ -1,7 +1,7 @@
 <template>
   <section
     class="shipping-information"
-    v-if="step === 'addresses'"
+    v-if="step === 'shipping'"
   >
     <h1>
       Billing Address
