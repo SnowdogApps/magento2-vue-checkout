@@ -1,14 +1,14 @@
 <template>
   <div>
-    <BaseShippingStep></BaseShippingStep>
+    <BaseShippingStep/>
 
-    <BasePaymentStep></BasePaymentStep>
+    <BasePaymentStep/>
 
-    <BaseSummaryStep></BaseSummaryStep>
+    <BaseSummaryStep/>
 
-    <BaseSuccessStep></BaseSuccessStep>
+    <BaseSuccessStep/>
 
-    <BaseItems></BaseItems>
+    <BaseItems/>
   </div>
 </template>
 
