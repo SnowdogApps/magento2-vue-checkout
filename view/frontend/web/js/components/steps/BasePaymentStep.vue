@@ -232,7 +232,7 @@ export default {
 
       const object                  = {},
             response                = this.shippingInformation.addressInformation,
-            billingAddressCheckbox  = this.$el.getElementById('billingAddress'),
+            billingAddressCheckbox  = this.$el.querySelector('#billingAddress'),
             billingAddressForm      = this.$el.querySelector('.billing-address__form')
                                           .querySelectorAll('input, select, textarea');
 
@@ -397,12 +397,12 @@ export default {
       }
     },
     cancelBillingInformations() {
-      const billingCheckbox = this.$el.getElementById('billingAddress');
       /**
        * Cancel addin a Billing Address
        * Hidding it
        *
       **/
+      const billingCheckbox = this.$el.querySelector('#billingAddress');
 
 
       this.billingAddress = {};
