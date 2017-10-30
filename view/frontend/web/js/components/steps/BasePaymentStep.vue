@@ -126,12 +126,12 @@ export default {
   data() {
     return {
       baseUrl               : baseUrl,
-      config                : this.$store.state.config,
       billingAddress        : {},
-      paymentMethods        : this.$store.state.paymentMethods,
-      selectedMethods       : this.$store.state.selectedMethods,
+      config                : this.$store.state.config,
+      isBillingAddressHidden: true,
+      isRegionIdHidden      : false,
       regionList            : regionList,
-      isBillingAddressHidden: true
+      selectedMethods       : this.$store.state.selectedMethods
     };
   },
   computed: {
@@ -140,6 +140,9 @@ export default {
     },
     step() {
       return this.$store.state.step;
+    },
+    paymentMethods() {
+      return this.$store.state.paymentMethods;
     },
     shippingInformation() {
       return this.$store.state.shippingInformation;
@@ -179,6 +182,13 @@ export default {
       });
     },
     setShippingInformation() {
+      /**
+       * Setting Payment Address
+       * Push address to data
+       * Shipping Information 2/2
+       *
+      **/
+
       this.request(
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
         {
@@ -190,9 +200,15 @@ export default {
         }
       ).then(response => {
         this.setMethods();
+        // Update step to summary is in setMethods method
       });
     },
     setMethods() {
+      /**
+       * Return totals informations and push to store
+       *
+      **/
+
       this.request(
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/collect-totals`,
         {
@@ -208,6 +224,12 @@ export default {
       });
     },
     getShippingInformation() {
+      /**
+       * Method which returnning Billing Address
+       * Update it in store
+       *
+      **/
+
       const object                  = {},
             response                = this.shippingInformation.addressInformation,
             billingAddressCheckbox  = this.$el.getElementById('billingAddress'),
@@ -227,8 +249,13 @@ export default {
       return object;
     },
     getSelectedMethods() {
+      /**
+       * Getting data with selected methods
+       * Setting it into object
+      **/
+
       const returnObj      = this.selectedMethods,
-            shippngMethod  = this.shippingInformation.addressInformation,
+            shippingMethod = this.shippingInformation.addressInformation,
             paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
 
       returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
@@ -241,9 +268,17 @@ export default {
         return false;
       }
 
+      this.$store.commit('updateSelectedMethods', returnObj);
+
       return returnObj;
     },
     settingData(elements, object) {
+      /**
+       * Setting Data into fields in object from property
+       * Need to replace in future
+       *
+      **/
+
       elements.forEach(element => {
         const id = element.id,
           value = element.value;
@@ -270,6 +305,12 @@ export default {
       return object;
     },
     changeSelection(event) {
+      /**
+       * Method onchange select (country/region)
+       * Returning country regions if exists
+       *
+      **/
+
       const getForm       = event.srcElement.parentElement.parentElement,
             countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
@@ -306,6 +347,13 @@ export default {
       }
     },
     returnCountryRegions(regions, optionToCompare) {
+      /**
+       * Rendering country region list
+       * Return in array and passing to select
+       * Need to replace in future
+       *
+      **/
+
       let newRegionList = [];
 
       newRegionList.push(`
@@ -327,6 +375,11 @@ export default {
       return newRegionList;
     },
     toggleBillingAddress(event) {
+      /**
+       * Showing/Hidding Billing Address by checkbox
+       *
+      **/
+
       const element = event.srcElement;
 
       if (element.checked) {
@@ -345,6 +398,12 @@ export default {
     },
     cancelBillingInformations() {
       const billingCheckbox = this.$el.getElementById('billingAddress');
+      /**
+       * Cancel addin a Billing Address
+       * Hidding it
+       *
+      **/
+
 
       this.billingAddress = {};
       this.isBillingAddressHidden = true;

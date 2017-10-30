@@ -100,11 +100,11 @@ export default {
     return {
       baseUrl            : baseUrl,
       config             : this.$store.state.config,
+      isRegionIdHidden   : false,
+      regionList         : regionList,
       shippingAddress    : shippingAddress,
       shippingInformation: this.$store.state.shippingInformation,
-      totals             : this.$store.state.totals,
-      regionList         : regionList,
-      isRegionIdHidden   : false
+      totals             : this.$store.state.totals
     };
   },
   computed: {
@@ -149,6 +149,12 @@ export default {
       });
     },
     setShippingInformation() {
+      /**
+       * Setting Shipping address and shipping method to object
+       * Push data to store
+       * Shipping Information set 1/2
+      **/
+
       const object              = {},
             response            = this.shippingInformation.addressInformation,
             shippingAddressForm = this.$el.querySelector('.shipping-address__form')
@@ -166,10 +172,9 @@ export default {
       }
 
       object.addressInformation = response;
+
       this.$store.commit('updateShippingInformation', object);
       this.getPaymentMethods();
-
-      return object;
     },
     getPaymentMethods() {
       /*
@@ -177,6 +182,7 @@ export default {
        * we was setting before
        *
       **/
+
       this.request(
         `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
         {
@@ -187,9 +193,16 @@ export default {
         }
       ).then(response => {
         this.$store.commit('updatePaymentMethods', response);
+        this.$store.commit('updateStep', 'payment');
       });
     },
     getShippingMethods(countryId) {
+      /**
+       * Getting shipping methods by country ID
+       * Update it in store
+       *
+      **/
+
       const conuntry = {
               "address": {
                 "country_id": countryId
@@ -206,10 +219,16 @@ export default {
           body: JSON.stringify(conuntry)
         }
       ).then(response => {
-        this.$store.commit('updatePaymentMethods', response);
+        this.$store.commit('updateShippingMethods', response);
       });
     },
     settingData(elements, object) {
+      /**
+       * Setting Data into fields in object from property
+       * Need to replace in future
+       *
+      **/
+
       elements.forEach(element => {
         const id = element.id,
           value = element.value;
@@ -236,17 +255,23 @@ export default {
       return object;
     },
     changeSelection(event) {
+      /**
+       * Method onchange select (country/region)
+       * Returning country regions if exists
+       *
+      **/
+
       const getForm       = event.srcElement.parentElement.parentElement,
             countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
             inputRegion   = getForm.querySelector('#region'),
             regionId      = getForm.querySelector('#region_id');
 
-      this.getShippingMethods(countryId);
-
       if (countryId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionValue = event.srcElement.selectedOptions[0].value,
               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
+
+        this.getShippingMethods(eventOptionValue);
 
         inputRegion.value = '';
 
@@ -274,6 +299,13 @@ export default {
       }
     },
     returnCountryRegions(regions, optionToCompare) {
+      /**
+       * Rendering country region list
+       * Return in array and passing to select
+       * Need to replace in future
+       *
+      **/
+
       let newRegionList = [];
 
       newRegionList.push(`

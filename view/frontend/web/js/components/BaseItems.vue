@@ -1,8 +1,8 @@
 <template>
   <section v-if="step !== 'success'">
-    <h1>
+    <h2>
       Product List
-    </h1>
+    </h2>
 
     <BaseProduct
       container-class="grid"
