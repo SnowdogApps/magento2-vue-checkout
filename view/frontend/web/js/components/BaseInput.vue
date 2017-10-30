@@ -1,14 +1,15 @@
 <template>
-  <div :class="fieldclass">
+  <div :class="fieldClass">
     <label :for="name">
         {{ label }}
     </label>
 
-    <input :type="type"
-           :id="name"
-           :name="name"
-           :class="inputclass"
-           :value="value"
+    <input
+      :type="type"
+      :id="name"
+      :name="name"
+      :class="inputClass"
+      :value="value"
     />
   </div>
 </template>
@@ -22,10 +23,10 @@ export default {
     name: {
       type: String
     },
-    fieldclass: {
+    fieldClass: {
       type: String
     },
-    inputclass: {
+    inputClass: {
       type: String
     },
     type: {

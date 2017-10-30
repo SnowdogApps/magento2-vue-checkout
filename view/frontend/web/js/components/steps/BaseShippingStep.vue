@@ -1,106 +1,80 @@
 <template>
-  <section class="shipping-information" v-if="step === 'addresses'">
+  <section
+    class="shipping-information"
+    v-if="step === 'shipping'"
+  >
     <h1>
-      Billing Address
+      Shipping address
     </h1>
 
-    <form class="billing-address__form">
-      <template v-for="field in billingAddress">
+    <form class="shipping-address__form">
+      <template v-for="field in shippingAddress">
         <template v-if="field.type !== 'select'">
           <BaseInput
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :type="field.type"
             :value="field.value"
-            fieldclass="billing-address__field"
-            inputclass="input billing-address__input"
+            field-class="shipping-address__field"
+            input-class="input shipping-address__input"
           />
         </template>
 
-        <template v-if="field.type === 'select'">
+        <template v-if="field.type === 'select' && field.name !== 'region_id'">
           <BaseSelect
+            :key="field.id"
             :label="field.label"
             :name="field.name"
             :options="field.options"
-            fieldclass="billing-address__field"
-            selectclass="billing-address__select"
+            field-class="shipping-address__field"
+            select-class="shipping-address__select"
             @change.native="changeSelection"
           />
         </template>
 
         <template v-if="field.name === 'region_id'">
+          <BaseSelect
+            :key="field.id"
+            :label="field.label"
+            :name="field.name"
+            :options="field.options"
+            field-class="billing-address__field"
+            select-class="billing-address__select"
+            :class="{ 'region--hidden': isRegionIdHidden }"
+            @change.native="changeSelection"
+          />
+
           <BaseInput
+            :key="field.id"
             label="State/Province"
             name="region"
             type="text"
-            fieldclass="billing-address__field region--hidden"
-            inputclass="input billing-address__input"
+            field-class="shipping-address__field"
+            input-class="input shipping-address__input"
+            :class="{ 'region--hidden': !isRegionIdHidden }"
           />
         </template>
       </template>
     </form>
 
-    <h1>
-      Shipping address
-    </h1>
+    <h2>
+      Shipping methods
+    </h2>
 
-    <BaseCheckbox
-      id="shippingAddress"
-      labelclass="label"
-      fieldclass="checkbox shipping-address__field"
-      inputclass="shipping-address__checkbox"
-      checked="true"
-      name="shippingAddress"
-      text="My billing and shipping address are the same"
-      @change.native="toggleShippingAddress"
+    <BaseShippingMethods
+      :options="shippingMethods"
+      :currency-code="totals.base_currency_code"
+      name="shipping"
+      label-class="labels"
+      container-class="methods__handler"
+      field-class="radio methods__field"
+      input-class="methods__radio"
     />
 
-    <form class="shipping-address__form shipping-address--hidden">
-      <template v-for="field in shippingAddress">
-        <template v-if="field.type !== 'select'">
-          <BaseInput
-            :label="field.label"
-            :name="field.name"
-            :type="field.type"
-            :value="field.value"
-            fieldclass="shipping-address__field"
-            inputclass="input shipping-address__input"
-          />
-        </template>
-
-        <template v-if="field.type === 'select'">
-            <BaseSelect
-              :label="field.label"
-              :name="field.name"
-              :options="field.options"
-              fieldclass="shipping-address__field"
-              selectclass="shipping-address__select"
-              @change.native="changeSelection"
-            />
-        </template>
-
-        <template v-if="field.name === 'region_id'">
-            <BaseInput
-              label="State/Province"
-              name="region"
-              type="text"
-              fieldclass="shipping-address__field region--hidden"
-              inputclass="input shipping-address__input"
-            />
-        </template>
-      </template>
-
-      <BaseButton
-        buttontype="button"
-        buttonclass="button"
-        text="Cancel"
-        @click.native="cancelShippingInformations"
-      />
-    </form>
-
     <BaseButton
-      buttontype="button"
-      buttonclass="button"
+      class="button"
+      button-type="button"
       text="Set Shipping Informations"
       @click.native="setShippingInformation"
     />
@@ -108,29 +82,29 @@
 </template>
 
 <script>
-import BaseButton from "../BaseButton.vue";
-import BaseCheckbox from "../BaseCheckbox.vue";
-import BaseInput from "../BaseInput.vue";
-import BaseSelect from "../BaseSelect.vue";
+import BaseButton from '../BaseButton.vue';
+import BaseCheckbox from '../BaseCheckbox.vue';
+import BaseInput from '../BaseInput.vue';
+import BaseSelect from '../BaseSelect.vue';
+import BaseShippingMethods from '../BaseShippingMethods.vue';
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BaseSelect
+    BaseSelect,
+    BaseShippingMethods
   },
   data() {
     return {
-      baseUrl: baseUrl,
-      config: this.$store.state.config,
-      billingAddress: billingAddress,
-      shippingAddress: {},
-      paymentMethods: this.$store.state.paymentMethods,
-      shippingMethods: this.$store.state.shippingMethods,
+      baseUrl            : baseUrl,
+      config             : this.$store.state.config,
+      shippingAddress    : shippingAddress,
       shippingInformation: this.$store.state.shippingInformation,
-      totals: this.$store.state.totals,
-      regionList: regionList
+      totals             : this.$store.state.totals,
+      regionList         : regionList,
+      isRegionIdHidden   : false
     };
   },
   computed: {
@@ -139,6 +113,9 @@ export default {
     },
     step() {
       return this.$store.state.step;
+    },
+    shippingMethods() {
+      return this.$store.state.shippingMethods;
     }
   },
   methods: {
@@ -172,78 +149,25 @@ export default {
       });
     },
     setShippingInformation() {
-      this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/shipping-information`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(this.getShippingInformation())
-        }
-      ).then(response => {
-        this.$store.commit("updateTotals", response.totals);
-        this.getPaymentMethods();
-        this.getShippingMethods();
-        this.$store.commit("updateStep", "methods");
-      });
-    },
-    getShippingInformation() {
-      const object                  = {},
-            response                = this.shippingInformation.addressInformation,
-            billingAddressForm      = this.$el.querySelector(".billing-address__form")
-                                         .querySelectorAll("input, select, textarea"),
-            shippingAddressCheckbox = this.$el.getElementById("shippingAddress"),
-            shippingAddressForm     = this.$el.querySelector(".shipping-address__form")
-                                          .querySelectorAll("input, select, textarea");
+      const object              = {},
+            response            = this.shippingInformation.addressInformation,
+            shippingAddressForm = this.$el.querySelector('.shipping-address__form')
+                                      .querySelectorAll('input, select, textarea'),
+            shippingMethod      = this.$el.querySelector('input[name="shipping"]:checked');
 
-      this.settingData(billingAddressForm, response.billing_address);
+      this.settingData(shippingAddressForm, response.shipping_address);
 
-      if (shippingAddressCheckbox.checked) {
-        response.shipping_address = response.billing_address;
-        response.shipping_address["same_as_billing"] = 1;
+      if (shippingMethod.value.length > 0) {
+        response.shipping_carrier_code = shippingMethod.value;
+        response.shipping_method_code = shippingMethod.dataset.methodCode;
       } else {
-        this.settingData(shippingAddressForm, response.shipping_address);
+        this.returnError();
+        return false;
       }
 
-      /*
-       * Must set it to static b/c can't set only shipping address
-       * API don't have endpoint to ONLY shipping address
-       * Endpoint with billing address are useless in guest cart
-       *
-      **/
-      response.shipping_method_code = "flatrate";
-      response.shipping_carrier_code = "flatrate";
-
       object.addressInformation = response;
-      this.$store.commit("updateShippingInformation", object);
-
-      return object;
-    },
-    settingData(elements, object) {
-      elements.forEach(element => {
-        const id = element.id,
-          value = element.value;
-
-        if (element.tagName === "INPUT" && value.length > 0) {
-          if (id === "street[0]") {
-            object.street = [value];
-          } else if (id === "street[1]") {
-            object.street.push(value);
-          } else {
-            object[id] = value;
-          }
-        } else if (id === "region_id" && value.length > 0) {
-          object[id] = parseInt(value);
-          object["region"] = element.selectedOptions[0].innerHTML.trim();
-        } else if (id === "country_id" && value.length > 0) {
-          object[id] = value;
-        } else {
-          this.returnError();
-          return false;
-        }
-      });
+      this.$store.commit('updateShippingInformation', object);
+      this.getPaymentMethods();
 
       return object;
     },
@@ -254,78 +178,98 @@ export default {
        *
       **/
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/payment-methods`,
+        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           }
         }
       ).then(response => {
-        this.$store.commit("updatePaymentMethods", response);
+        this.$store.commit('updatePaymentMethods', response);
       });
     },
-    getShippingMethods() {
-      /*
-       * getting payment methods by our shipping information which
-       * we was setting before
-       *
-      **/
+    getShippingMethods(countryId) {
+      const conuntry = {
+              "address": {
+                "country_id": countryId
+              }
+            };
+
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this
-          .cartId}/shipping-methods`,
+        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
         {
-          method: "GET",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(conuntry)
         }
       ).then(response => {
-        this.$store.commit("updateShippingMethods", response);
+        this.$store.commit('updatePaymentMethods', response);
       });
+    },
+    settingData(elements, object) {
+      elements.forEach(element => {
+        const id = element.id,
+          value = element.value;
+
+        if (element.tagName === 'INPUT' && value.length > 0) {
+          if (id === 'street[0]') {
+            object.street = [value];
+          } else if (id === 'street[1]') {
+            object.street.push(value);
+          } else {
+            object[id] = value;
+          }
+        } else if (id === 'region_id' && value.length > 0) {
+          object[id] = parseInt(value);
+          object['region'] = element.selectedOptions[0].innerHTML.trim();
+        } else if (id === 'country_id' && value.length > 0) {
+          object[id] = value;
+        } else {
+          this.returnError();
+          return false;
+        }
+      });
+
+      return object;
     },
     changeSelection(event) {
       const getForm       = event.srcElement.parentElement.parentElement,
-            countryId     = getForm.querySelector("#country_id"),
+            countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
-            inputRegion   = getForm.querySelector("#region"),
-            regionId      = getForm.querySelector("#region_id");
+            inputRegion   = getForm.querySelector('#region'),
+            regionId      = getForm.querySelector('#region_id');
 
-      if (countryId == getForm.querySelector("#" + eventSelectId)) {
+      this.getShippingMethods(countryId);
+
+      if (countryId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionValue = event.srcElement.selectedOptions[0].value,
               propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
 
-        inputRegion.value = "";
+        inputRegion.value = '';
 
         if (propertyRegions.length > 1) {
-          regionId.innerHTML = propertyRegions.join(" ");
+          regionId.innerHTML = propertyRegions.join(' ');
 
-          this.regionToggle(
-            inputRegion.parentNode,
-            regionId.parentNode,
-            "region--hidden"
-          );
+          this.isRegionIdHidden = false;
         } else {
-          this.regionToggle(
-            regionId.parentNode,
-            inputRegion.parentNode,
-            "region--hidden"
-          );
+          this.isRegionIdHidden = true;
         }
-      } else if (regionId == getForm.querySelector("#" + eventSelectId)) {
+      } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
         const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
               eventOptionValue     = event.srcElement.selectedOptions[0].value;
 
         if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
           const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
 
-          regionId.innerHTML = propertyRegions.join(" ");
+          regionId.innerHTML = propertyRegions.join(' ');
 
           regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
           countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
 
-          this.regionToggle(inputRegion.parentNode, regionId.parentNode, 'region--hidden');
+          this.isRegionIdHidden = false;
         }
       }
     },
@@ -350,38 +294,8 @@ export default {
 
       return newRegionList;
     },
-    regionToggle(elementToHide, elementToShow, classToToggle) {
-      elementToHide.classList.add(classToToggle);
-      elementToShow.classList.remove(classToToggle);
-    },
     returnError(element, cssClass, text) {
       // Initial validation in future
-    },
-    toggleShippingAddress(event) {
-      const element      = event.srcElement,
-            shippingForm = this.$el.querySelector(".shipping-address__form");
-
-      if (element.checked) {
-        this.shippingAddress = {};
-
-        if (!shippingForm.classList.contains("shipping-address--hidden")) {
-          shippingForm.classList.add("shipping-address--hidden");
-        }
-      } else {
-        this.shippingAddress = shippingAddress;
-
-        if (shippingForm.classList.contains("shipping-address--hidden")) {
-          shippingForm.classList.remove("shipping-address--hidden");
-        }
-      }
-    },
-    cancelShippingInformations() {
-      const shippingCheckbox = this.$el.getElementById("shippingAddress"),
-            shippingForm     = this.$el.querySelector(".shipping-address");
-
-      this.shippingAddress = {};
-      shippingForm.classList.add("shipping-address--hidden");
-      shippingCheckbox.checked = true;
     }
   }
 };

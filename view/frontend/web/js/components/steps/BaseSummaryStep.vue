@@ -6,23 +6,23 @@
 
     <BaseSummary
       :items="totals.total_segments"
-      :discountamout="totals.discount_amount"
-      :itemsqty="totals.items_qty"
-      :currencycode="totals.base_currency_code"
+      :discount-amout="totals.discount_amount"
+      :items-qty="totals.items_qty"
+      :currency-code="totals.base_currency_code"
     />
 
     <BaseButton
-      buttontype="button"
-      buttonclass="button"
+      class="button"
+      button-type="button"
       text="Place order"
       @click.native="makeOrder"
     />
 
     <BaseButton
-      buttontype="button"
-      buttonclass="button"
+      class="button"
+      button-type="button"
       text="Back"
-      @click.native="changeStep('methods')"
+      @click.native="changeStep('payment')"
     />
   </section>
 </template>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       baseUrl: baseUrl,
-      config: this.$store.state.config
+      config : this.$store.state.config
     }
   },
   computed: {

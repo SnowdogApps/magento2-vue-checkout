@@ -1,13 +1,17 @@
 <template>
-  <div :class="fieldclass">
-    <input type="checkbox"
-           :id="id"
-           :name="name"
-           :class="inputclass"
-           :checked="checked"
+  <div :class="fieldClass">
+    <input
+      type="checkbox"
+      :id="id"
+      :name="name"
+      :class="inputClass"
+      :checked="checked"
     />
 
-    <label :class="labelclass" :for="id">
+    <label
+      :class="labelClass"
+      :for="id"
+    >
       {{ text }}
     </label>
   </div>
@@ -16,7 +20,7 @@
 <script>
 export default {
   props: {
-    labelclass: {
+    labelClass: {
       type: String
     },
     id: {
@@ -25,10 +29,10 @@ export default {
     name: {
       type: String
     },
-    fieldclass: {
+    fieldClass: {
       type: String
     },
-    inputclass: {
+    inputClass: {
       type: String
     },
     text: {

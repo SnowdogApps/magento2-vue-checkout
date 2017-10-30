@@ -1,15 +1,21 @@
 <template>
-  <div :class="fieldclass">
+  <div :class="fieldClass">
     <label :for="name">
       {{ label }}
     </label>
 
-    <select :name="name" :id="name" :class="selectclass">
-      <option v-for="option in options"
-              :value="option.value"
-              :selected="option.selected"
-              :disabled="option.disabled"
-              :data-countryid="option.country_id"
+    <select
+      :name="name"
+      :id="name"
+      :class="selectClass"
+    >
+      <option
+        v-for="option in options"
+        :key="option.id"
+        :value="option.value"
+        :selected="option.selected"
+        :disabled="option.disabled"
+        :data-countryid="option.country_id"
       >
         {{ option.label }}
       </option>
@@ -29,10 +35,10 @@ export default {
     name: {
       type: String
     },
-    fieldclass: {
+    fieldClass: {
       type: String
     },
-    selectclass: {
+    selectClass: {
       type: String
     }
   }
