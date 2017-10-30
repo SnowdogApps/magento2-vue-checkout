@@ -210,7 +210,7 @@ export default {
     getShippingInformation() {
       const object                  = {},
             response                = this.shippingInformation.addressInformation,
-            billingAddressCheckbox  = this.$el.getElementById('billingAddress'),
+            billingAddressCheckbox  = this.$el.querySelector('#billingAddress'),
             billingAddressForm      = this.$el.querySelector('.billing-address__form')
                                           .querySelectorAll('input, select, textarea');
 
@@ -344,7 +344,7 @@ export default {
       }
     },
     cancelBillingInformations() {
-      const billingCheckbox = this.$el.getElementById('billingAddress');
+      const billingCheckbox = this.$el.querySelector('#billingAddress');
 
       this.billingAddress = {};
       this.isBillingAddressHidden = true;
