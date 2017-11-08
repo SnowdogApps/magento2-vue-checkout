@@ -1,6 +1,6 @@
 <template>
   <div :class="containerClass">
-    <template v-for="option in options">
+    <template v-for="option in options" v-if="options.length > 0">
       <div
         v-if="option.available"
         :key="option.id"
@@ -28,6 +28,12 @@
           </span>
         </label>
       </div>
+    </template>
+
+    <template v-if="options.length === 0">
+      <p>
+        In this country we don't handle any shipping methods.
+      </p>
     </template>
   </div>
 </template>
