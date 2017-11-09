@@ -2,16 +2,16 @@
     <div :class="containerclass">
         <template v-for="option in options">
             <div :class="fieldclass">
-                    <input type="radio" 
-                            :id="option.code" 
-                            :name="name" 
-                            :value="option.code"
-                            :class="inputclass" 
-                    />
+                <input type="radio" 
+                        :id="option.code" 
+                        :name="name" 
+                        :value="option.code"
+                        :class="inputclass" 
+                />
 
-                    <label :class="labelclass" :for="option.code">
-                        {{ option.title }}
-                    </label>
+                <label :class="labelclass" :for="option.code">
+                    {{ option.title }}
+                </label>
             </div>
         </template>
     </div>
