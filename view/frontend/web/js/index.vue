@@ -4,20 +4,20 @@
             <h1>
                 Billing Address
             </h1>
-            
+
             <form class="billing-address__form">
                 <template v-for="field in billingAddress">
                     <template v-if="field.type !== 'select'">
-                        <BaseInput 
-                            :label="field.label" 
-                            :name="field.name" 
+                        <BaseInput
+                            :label="field.label"
+                            :name="field.name"
                             :type="field.type"
                             :value="field.value"
                             fieldclass="billing-address__field"
                             inputclass="input billing-address__input"
                         />
                     </template>
-                    
+
                     <template v-if="field.type === 'select'">
                         <BaseSelect
                             :label="field.label"
@@ -30,9 +30,9 @@
                     </template>
 
                     <template v-if="field.name === 'region_id'">
-                        <BaseInput 
-                            label="State/Province" 
-                            name="region" 
+                        <BaseInput
+                            label="State/Province"
+                            name="region"
                             type="text"
                             fieldclass="billing-address__field region--hidden"
                             inputclass="input billing-address__input"
@@ -45,25 +45,23 @@
                 Shipping address
             </h1>
 
-            <template>
-                <BaseCheckbox 
-                    id="shippingAddress"
-                    labelclass="label"
-                    fieldclass="checkbox shipping-address__field"
-                    inputclass="shipping-address__checkbox"
-                    checked="true"
-                    name="shippingAddress"
-                    text="My billing and shipping address are the same"
-                    @change.native="toggleShippingAddress"
-                />
-            </template>
+            <BaseCheckbox
+                id="shippingAddress"
+                labelclass="label"
+                fieldclass="checkbox shipping-address__field"
+                inputclass="shipping-address__checkbox"
+                checked="true"
+                name="shippingAddress"
+                text="My billing and shipping address are the same"
+                @change.native="toggleShippingAddress"
+            />
 
             <form class="shipping-address__form shipping-address--hidden">
                 <template v-for="field in shippingAddress">
                     <template v-if="field.type !== 'select'">
-                        <BaseInput 
-                            :label="field.label" 
-                            :name="field.name" 
+                        <BaseInput
+                            :label="field.label"
+                            :name="field.name"
                             :type="field.type"
                             :value="field.value"
                             fieldclass="shipping-address__field"
@@ -83,9 +81,9 @@
                     </template>
 
                     <template v-if="field.name === 'region_id'">
-                        <BaseInput 
-                            label="State/Province" 
-                            name="region" 
+                        <BaseInput
+                            label="State/Province"
+                            name="region"
                             type="text"
                             fieldclass="shipping-address__field region--hidden"
                             inputclass="input shipping-address__input"
@@ -93,24 +91,20 @@
                     </template>
                 </template>
 
-                <template>
-                    <BaseButton
-                        buttontype="button"
-                        buttonclass="button"
-                        text="Cancel"
-                        @click.native="cancelShippingInformations"
-                    />
-                </template>
-            </form>
-
-            <template>
                 <BaseButton
                     buttontype="button"
                     buttonclass="button"
-                    text="Set Shipping Informations"
-                    @click.native="setShippingInformation"
+                    text="Cancel"
+                    @click.native="cancelShippingInformations"
                 />
-            </template>
+            </form>
+
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Set Shipping Informations"
+                @click.native="setShippingInformation"
+            />
         </section>
 
         <section class="methods" v-if="step === 'methods'">
@@ -122,50 +116,42 @@
                 Shipping methods
             </h2>
 
-            <template>
-                <BaseShippingMethods
-                    :options="shippingMethods"
-                    :currencycode="totals.base_currency_code"
-                    name="shipping"
-                    labelclass="labels"
-                    containerclass="methods__handler"
-                    fieldclass="radio methods__field"
-                    inputclass="methods__radio"
-                />
-            </template>
+            <BaseShippingMethods
+                :options="shippingMethods"
+                :currencycode="totals.base_currency_code"
+                name="shipping"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
+            />
 
             <h2>
                 Payment methods
             </h2>
 
-            <template>
-                <BasePaymentMethods
-                    :options="paymentMethods"
-                    name="payment"
-                    labelclass="labels"
-                    containerclass="methods__handler"
-                    fieldclass="radio methods__field"
-                    inputclass="methods__radio"
-                />
-            </template>
+            <BasePaymentMethods
+                :options="paymentMethods"
+                name="payment"
+                labelclass="labels"
+                containerclass="methods__handler"
+                fieldclass="radio methods__field"
+                inputclass="methods__radio"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Go to summary"
-                    @click.native="setMethods"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Go to summary"
+                @click.native="setMethods"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Back"
-                    @click.native="step = 'summary'"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'summary'"
+            />
         </section>
 
         <section v-if="step === 'summary'">
@@ -173,42 +159,34 @@
                 Summary
             </h1>
 
-            <template>
-                <BaseSummary
-                    :items="totals.total_segments"
-                    :discountamout="totals.discount_amount"
-                    :itemsqty="totals.items_qty"
-                    :currencycode="totals.base_currency_code"
-                />
-            </template>
+            <BaseSummary
+                :items="totals.total_segments"
+                :discountamout="totals.discount_amount"
+                :itemsqty="totals.items_qty"
+                :currencycode="totals.base_currency_code"
+            />
 
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Place order"
-                    @click.native="makeOrder"
-                />
-            </template>
-            
-            <template>
-                <BaseButton
-                    buttontype="button"
-                    buttonclass="button"
-                    text="Back"
-                    @click.native="step = 'methods'"
-                />
-            </template>
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Place order"
+                @click.native="makeOrder"
+            />
+
+            <BaseButton
+                buttontype="button"
+                buttonclass="button"
+                text="Back"
+                @click.native="step = 'methods'"
+            />
         </section>
 
         <section v-if="step === 'success'">
-            <template>
-                We did it!
+            We did it!
 
-                <a href="/what-is-new.html">
-                    Back to category
-                </a>
-            </template>
+            <a href="/what-is-new.html">
+                Back to category
+            </a>
         </section>
 
         <section v-if="step !== 'success'">
@@ -216,27 +194,25 @@
                 Product List
             </h1>
 
-            <template>
-                <BaseProduct 
-                    containerclass="grid"
-                    itemclass="grid__columns"
-                    :products="config.totalsData.items"
-                    :currency="config.totalsData.base_currency_code"
-                />
-            </template>
+            <BaseProduct
+                containerclass="grid"
+                itemclass="grid__columns"
+                :products="config.totalsData.items"
+                :currency="config.totalsData.base_currency_code"
+            />
         </section>
     </div>
 </template>
 
 <script>
-import BaseButton from './button.vue'
-import BaseCheckbox from './checkbox.vue'
-import BaseInput from './input.vue'
-import BasePaymentMethods from './payment-methods.vue'
-import BaseProduct from './product.vue'
-import BaseSelect from './select.vue'
-import BaseShippingMethods from './shipping-methods.vue'
-import BaseSummary from './summation.vue'
+import BaseButton from './components/button.vue'
+import BaseCheckbox from './components/checkbox.vue'
+import BaseInput from './components/input.vue'
+import BasePaymentMethods from './components/payment-methods.vue'
+import BaseProduct from './components/product.vue'
+import BaseSelect from './components/select.vue'
+import BaseShippingMethods from './components/shipping-methods.vue'
+import BaseSummary from './components/summation.vue'
 
 export default {
     components: {
@@ -251,7 +227,7 @@ export default {
     },
     data() {
         return {
-            baseUrl: window.location.origin + '/',
+            baseUrl: baseUrl,
             config: config,
             billingAddress: billingAddress,
             shippingAddress: {},
@@ -272,14 +248,6 @@ export default {
             const cart = this.config.quoteData;
             cart.items = this.config.quoteItemData;
             return cart;
-        }
-    },
-    filters: {
-        currency(value) {
-            return parseFloat(value).toFixed(2);
-        },
-        trimZero(value) {
-            return parseInt(value);
         }
     },
     methods: {
@@ -340,7 +308,6 @@ export default {
             )
                 .then(response => {
                     this.totals = response;
-                    this.getSummary();
                     this.step = 'summary';
                 });
         },
@@ -403,7 +370,7 @@ export default {
                   eventSelectId  = event.srcElement.id,
                   inputRegion    = getForm.querySelector('#region'),
                   regionId       = getForm.querySelector('#region_id');
-                  
+
             if ( countryId == getForm.querySelector("#"+eventSelectId)) {
                 const eventOptionValue = event.srcElement.selectedOptions[0].value,
                       propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
@@ -476,7 +443,7 @@ export default {
                 if (shippingForm.classList.contains('shipping-address--hidden')) {
                     shippingForm.classList.remove('shipping-address--hidden');
                 }
-                 
+
             }
         },
         cancelShippingInformations() {
@@ -489,15 +456,15 @@ export default {
         },
         getShippingInformation() {
             const object                  = {},
-                response                = this.shippingInformation.addressInformation,
-                billingAddressForm      = document.querySelector('.billing-address__form')
+                  response                = this.shippingInformation.addressInformation,
+                  billingAddressForm      = document.querySelector('.billing-address__form')
                                                     .querySelectorAll('input, select, textarea'),
-                shippingAddressCheckbox = document.getElementById('shippingAddress'),
-                shippingAddressForm     = document.querySelector('.shipping-address__form')
+                  shippingAddressCheckbox = document.getElementById('shippingAddress'),
+                  shippingAddressForm     = document.querySelector('.shipping-address__form')
                                                     .querySelectorAll('input, select, textarea');
 
             this.settingData(billingAddressForm, response.billing_address);
-            
+
             if (shippingAddressCheckbox.checked) {
                 response.shipping_address = response.billing_address;
                 response.shipping_address['same_as_billing'] = 1;
@@ -532,9 +499,9 @@ export default {
                 this.returnError();
                 return false;
             }
-            
+
             if (paymentMethod.value.length > 0) {
-                returnObj.paymentMethod.method = paymentMethod.value;                        
+                returnObj.paymentMethod.method = paymentMethod.value;
             }
             else {
                 this.returnError();
@@ -544,11 +511,11 @@ export default {
             return returnObj;
         },
         getPaymentMethods() {
-            /* 
+            /*
             * Getting payment methods by our shipping information which
             * we was setting before
-            * 
-            **/ 
+            *
+            **/
             this.request(
                 `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
                 {
@@ -563,11 +530,11 @@ export default {
                 });
         },
         getShippingMethods() {
-            /* 
+            /*
             * getting payment methods by our shipping information which
             * we was setting before
-            * 
-            **/ 
+            *
+            **/
             this.request(
                 `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-methods`,
                 {
@@ -581,42 +548,7 @@ export default {
                     this.shippingMethods = response;
                 });
         },
-        getSummary() {
-            const shippingMethodCode = this.shippingInformation;
 
-            /**
-             * Update static shipping method - now it's choosen
-             * Must use this endpoint again
-             * 
-             */
-            shippingMethodCode.addressInformation.shipping_method_code = this.selectedMethods.shippingMethodCode;
-            shippingMethodCode.addressInformation.shipping_carrier_code = this.selectedMethods.shippingCarrierCode;
-
-            this.request(
-                `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(shippingMethodCode)
-                }
-            )
-                .then(response => {
-                    this.request(
-                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/totals`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    )
-                    .then(response => {
-                        this.totals = response;
-                    });
-                });
-        }
     }
 }
 </script>
