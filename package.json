@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Magento 2 Checkout module based on Vue.js",
   "scripts": {
+    "dev": "webpack --watch",
     "build": "webpack"
   },
   "devDependencies": {
