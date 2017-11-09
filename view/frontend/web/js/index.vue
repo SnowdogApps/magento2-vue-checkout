@@ -4,20 +4,20 @@
             <h1>
                 Billing Address
             </h1>
-            
+
             <form class="billing-address__form">
                 <template v-for="field in billingAddress">
                     <template v-if="field.type !== 'select'">
-                        <BaseInput 
-                            :label="field.label" 
-                            :name="field.name" 
+                        <BaseInput
+                            :label="field.label"
+                            :name="field.name"
                             :type="field.type"
                             :value="field.value"
                             fieldclass="billing-address__field"
                             inputclass="input billing-address__input"
                         />
                     </template>
-                    
+
                     <template v-if="field.type === 'select'">
                         <BaseSelect
                             :label="field.label"
@@ -30,9 +30,9 @@
                     </template>
 
                     <template v-if="field.name === 'region_id'">
-                        <BaseInput 
-                            label="State/Province" 
-                            name="region" 
+                        <BaseInput
+                            label="State/Province"
+                            name="region"
                             type="text"
                             fieldclass="billing-address__field region--hidden"
                             inputclass="input billing-address__input"
@@ -45,7 +45,7 @@
                 Shipping address
             </h1>
 
-            <BaseCheckbox 
+            <BaseCheckbox
                 id="shippingAddress"
                 labelclass="label"
                 fieldclass="checkbox shipping-address__field"
@@ -59,9 +59,9 @@
             <form class="shipping-address__form shipping-address--hidden">
                 <template v-for="field in shippingAddress">
                     <template v-if="field.type !== 'select'">
-                        <BaseInput 
-                            :label="field.label" 
-                            :name="field.name" 
+                        <BaseInput
+                            :label="field.label"
+                            :name="field.name"
                             :type="field.type"
                             :value="field.value"
                             fieldclass="shipping-address__field"
@@ -81,9 +81,9 @@
                     </template>
 
                     <template v-if="field.name === 'region_id'">
-                        <BaseInput 
-                            label="State/Province" 
-                            name="region" 
+                        <BaseInput
+                            label="State/Province"
+                            name="region"
                             type="text"
                             fieldclass="shipping-address__field region--hidden"
                             inputclass="input shipping-address__input"
@@ -172,7 +172,7 @@
                 text="Place order"
                 @click.native="makeOrder"
             />
-        
+
             <BaseButton
                 buttontype="button"
                 buttonclass="button"
@@ -194,7 +194,7 @@
                 Product List
             </h1>
 
-            <BaseProduct 
+            <BaseProduct
                 containerclass="grid"
                 itemclass="grid__columns"
                 :products="config.totalsData.items"
@@ -205,14 +205,14 @@
 </template>
 
 <script>
-import BaseButton from './button.vue'
-import BaseCheckbox from './checkbox.vue'
-import BaseInput from './input.vue'
-import BasePaymentMethods from './payment-methods.vue'
-import BaseProduct from './product.vue'
-import BaseSelect from './select.vue'
-import BaseShippingMethods from './shipping-methods.vue'
-import BaseSummary from './summation.vue'
+import BaseButton from './components/button.vue'
+import BaseCheckbox from './components/checkbox.vue'
+import BaseInput from './components/input.vue'
+import BasePaymentMethods from './components/payment-methods.vue'
+import BaseProduct from './components/product.vue'
+import BaseSelect from './components/select.vue'
+import BaseShippingMethods from './components/shipping-methods.vue'
+import BaseSummary from './components/summation.vue'
 
 export default {
     components: {
@@ -308,7 +308,6 @@ export default {
             )
                 .then(response => {
                     this.totals = response;
-                    this.getSummary();
                     this.step = 'summary';
                 });
         },
@@ -371,7 +370,7 @@ export default {
                   eventSelectId  = event.srcElement.id,
                   inputRegion    = getForm.querySelector('#region'),
                   regionId       = getForm.querySelector('#region_id');
-                  
+
             if ( countryId == getForm.querySelector("#"+eventSelectId)) {
                 const eventOptionValue = event.srcElement.selectedOptions[0].value,
                       propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
@@ -444,7 +443,7 @@ export default {
                 if (shippingForm.classList.contains('shipping-address--hidden')) {
                     shippingForm.classList.remove('shipping-address--hidden');
                 }
-                 
+
             }
         },
         cancelShippingInformations() {
@@ -465,7 +464,7 @@ export default {
                                                     .querySelectorAll('input, select, textarea');
 
             this.settingData(billingAddressForm, response.billing_address);
-            
+
             if (shippingAddressCheckbox.checked) {
                 response.shipping_address = response.billing_address;
                 response.shipping_address['same_as_billing'] = 1;
@@ -500,9 +499,9 @@ export default {
                 this.returnError();
                 return false;
             }
-            
+
             if (paymentMethod.value.length > 0) {
-                returnObj.paymentMethod.method = paymentMethod.value;                        
+                returnObj.paymentMethod.method = paymentMethod.value;
             }
             else {
                 this.returnError();
@@ -512,11 +511,11 @@ export default {
             return returnObj;
         },
         getPaymentMethods() {
-            /* 
+            /*
             * Getting payment methods by our shipping information which
             * we was setting before
-            * 
-            **/ 
+            *
+            **/
             this.request(
                 `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
                 {
@@ -531,11 +530,11 @@ export default {
                 });
         },
         getShippingMethods() {
-            /* 
+            /*
             * getting payment methods by our shipping information which
             * we was setting before
-            * 
-            **/ 
+            *
+            **/
             this.request(
                 `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-methods`,
                 {
@@ -549,42 +548,7 @@ export default {
                     this.shippingMethods = response;
                 });
         },
-        getSummary() {
-            const shippingMethodCode = this.shippingInformation;
 
-            /**
-             * Update static shipping method - now it's choosen
-             * Must use this endpoint again
-             * 
-             */
-            shippingMethodCode.addressInformation.shipping_method_code = this.selectedMethods.shippingMethodCode;
-            shippingMethodCode.addressInformation.shipping_carrier_code = this.selectedMethods.shippingCarrierCode;
-
-            this.request(
-                `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(shippingMethodCode)
-                }
-            )
-                .then(response => {
-                    this.request(
-                        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/totals`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    )
-                    .then(response => {
-                        this.totals = response;
-                    });
-                });
-        }
     }
 }
 </script>
