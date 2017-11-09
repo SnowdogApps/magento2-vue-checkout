@@ -249,18 +249,20 @@ export default {
         BaseShippingMethods,
         BaseSummary
     },
-    data: {
-        baseUrl: window.location.origin,
-        config: config,
-        billingAddress: billingAddress,
-        shippingAddress: {},
-        paymentMethods: [],
-        shippingMethods: [],
-        shippingInformation: shippingInformation,
-        totals: {},
-        selectedMethods: selectedMethods,
-        regionList: regionList,
-        step: 'addresses'
+    data() {
+        return {
+            baseUrl: window.location.origin + '/',
+            config: config,
+            billingAddress: billingAddress,
+            shippingAddress: {},
+            paymentMethods: [],
+            shippingMethods: [],
+            shippingInformation: shippingInformation,
+            totals: {},
+            selectedMethods: selectedMethods,
+            regionList: regionList,
+            step: 'addresses'
+        }
     },
     computed: {
         cartId() {

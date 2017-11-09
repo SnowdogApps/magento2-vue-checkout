@@ -73,6 +73,14 @@ export default {
         currency: {
             type: String
         }
+    },
+    filters: {
+        currency(value) {
+            return parseFloat(value).toFixed(2);
+        },
+        trimZero(value) {
+            return parseInt(value);
+        }
     }
 }
 </script>
