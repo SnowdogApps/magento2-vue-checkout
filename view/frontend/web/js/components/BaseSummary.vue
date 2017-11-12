@@ -7,7 +7,7 @@
       <p class="summary__text">
         Qty of ordered items:
         <strong>
-          {{ itemsQty | trimZero }}
+          {{ itemsQty | quantity }}
         </strong>
       </p>
     </div>
@@ -60,11 +60,6 @@ export default {
     },
     currencyCode: {
       type: String
-    }
-  },
-  filters: {
-    trimZero(value) {
-      return parseInt(value);
     }
   }
 }
