@@ -1,6 +1,6 @@
 <template>
   <section
-    class="methods"
+    class="billing-address"
     v-if="step === 'payment'"
   >
     <h1>
