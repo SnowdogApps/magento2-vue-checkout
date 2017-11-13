@@ -2,13 +2,6 @@
 
 <div id="checkout" class="checkout-container"></div>
 
-<style>
-.region--hidden,
-.shipping-address--hidden {
-    display: none;
-}
-</style>
-
 <script>
     var config = <?= \Zend_Json::encode($block->getCheckoutConfig()); ?>;
     var baseUrl = '<?= $block->getBaseUrl() ?>';

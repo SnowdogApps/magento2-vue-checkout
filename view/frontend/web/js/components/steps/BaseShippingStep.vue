@@ -81,6 +81,14 @@
   </section>
 </template>
 
+<style lang="scss" scoped>
+.region {
+  &--hidden {
+    display: none;
+  }
+}
+</style>
+
 <script>
 import BaseButton from '../BaseButton.vue';
 import BaseCheckbox from '../BaseCheckbox.vue';
