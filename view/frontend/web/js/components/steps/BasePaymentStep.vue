@@ -190,7 +190,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
         {
           method: 'POST',
           headers: {
@@ -210,7 +210,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/collect-totals`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
         {
           method: 'PUT',
           headers: {

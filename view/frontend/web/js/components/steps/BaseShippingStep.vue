@@ -184,7 +184,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/payment-methods`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-methods`,
         {
           method: 'GET',
           headers: {
@@ -210,7 +210,7 @@ export default {
             };
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
         {
           method: 'POST',
           headers: {

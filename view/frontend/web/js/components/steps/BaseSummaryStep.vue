@@ -96,7 +96,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/order`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/order`,
         {
           method: 'PUT',
           headers: {
