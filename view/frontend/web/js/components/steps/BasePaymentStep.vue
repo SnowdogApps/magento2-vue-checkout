@@ -230,21 +230,21 @@ export default {
        *
       **/
 
-    const addressInformation      = this.shippingInformation.addressInformation,
-          billingAddressCheckbox  = this.$el.getElementById('billingAddress'),
-          billingAddressForm      = this.$el.querySelector('.billing-address__form')
-                                          .querySelectorAll('input, select, textarea');
+    const addressInformation     = this.shippingInformation.addressInformation,
+          billingAddressCheckbox = this.$el.querySelector('#billingAddress'),
+          billingAddressForm     = this.$el.querySelector('.billing-address__form')
+                                        .querySelectorAll('input, select, textarea');
 
       if (billingAddressCheckbox.checked) {
         addressInformation.billing_address = addressInformation.shipping_address;
-        addressInformation.shipping_address['same_as_billing'] = 1;
+        addressInformation.shipping_address.same_as_billing = 1;
       } else {
         this.settingData(billingAddressForm, addressInformation.billing_address);
       }
 
-      this.$store.commit('updateShippingInformation', addressInformation);
+      this.$store.commit('updateShippingInformation', { addressInformation });
 
-      return addressInformation;
+      return { addressInformation };
     },
     getSelectedMethods() {
       /**
