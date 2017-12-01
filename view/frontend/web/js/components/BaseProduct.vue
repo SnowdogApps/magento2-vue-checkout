@@ -19,7 +19,7 @@
       <span class="product__price">
         Price:
         <strong>
-          {{ product.price | currency }} {{ currency }}
+          {{ product.price | currency }} {{ currencyCode }}
         </strong>
       </span>
 
@@ -77,7 +77,7 @@ export default {
     itemClass: {
         type: String
     },
-    currency: {
+    currencyCode: {
         type: String
     }
   }

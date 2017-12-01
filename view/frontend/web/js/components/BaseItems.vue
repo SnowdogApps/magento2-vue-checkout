@@ -8,7 +8,7 @@
       container-class="grid"
       item-class="grid__columns"
       :products="config.totalsData.items"
-      :currency="config.totalsData.base_currency_code"
+      :currency-code="config.totalsData.base_currency_code"
     />
   </section>
 </template>
