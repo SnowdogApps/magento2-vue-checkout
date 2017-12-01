@@ -204,7 +204,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
         {
           method: 'POST',
           headers: {
@@ -224,7 +224,7 @@ export default {
       **/
 
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/collect-totals`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
         {
           method: 'PUT',
           headers: {
@@ -244,23 +244,21 @@ export default {
        *
       **/
 
-      const object                  = {},
-            response                = this.shippingInformation.addressInformation,
-            billingAddressCheckbox  = this.$el.querySelector('#billingAddress'),
-            billingAddressForm      = this.$el.querySelector('.billing-address__form')
-                                          .querySelectorAll('input, select, textarea');
+    const addressInformation     = this.shippingInformation.addressInformation,
+          billingAddressCheckbox = this.$el.querySelector('#billingAddress'),
+          billingAddressForm     = this.$el.querySelector('.billing-address__form')
+                                        .querySelectorAll('input, select, textarea');
 
       if (billingAddressCheckbox.checked) {
-        response.billing_address = response.shipping_address;
-        response.shipping_address['same_as_billing'] = 1;
+        addressInformation.billing_address = addressInformation.shipping_address;
+        addressInformation.shipping_address.same_as_billing = 1;
       } else {
-        this.settingData(billingAddressForm, response.billing_address);
+        this.settingData(billingAddressForm, addressInformation.billing_address);
       }
 
-      object.addressInformation = response;
-      this.$store.commit('updateShippingInformation', object);
+      this.$store.commit('updateShippingInformation', { addressInformation });
 
-      return object;
+      return { addressInformation };
     },
     getSelectedMethods() {
       /**
