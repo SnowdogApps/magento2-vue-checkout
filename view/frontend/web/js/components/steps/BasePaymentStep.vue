@@ -126,12 +126,12 @@ export default {
   data() {
     return {
       baseUrl               : baseUrl,
-      config                : this.$store.state.config,
       billingAddress        : {},
-      paymentMethods        : this.$store.state.paymentMethods,
-      selectedMethods       : this.$store.state.selectedMethods,
+      config                : this.$store.state.config,
+      isBillingAddressHidden: true,
+      isRegionIdHidden      : false,
       regionList            : regionList,
-      isBillingAddressHidden: true
+      selectedMethods       : this.$store.state.selectedMethods
     };
   },
   computed: {
@@ -140,6 +140,9 @@ export default {
     },
     step() {
       return this.$store.state.step;
+    },
+    paymentMethods() {
+      return this.$store.state.paymentMethods;
     },
     shippingInformation() {
       return this.$store.state.shippingInformation;
@@ -179,8 +182,15 @@ export default {
       });
     },
     setShippingInformation() {
+      /**
+       * Setting Payment Address
+       * Push address to data
+       * Shipping Information 2/2
+       *
+      **/
+
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
         {
           method: 'POST',
           headers: {
@@ -190,11 +200,17 @@ export default {
         }
       ).then(response => {
         this.setMethods();
+        // Update step to summary is in setMethods method
       });
     },
     setMethods() {
+      /**
+       * Return totals informations and push to store
+       *
+      **/
+
       this.request(
-        `${this.baseUrl}index.php/rest/V1/guest-carts/${this.cartId}/collect-totals`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
         {
           method: 'PUT',
           headers: {
@@ -208,27 +224,36 @@ export default {
       });
     },
     getShippingInformation() {
-      const object                  = {},
-            response                = this.shippingInformation.addressInformation,
-            billingAddressCheckbox  = this.$el.querySelector('#billingAddress'),
-            billingAddressForm      = this.$el.querySelector('.billing-address__form')
-                                          .querySelectorAll('input, select, textarea');
+      /**
+       * Method which returnning Billing Address
+       * Update it in store
+       *
+      **/
+
+    const addressInformation     = this.shippingInformation.addressInformation,
+          billingAddressCheckbox = this.$el.querySelector('#billingAddress'),
+          billingAddressForm     = this.$el.querySelector('.billing-address__form')
+                                        .querySelectorAll('input, select, textarea');
 
       if (billingAddressCheckbox.checked) {
-        response.billing_address = response.shipping_address;
-        response.shipping_address['same_as_billing'] = 1;
+        addressInformation.billing_address = addressInformation.shipping_address;
+        addressInformation.shipping_address.same_as_billing = 1;
       } else {
-        this.settingData(billingAddressForm, response.billing_address);
+        this.settingData(billingAddressForm, addressInformation.billing_address);
       }
 
-      object.addressInformation = response;
-      this.$store.commit('updateShippingInformation', object);
+      this.$store.commit('updateShippingInformation', { addressInformation });
 
-      return object;
+      return { addressInformation };
     },
     getSelectedMethods() {
+      /**
+       * Getting data with selected methods
+       * Setting it into object
+      **/
+
       const returnObj      = this.selectedMethods,
-            shippngMethod  = this.shippingInformation.addressInformation,
+            shippingMethod = this.shippingInformation.addressInformation,
             paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
 
       returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
@@ -241,9 +266,17 @@ export default {
         return false;
       }
 
+      this.$store.commit('updateSelectedMethods', returnObj);
+
       return returnObj;
     },
     settingData(elements, object) {
+      /**
+       * Setting Data into fields in object from property
+       * Need to replace in future
+       *
+      **/
+
       elements.forEach(element => {
         const id = element.id,
           value = element.value;
@@ -270,6 +303,12 @@ export default {
       return object;
     },
     changeSelection(event) {
+      /**
+       * Method onchange select (country/region)
+       * Returning country regions if exists
+       *
+      **/
+
       const getForm       = event.srcElement.parentElement.parentElement,
             countryId     = getForm.querySelector('#country_id'),
             eventSelectId = event.srcElement.id,
@@ -306,6 +345,13 @@ export default {
       }
     },
     returnCountryRegions(regions, optionToCompare) {
+      /**
+       * Rendering country region list
+       * Return in array and passing to select
+       * Need to replace in future
+       *
+      **/
+
       let newRegionList = [];
 
       newRegionList.push(`
@@ -327,6 +373,11 @@ export default {
       return newRegionList;
     },
     toggleBillingAddress(event) {
+      /**
+       * Showing/Hidding Billing Address by checkbox
+       *
+      **/
+
       const element = event.srcElement;
 
       if (element.checked) {
@@ -344,7 +395,13 @@ export default {
       }
     },
     cancelBillingInformations() {
+      /**
+       * Cancel addin a Billing Address
+       * Hidding it
+       *
+      **/
       const billingCheckbox = this.$el.querySelector('#billingAddress');
+
 
       this.billingAddress = {};
       this.isBillingAddressHidden = true;
