@@ -7,7 +7,6 @@ const store = new Vuex.Store({
   state: {
     config: config,
     step: 'shipping',
-    cart: '',
     paymentMethods: [],
     shippingMethods: [],
     shippingInformation: shippingInformation,
@@ -18,9 +17,6 @@ const store = new Vuex.Store({
   mutations: {
     updateStep (state, newStep) {
       state.step = newStep;
-    },
-    setCartId(state, id) {
-      state.cart = id;
     },
     updatePaymentMethods(state, methods) {
       state.paymentMethods = methods;
@@ -41,6 +37,9 @@ const store = new Vuex.Store({
   getters: {
     currencyCode (state) {
       return state.config.totalsData.base_currency_code;
+    },
+    cartId (state) {
+      return state.config.quoteData.entity_id
     }
   }
 });

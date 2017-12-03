@@ -1,14 +1,10 @@
 <template>
   <div>
-    <BaseShippingStep/>
-
-    <BasePaymentStep/>
-
-    <BaseSummaryStep/>
-
-    <BaseSuccessStep/>
-
-    <BaseItems/>
+    <base-shipping-step/>
+    <base-payment-step/>
+    <base-summary-step/>
+    <base-success-step/>
+    <base-items/>
   </div>
 </template>
 
@@ -26,20 +22,6 @@ export default {
     BaseSummaryStep,
     BaseSuccessStep,
     BaseItems
-  },
-  data() {
-    return {
-      baseUrl: baseUrl,
-      config: this.$store.state.config
-    }
-  },
-  methods: {
-    returnError(element, cssClass, text) {
-      // Initial validation in future
-    }
-  },
-  beforeMount() {
-    this.$store.commit('setCartId', this.config.quoteData.entity_id);
   }
 }
 </script>
