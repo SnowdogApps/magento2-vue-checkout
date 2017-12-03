@@ -1,6 +1,6 @@
 <template>
   <section
-    class="shipping-information"
+    class="shipping-address"
     v-if="step === 'shipping'"
   >
     <h1>
@@ -39,8 +39,8 @@
             :label="field.label"
             :name="field.name"
             :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
+            field-class="shipping-address__field"
+            select-class="shipping-address__select"
             :class="{ 'region--hidden': isRegionIdHidden }"
             @change.native="changeSelection"
           />
@@ -80,6 +80,14 @@
     />
   </section>
 </template>
+
+<style lang="scss" scoped>
+.region {
+  &--hidden {
+    display: none;
+  }
+}
+</style>
 
 <script>
 import BaseButton from '../BaseButton.vue';

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="methods"
+    class="billing-address"
     v-if="step === 'payment'"
   >
     <h1>
@@ -20,7 +20,7 @@
 
     <form
       class="billing-address__form"
-      :class="{ 'shipping-address--hidden': isBillingAddressHidden }"
+      :class="{ 'billing-address--hidden': isBillingAddressHidden }"
     >
       <template v-for="field in billingAddress">
         <template v-if="field.type !== 'select'">
@@ -107,6 +107,20 @@
     />
   </section>
 </template>
+
+<style lang="scss" scoped>
+.billing-address {
+  &--hidden {
+    display: none;
+  }
+}
+
+.region {
+  &--hidden {
+    display: none;
+  }
+}
+</style>
 
 <script>
 import BaseButton from '../BaseButton.vue';
