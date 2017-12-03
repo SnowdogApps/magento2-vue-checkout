@@ -12,12 +12,9 @@
     "vuex": "^3.0.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "css-loader": "^0.28.7",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
-=======
->>>>>>> develop
     "vue-loader": "^13.3.0",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.7.1"
