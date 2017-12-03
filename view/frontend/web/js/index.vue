@@ -1,10 +1,10 @@
 <template>
   <div>
-    <base-shipping-step/>
-    <base-payment-step/>
-    <base-summary-step/>
-    <base-success-step/>
-    <base-items/>
+    <BaseShippingStep/>
+    <BasePaymentStep/>
+    <BaseSummaryStep/>
+    <BaseSuccessStep/>
+    <BaseItems/>
   </div>
 </template>
 
