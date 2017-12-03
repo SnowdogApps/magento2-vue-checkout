@@ -19,7 +19,7 @@
       <span class="product__price">
         Price:
         <strong>
-          {{ product.price | currency }} {{ currencyCode }}
+          {{ product.price | currency(currencyCode) }}
         </strong>
       </span>
 
@@ -76,9 +76,11 @@ export default {
     },
     itemClass: {
         type: String
-    },
-    currencyCode: {
-        type: String
+    }
+  },
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
   }
 }

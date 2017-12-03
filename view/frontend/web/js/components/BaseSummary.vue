@@ -17,7 +17,7 @@
         <p class="summary__text">
           Discount amount:
           <strong>
-            {{ discountAmout | currency }}
+            {{ discountAmout | currency(currencyCode) }}
           </strong>
         </p>
       </div>
@@ -33,7 +33,7 @@
         {{ item.title }}
 
         <strong>
-          {{ item.value | currency }} {{ currencyCode }}
+          {{ item.value | currency(currencyCode) }}
         </strong>
       </p>
     </div>
@@ -57,10 +57,12 @@ export default {
     },
     itemsQty: {
       type: Number
-    },
-    currencyCode: {
-      type: String
     }
-  }
+  },
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
+    }
+  },
 }
 </script>
