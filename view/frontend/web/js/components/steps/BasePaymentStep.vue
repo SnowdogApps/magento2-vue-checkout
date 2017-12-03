@@ -8,7 +8,7 @@
     </h1>
 
     <BaseCheckbox
-      id="billingAddress"
+      id="billing-address"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
@@ -245,7 +245,7 @@ export default {
       **/
 
     const addressInformation     = this.shippingInformation.addressInformation,
-          billingAddressCheckbox = this.$el.querySelector('#billingAddress'),
+          billingAddressCheckbox = this.$el.querySelector('#billing-address'),
           billingAddressForm     = this.$el.querySelector('.billing-address__form')
                                         .querySelectorAll('input, select, textarea');
 
@@ -414,7 +414,7 @@ export default {
        * Hidding it
        *
       **/
-      const billingCheckbox = this.$el.querySelector('#billingAddress');
+      const billingCheckbox = this.$el.querySelector('#billing-address');
 
 
       this.billingAddress = {};
