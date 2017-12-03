@@ -1,5 +1,5 @@
-export function currency(value) {
-  return parseFloat(value).toFixed(2);
+export function currency(price, code) {
+  return parseFloat(price).toFixed(2) + ' ' + code;
 }
 
 export function quantity(value) {

@@ -37,6 +37,11 @@ const store = new Vuex.Store({
     updateSelectedMethods(state, newSelectedMethods) {
       state.selectedMethods = newSelectedMethods;
     }
+  },
+  getters: {
+    currencyCode (state) {
+      return state.config.totalsData.base_currency_code;
+    }
   }
 });
 

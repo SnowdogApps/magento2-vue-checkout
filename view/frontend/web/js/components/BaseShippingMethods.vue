@@ -24,7 +24,7 @@
           </span>
 
           <span class="label__price">
-              {{ option.price_incl_tax | currency }} {{ currencyCode }}
+              {{ option.price_incl_tax | currency(currencyCode) }}
           </span>
         </label>
       </div>
@@ -58,10 +58,12 @@ export default {
     },
     inputClass: {
       type: String
-    },
-    currencyCode: {
-      type: String
     }
-  }
+  },
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
+    }
+  },
 }
 </script>
