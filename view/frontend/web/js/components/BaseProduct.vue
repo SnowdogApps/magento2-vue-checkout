@@ -19,7 +19,7 @@
       <span class="product__price">
         Price:
         <strong>
-          {{ product.price | currency }} {{ currency }}
+          {{ product.price | currency(currencyCode) }}
         </strong>
       </span>
 
@@ -76,14 +76,11 @@ export default {
     },
     itemClass: {
         type: String
-    },
-    currency: {
-        type: String
     }
   },
-  filters: {
-    currency(value) {
-        return parseFloat(value).toFixed(2);
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
   }
 }

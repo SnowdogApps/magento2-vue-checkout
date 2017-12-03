@@ -7,7 +7,7 @@
       <p class="summary__text">
         Qty of ordered items:
         <strong>
-          {{ itemsQty | trimZero }}
+          {{ itemsQty | quantity }}
         </strong>
       </p>
     </div>
@@ -17,7 +17,7 @@
         <p class="summary__text">
           Discount amount:
           <strong>
-            {{ discountAmout | currency }}
+            {{ discountAmout | currency(currencyCode) }}
           </strong>
         </p>
       </div>
@@ -33,7 +33,7 @@
         {{ item.title }}
 
         <strong>
-          {{ item.value | currency }} {{ currencyCode }}
+          {{ item.value | currency(currencyCode) }}
         </strong>
       </p>
     </div>
@@ -57,18 +57,12 @@ export default {
     },
     itemsQty: {
       type: Number
-    },
-    currencyCode: {
-      type: String
     }
   },
-  filters: {
-    currency(value) {
-      return parseFloat(value).toFixed(2);
-    },
-    trimZero(value) {
-      return parseInt(value);
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
-  }
+  },
 }
 </script>

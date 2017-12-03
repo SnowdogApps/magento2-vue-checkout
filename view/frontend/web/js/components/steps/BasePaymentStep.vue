@@ -395,12 +395,12 @@ export default {
       }
     },
     cancelBillingInformations() {
-      const billingCheckbox = this.$el.getElementById('billingAddress');
       /**
        * Cancel addin a Billing Address
        * Hidding it
        *
       **/
+      const billingCheckbox = this.$el.querySelector('#billingAddress');
 
 
       this.billingAddress = {};

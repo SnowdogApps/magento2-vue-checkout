@@ -1,6 +1,6 @@
 <template>
   <div :class="containerClass">
-    <template v-for="option in options">
+    <template v-for="option in options" v-if="options.length > 0">
       <div
         v-if="option.available"
         :key="option.id"
@@ -24,10 +24,16 @@
           </span>
 
           <span class="label__price">
-              {{ option.price_incl_tax | currency }} {{ currencyCode }}
+              {{ option.price_incl_tax | currency(currencyCode) }}
           </span>
         </label>
       </div>
+    </template>
+
+    <template v-if="options.length === 0">
+      <p>
+        In this country we don't handle any shipping methods.
+      </p>
     </template>
   </div>
 </template>
@@ -52,15 +58,12 @@ export default {
     },
     inputClass: {
       type: String
-    },
-    currencyCode: {
-      type: String
     }
   },
-  filters: {
-    currency(value) {
-      return parseFloat(value).toFixed(2);
+  computed: {
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
-  }
+  },
 }
 </script>
