@@ -117,7 +117,7 @@ export default {
   },
   computed: {
     cartId() {
-      return this.$store.state.cart;
+      return this.$store.getters.cartId;
     },
     step() {
       return this.$store.state.step;
