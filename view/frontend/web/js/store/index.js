@@ -40,6 +40,9 @@ const store = new Vuex.Store({
     },
     cartId (state) {
       return state.config.quoteData.entity_id
+    },
+    regionsByCountryId: (state) => (countryId) => {
+      return state.regionList.filter(region => region.country_id === countryId)
     }
   }
 });
