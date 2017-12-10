@@ -147,7 +147,7 @@
       <BaseButton
         class="button"
         button-type="button"
-        text="Set Shipping Informations"
+        text="Next Step"
         @click.native="setShippingInformation"
       />
     </form>
@@ -245,8 +245,6 @@ export default {
   },
   data() {
     return {
-      baseUrl            : baseUrl,
-      config             : this.$store.state.config,
       isRegionIdHidden   : false,
       regionList         : regionList,
       shippingAddress    : shippingAddress,
@@ -268,6 +266,9 @@ export default {
     };
   },
   computed: {
+    baseUrl() {
+      return this.$store.state.baseUrl;
+    },
     cartId() {
       return this.$store.getters.cartId;
     },
@@ -279,35 +280,6 @@ export default {
     }
   },
   methods: {
-    parseJSON(response) {
-      return new Promise(resolve =>
-        response.json().then(json =>
-          resolve({
-            status: response.status,
-            ok: response.ok,
-            json
-          })
-        )
-      );
-    },
-    request(url, params = {}) {
-      return new Promise((resolve, reject) => {
-        fetch(url, params)
-          .then(this.parseJSON)
-          .then(response => {
-            if (response.ok) {
-              return resolve(response.json);
-            }
-            // extract the error from the server's json
-            return reject(response.json);
-          })
-          .catch(error =>
-            reject({
-              networkError: error.message
-            })
-          );
-      });
-    },
     settingData(elements, object) {
       /**
        * Setting Data into fields in object from property
@@ -341,28 +313,8 @@ export default {
       return object;
     },
     onCountryChange() {
-      const countryId= this.countryId;
-      this.regions = this.$store.getters.regionsByCountryId(countryId);
-
-      // tmp code to refactor
-      const conuntry = {
-        "address": {
-          "country_id": countryId
-        }
-      };
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(conuntry)
-        }
-      ).then(response => {
-        this.$store.commit('updateShippingMethods', response);
-      });
-      // end of tmp code to refactor
+      this.regions = this.$store.getters.regionsByCountryId(this.countryId);
+      this.$store.dispatch('updateShippingMethods', this.countryId)
     },
     setShippingInformation() {
       console.log('setShippingInfo');
@@ -400,88 +352,18 @@ export default {
        *
       **/
 
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-methods`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(response => {
-        this.$store.commit('updatePaymentMethods', response);
-        this.$store.commit('updateStep', 'payment');
-      });
-    },
-    getShippingMethods(countryId) {
-      // /**
-      //  * Getting shipping methods by country ID
-      //  * Update it in store
-      //  *
-      // **/
-
-      // const conuntry = {
-      //         "address": {
-      //           "country_id": countryId
-      //         }
-      //       };
-
       // this.request(
-      //   `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/estimate-shipping-methods`,
+      //   `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-methods`,
       //   {
-      //     method: 'POST',
+      //     method: 'GET',
       //     headers: {
       //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(conuntry)
+      //     }
       //   }
       // ).then(response => {
-      //   this.$store.commit('updateShippingMethods', response);
+      //   this.$store.commit('updatePaymentMethods', response);
+      //   this.$store.commit('updateStep', 'payment');
       // });
-    },
-    changeSelection(event) {
-      /**
-       * Method onchange select (country/region)
-       * Returning country regions if exists
-       *
-      **/
-
-      const getForm       = event.srcElement.parentElement.parentElement,
-            countryId     = getForm.querySelector('#country_id'),
-            eventSelectId = event.srcElement.id,
-            inputRegion   = getForm.querySelector('#region'),
-            regionId      = getForm.querySelector('#region_id');
-
-      if (countryId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionValue = event.srcElement.selectedOptions[0].value,
-              propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
-
-        this.getShippingMethods(eventOptionValue);
-
-        inputRegion.value = '';
-
-        if (propertyRegions.length > 1) {
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          this.isRegionIdHidden = false;
-        } else {
-          this.isRegionIdHidden = true;
-        }
-      } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
-              eventOptionValue     = event.srcElement.selectedOptions[0].value;
-
-        if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
-          const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
-
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
-          countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
-
-          this.isRegionIdHidden = false;
-        }
-      }
     },
     returnCountryRegions(regions, optionToCompare) {
       /**

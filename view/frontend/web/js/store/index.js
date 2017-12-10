@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     config: config,
+    baseUrl: baseUrl,
     step: 'shipping',
     paymentMethods: [],
     shippingMethods: [],
@@ -13,6 +14,41 @@ const store = new Vuex.Store({
     totals: {},
     selectedMethods: selectedMethods,
     regionList: regionList
+  },
+  actions: {
+    updateShippingMethods ({commit, state, getters}, countryId) {
+      const conuntry = {
+        "address": {
+          "country_id": countryId
+        }
+      };
+
+      fetch(
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(conuntry)
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            return response;
+          }
+          throw Error(response.statusText);
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          commit('updateShippingMethods', response);
+        })
+        .catch(error => {
+          console.log('Looks like there was a problem: \n', error);
+        });
+    }
   },
   mutations: {
     updateStep (state, newStep) {
