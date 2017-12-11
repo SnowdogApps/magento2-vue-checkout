@@ -305,7 +305,6 @@ export default {
         } else if (id === 'country_id' && value.length > 0) {
           object[id] = value;
         } else {
-          this.returnError();
           return false;
         }
       });
@@ -364,37 +363,6 @@ export default {
       //   this.$store.commit('updatePaymentMethods', response);
       //   this.$store.commit('updateStep', 'payment');
       // });
-    },
-    returnCountryRegions(regions, optionToCompare) {
-      /**
-       * Rendering country region list
-       * Return in array and passing to select
-       * Need to replace in future
-       *
-      **/
-
-      let newRegionList = [];
-
-      newRegionList.push(`
-        <option value="">
-          <?= /* @escapeNotVerified */ __('Please select a region, state or province.'); ?>
-        </option>
-      `);
-
-      regions.forEach(region => {
-        if (region.country_id === optionToCompare) {
-          newRegionList.push(`
-            <option value="${region.value}" data-countryid="${region.country_id}">
-              ${region.label}
-            </option>
-          `);
-        }
-      });
-
-      return newRegionList;
-    },
-    returnError(element, cssClass, text) {
-      // Initial validation in future
     }
   }
 };
