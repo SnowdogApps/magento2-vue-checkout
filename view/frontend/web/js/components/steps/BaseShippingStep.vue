@@ -165,57 +165,6 @@
       field-class="radio methods__field"
       input-class="methods__radio"
     />
-
-    <!-- <template v-for="field in shippingAddress">
-      <template v-if="field.type !== 'select'">
-        <BaseInput
-          :key="field.id"
-          :label="field.label"
-          :name="field.name"
-          :type="field.type"
-          :value="field.value"
-          field-class="shipping-address__field"
-          input-class="input shipping-address__input"
-        /> -->
-
-      <!-- </template>
-
-      <template v-if="field.type === 'select' && field.name !== 'region_id'">
-        <BaseSelect
-          :key="field.id"
-          :label="field.label"
-          :name="field.name"
-          :options="field.options"
-          field-class="shipping-address__field"
-          select-class="shipping-address__select"
-          @change.native="changeSelection"
-        />
-      </template>
-
-      <template v-if="field.name === 'region_id'">
-        <BaseSelect
-          :key="field.id"
-          :label="field.label"
-          :name="field.name"
-          :options="field.options"
-          field-class="shipping-address__field"
-          select-class="shipping-address__select"
-          :class="{ 'region--hidden': isRegionIdHidden }"
-          @change.native="changeSelection"
-        />
-
-        <BaseInput
-          :key="field.id"
-          label="State/Province"
-          name="region"
-          type="text"
-          field-class="shipping-address__field"
-          input-class="input shipping-address__input"
-          :class="{ 'region--hidden': !isRegionIdHidden }"
-        />
-
-      </template>
-    </template> -->
   </section>
 </template>
 
