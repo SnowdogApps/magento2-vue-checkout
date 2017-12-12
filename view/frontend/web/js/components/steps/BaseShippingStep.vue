@@ -7,7 +7,7 @@
       Shipping address
     </h1>
 
-    <form @submit.prevent="setShippingInformation" class="shipping-address__form">
+    <form @submit.prevent="onFormSubmit" class="shipping-address__form">
       <div class="shipping-address__field">
         <label for="email">
           Email:
@@ -146,25 +146,44 @@
       <br>
       <BaseButton
         class="button"
-        button-type="button"
+        button-type="submit"
         text="Next Step"
-        @click.native="setShippingInformation"
       />
+
+      <h2>
+        Shipping methods
+      </h2>
+      <div v-if="shippingMethods.length > 0">
+        <div
+          v-for="method in shippingMethods"
+          v-if="method.available"
+          :key="method.id"
+        >
+          <input
+            type="radio"
+            v-model="shippingMethod"
+            name="shipping-method"
+            :value="method.carrier_code"
+            :id="method.carrier_code"
+          />
+
+          <label
+            :for="method.carrier_code"
+          >
+            <span class="label__text">
+              {{ method.carrier_title }} - {{ method.method_title }}
+            </span>
+
+            <span class="label__price">
+                {{ method.price_incl_tax | currency(currencyCode) }}
+            </span>
+          </label>
+        </div>
+      </div>
+      <p v-else>
+        In this country we don't handle any shipping methods.
+      </p>
     </form>
-
-    <h2>
-      Shipping methods
-    </h2>
-
-    <BaseShippingMethods
-      :options="shippingMethods"
-      :currency-code="totals.base_currency_code"
-      name="shipping"
-      label-class="labels"
-      container-class="methods__handler"
-      field-class="radio methods__field"
-      input-class="methods__radio"
-    />
   </section>
 </template>
 
@@ -203,6 +222,7 @@ export default {
       regionId: '',
       company: '',
       countries,
+      shippingMethod: '',
       regions: []
     };
   },
@@ -218,6 +238,9 @@ export default {
     },
     shippingMethods() {
       return this.$store.state.shippingMethods;
+    },
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
   },
   methods: {
@@ -256,13 +279,12 @@ export default {
       this.regions = this.$store.getters.regionsByCountryId(this.countryId);
       this.$store.dispatch('updateShippingMethods', this.countryId)
     },
-    setShippingInformation() {
-      console.log('setShippingInfo');
-      // /**
-      //  * Setting Shipping address and shipping method to object
-      //  * Push data to store
-      //  * Shipping Information set 1/2
-      // **/
+    onFormSubmit() {
+      // under this form data
+      console.log(this)
+
+      this.$store.dispatch('getPaymentMethods')
+
 
       // const object              = {},
       //       response            = this.shippingInformation.addressInformation,
@@ -284,26 +306,6 @@ export default {
 
       // this.$store.commit('updateShippingInformation', object);
       // this.getPaymentMethods();
-    },
-    getPaymentMethods() {
-      /*
-       * Getting payment methods by our shipping information which
-       * we was setting before
-       *
-      **/
-
-      // this.request(
-      //   `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-methods`,
-      //   {
-      //     method: 'GET',
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     }
-      //   }
-      // ).then(response => {
-      //   this.$store.commit('updatePaymentMethods', response);
-      //   this.$store.commit('updateStep', 'payment');
-      // });
     }
   }
 };

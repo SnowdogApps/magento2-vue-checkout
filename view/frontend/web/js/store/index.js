@@ -48,6 +48,33 @@ const store = new Vuex.Store({
         .catch(error => {
           console.log('Looks like there was a problem: \n', error);
         });
+    },
+    getPaymentMethods ({commit, state, getters}, countryId) {
+      fetch(
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-methods`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            return response;
+          }
+          throw Error(response.statusText);
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          commit('updatePaymentMethods', response);
+          commit('updateStep', 'payment');
+        })
+        .catch(error => {
+          console.log('Looks like there was a problem: \n', error);
+        });
     }
   },
   mutations: {
