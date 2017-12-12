@@ -244,37 +244,6 @@ export default {
     }
   },
   methods: {
-    settingData(elements, object) {
-      /**
-       * Setting Data into fields in object from property
-       * Need to replace in future
-       *
-      **/
-
-      elements.forEach(element => {
-        const id = element.id,
-          value = element.value;
-
-        if (element.tagName === 'INPUT' && value.length > 0) {
-          if (id === 'street[0]') {
-            object.street = [value];
-          } else if (id === 'street[1]') {
-            object.street.push(value);
-          } else {
-            object[id] = value;
-          }
-        } else if (id === 'region_id' && value.length > 0) {
-          object[id] = parseInt(value);
-          object['region'] = element.selectedOptions[0].innerHTML.trim();
-        } else if (id === 'country_id' && value.length > 0) {
-          object[id] = value;
-        } else {
-          return false;
-        }
-      });
-
-      return object;
-    },
     onCountryChange() {
       this.regions = this.$store.getters.regionsByCountryId(this.countryId);
       this.$store.dispatch('updateShippingMethods', this.countryId)
@@ -282,30 +251,8 @@ export default {
     onFormSubmit() {
       // under this form data
       console.log(this)
-
+      //TODO: save form data to store
       this.$store.dispatch('getPaymentMethods')
-
-
-      // const object              = {},
-      //       response            = this.shippingInformation.addressInformation,
-      //       shippingAddressForm = this.$el.querySelector('.shipping-address__form')
-      //                                 .querySelectorAll('input, select, textarea'),
-      //       shippingMethod      = this.$el.querySelector('input[name="shipping"]:checked');
-
-      // this.settingData(shippingAddressForm, response.shipping_address);
-
-      // if (shippingMethod.value.length > 0) {
-      //   response.shipping_carrier_code = shippingMethod.value;
-      //   response.shipping_method_code = shippingMethod.dataset.methodCode;
-      // } else {
-      //   this.returnError();
-      //   return false;
-      // }
-
-      // object.addressInformation = response;
-
-      // this.$store.commit('updateShippingInformation', object);
-      // this.getPaymentMethods();
     }
   }
 };
