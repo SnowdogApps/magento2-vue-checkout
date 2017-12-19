@@ -1,0 +1,22 @@
+{
+  "name": "magento2-vue-checkout",
+  "version": "1.0.0",
+  "description": "Magento 2 Checkout module based on Vue.js",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dev": "webpack --watch",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "vue": "^2.4.4",
+    "vuex": "^3.0.0"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.7",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^13.3.0",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.7.1"
+  }
+}
