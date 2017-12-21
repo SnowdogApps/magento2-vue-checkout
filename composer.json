@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "magento/module-checkout": "*"
+        "magento/module-checkout": "100.2.*"
     },
     "autoload": {
         "files": [
