@@ -143,17 +143,11 @@
           class="input shipping-address__input"
         >
       </div>
-      <br>
-      <BaseButton
-        class="button"
-        button-type="submit"
-        text="Next Step"
-      />
 
       <h2>
         Shipping methods
       </h2>
-      <div v-if="shippingMethods.length > 0">
+      <template v-if="shippingMethods.length > 0">
         <div
           v-for="method in shippingMethods"
           v-if="method.available"
@@ -179,10 +173,18 @@
             </span>
           </label>
         </div>
-      </div>
-      <p v-else>
-        In this country we don't handle any shipping methods.
-      </p>
+      </template>
+      <template v-else>
+        <p>
+          In this country we don't handle any shipping methods.
+        </p>
+      </template>
+
+      <BaseButton
+        class="button"
+        button-type="submit"
+        text="Next Step"
+      />
     </form>
   </section>
 </template>
