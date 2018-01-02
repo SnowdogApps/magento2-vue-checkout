@@ -211,7 +211,6 @@ export default {
       regionList         : regionList,
       shippingAddress    : shippingAddress,
       shippingInformation: this.$store.state.shippingInformation,
-      totals             : this.$store.state.totals,
       email: '',
       firstname: '',
       lastname: '',
