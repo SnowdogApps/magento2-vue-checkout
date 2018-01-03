@@ -1,8 +1,5 @@
 <template>
-  <section
-    class="shipping-address"
-    v-if="step === 'shipping'"
-  >
+  <section class="shipping-address" v-if="step === 'shipping'">
     <h1>
       Shipping address
     </h1>
@@ -73,6 +70,7 @@
       <h2>
         Shipping methods
       </h2>
+
       <template v-if="shippingMethods.length > 0">
         <div
           v-for="method in shippingMethods"
@@ -133,8 +131,7 @@ export default {
   },
   data() {
     return {
-      isRegionIdHidden   : false,
-      shippingAddress    : shippingAddress,
+      shippingAddress: shippingAddress,
       countries,
       regions: [],
       countryId: '',
