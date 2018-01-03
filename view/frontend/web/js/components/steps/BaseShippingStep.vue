@@ -8,141 +8,67 @@
     </h1>
 
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
-      <div class="shipping-address__field">
-        <label for="email">
-          Email:
-        </label>
-        <input
-          v-model="email"
-          type="email"
-          id="email"
-          name="email"
-          class="input shipping-address__input"
+      <template v-for="field in shippingAddress">
+        <template v-if="field.type !== 'select'">
+          <BaseInput
+            v-model="field.value"
+            :key="field.id"
+            :label="field.label"
+            :name="field.name"
+            :type="field.type"
+          />
+        </template>
+
+        <template
+          v-else-if="
+            field.type === 'select'
+            && field.name === 'country_id'
+          "
         >
-      </div>
-      <div class="shipping-address__field">
-        <label for="firstname">
-          First Name:
-        </label>
-        <input
-          v-model="firstname"
-          type="text"
-          id="firstname"
-          name="firstname"
-          class="input shipping-address__input"
+          <BaseSelect
+            v-model="field.value"
+            :key="field.id"
+            :label="field.label"
+            :name="field.name"
+            :options="countries"
+            @input="onCountryChange"
+          >
+            <option slot="default-option" value="null">
+              Select country
+            </option>
+            <template slot-scope="option">
+              <option :value="option.value">
+                {{ option.label }}
+              </option>
+            </template>
+          </BaseSelect>
+        </template>
+
+        <template
+          v-else-if="
+            field.type === 'select'
+            && field.name === 'region_id'
+          "
         >
-      </div>
-      <div class="shipping-address__field">
-        <label for="lastname">
-          Lasr Name:
-        </label>
-        <input
-          v-model="lastname"
-          type="text"
-          id="lastname"
-          name="lastname"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="shipping-address__field">
-        <label for="telephone">
-          Last Name:
-        </label>
-        <input
-          v-model="telephone"
-          type="tel"
-          id="telephone"
-          name="telephone"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="shipping-address__field">
-        <label for="street-first-row">
-          Street Address:
-        </label>
-        <input
-          v-model="streetFirstRow"
-          type="text"
-          id="street-first-row"
-          name="street-first-row"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="shipping-address__field">
-        <label for="street-second-row">
-          Street Address:
-        </label>
-        <input
-          v-model="streetSecondRow"
-          type="text"
-          id="street-second-row"
-          name="street-second-row"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="fieldClass">
-        <label for="country">Country</label>
-        <select
-          v-model="countryId"
-          name="country"
-          id="country"
-          class="shipping-address__select"
-          @change="onCountryChange"
-        >
-          <option v-for="country in countries" :key="country.value" :value="country.value">
-            {{ country.label }}
-          </option>
-        </select>
-      </div>
-      <div class="shipping-address__field">
-        <label for="city">
-          City:
-        </label>
-        <input
-          v-model="city"
-          type="text"
-          id="city"
-          name="city"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="shipping-address__field">
-        <label for="postcode">
-          Post Code:
-        </label>
-        <input
-          v-model="postcode"
-          type="text"
-          id="postcode"
-          name="postcode"
-          class="input shipping-address__input"
-        >
-      </div>
-      <div class="fieldClass">
-        <label for="region-id">State/Province</label>
-        <select
-          v-model="regionId"
-          name="region-id"
-          id="region-id"
-          class="shipping-address__select"
-        >
-          <option v-for="region in regions" :key="region.value" :value="region.value">
-            {{ region.label }}
-          </option>
-        </select>
-      </div>
-      <div class="shipping-address__field">
-        <label for="company">
-          Company:
-        </label>
-        <input
-          v-model="company"
-          type="text"
-          id="company"
-          name="company"
-          class="input shipping-address__input"
-        >
-      </div>
+          <BaseSelect
+            v-model="field.value"
+            :key="field.id"
+            :label="field.label"
+            :name="field.name"
+            :options="regions"
+            @input="onRegionChange"
+          >
+            <option slot="default-option" value="">
+              Select State/Province
+            </option>
+            <template slot-scope="option">
+              <option :value="option.value">
+                {{ option.label }}
+              </option>
+            </template>
+          </BaseSelect>
+        </template>
+      </template>
 
       <h2>
         Shipping methods
@@ -208,7 +134,6 @@ export default {
   data() {
     return {
       isRegionIdHidden   : false,
-      regionList         : regionList,
       shippingAddress    : shippingAddress,
       shippingInformation: this.$store.state.shippingInformation,
       email: '',
@@ -245,14 +170,16 @@ export default {
     }
   },
   methods: {
-    onCountryChange() {
+    onCountryChange(selectedOption) {
+      this.countryId = selectedOption
       this.regions = this.$store.getters.regionsByCountryId(this.countryId);
       this.$store.dispatch('updateShippingMethods', this.countryId)
     },
+    onRegionChange(selectedOption) {
+      this.regionId = selectedOption
+    },
     onFormSubmit() {
-      // under this form data
-      console.log(this)
-      //TODO: save form data to store
+      // TODO: save form data to store
       this.$store.dispatch('getPaymentMethods')
     }
   }

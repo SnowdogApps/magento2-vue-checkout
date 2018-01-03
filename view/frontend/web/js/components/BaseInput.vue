@@ -1,5 +1,5 @@
 <template>
-  <div :class="fieldClass">
+  <div>
     <label :for="name">
         {{ label }}
     </label>
@@ -8,8 +8,8 @@
       :type="type"
       :id="name"
       :name="name"
-      :class="inputClass"
       :value="value"
+      @input="$emit('input', $event.target.value)"
     />
   </div>
 </template>
@@ -21,12 +21,6 @@ export default {
       type: String
     },
     name: {
-      type: String
-    },
-    fieldClass: {
-      type: String
-    },
-    inputClass: {
       type: String
     },
     type: {
