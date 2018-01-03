@@ -153,12 +153,6 @@ export default {
     };
   },
   computed: {
-    baseUrl() {
-      return this.$store.state.baseUrl;
-    },
-    cartId() {
-      return this.$store.getters.cartId;
-    },
     step() {
       return this.$store.state.step;
     },
