@@ -135,21 +135,11 @@ export default {
     return {
       isRegionIdHidden   : false,
       shippingAddress    : shippingAddress,
-      shippingInformation: this.$store.state.shippingInformation,
-      email: '',
-      firstname: '',
-      lastname: '',
-      telephone: '',
-      streetFirstRow: '',
-      streetSecondRow: '',
-      countryId: '',
-      city: '',
-      postcode: '',
-      regionId: '',
-      company: '',
       countries,
-      shippingMethod: '',
-      regions: []
+      regions: [],
+      countryId: '',
+      regionId: '',
+      shippingMethod: ''
     };
   },
   computed: {
