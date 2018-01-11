@@ -160,7 +160,10 @@ export default {
       this.regionId = selectedOption
     },
     onFormSubmit() {
-      // TODO: save form data to store
+      this.$store.commit('setAddress', {
+        type: 'shipping',
+        address: this.shippingAddress
+      })
       this.$store.dispatch('getPaymentMethods')
     }
   }

@@ -8,6 +8,36 @@ const store = new Vuex.Store({
     config: config,
     baseUrl: baseUrl,
     step: 'shipping',
+    address: {
+      billing: {
+        'region': '',
+        'region_id': '',
+        'region_code': '',
+        'country_id': '',
+        'street': [],
+        'company': '',
+        'telephone': '',
+        'postcode': '',
+        'city': '',
+        'firstname': '',
+        'lastname': '',
+        'email': ''
+      },
+      shipping: {
+        'region': '',
+        'region_id': '',
+        'region_code': '',
+        'country_id': '',
+        'street': [],
+        'company': '',
+        'telephone': '',
+        'postcode': '',
+        'city': '',
+        'firstname': '',
+        'lastname': '',
+        'email': ''
+      }
+    },
     paymentMethods: [],
     shippingMethods: [],
     shippingInformation: shippingInformation,
@@ -87,14 +117,21 @@ const store = new Vuex.Store({
     updateShippingMethods(state, methods) {
       state.shippingMethods = methods;
     },
-    updateShippingInformation(state, newShippingInfo) {
-      state.shippingInformation = newShippingInfo;
-    },
     updateTotals(state, newTotals) {
       state.totals = newTotals;
     },
     updateSelectedMethods(state, newSelectedMethods) {
       state.selectedMethods = newSelectedMethods;
+    },
+    setAddress (state, payload) {
+      payload.address.forEach(item => {
+        if (item.name.includes('street')) {
+          state.address[payload.type]['street'].push(item.value)
+        }
+        else {
+          state.address[payload.type][item.name] = item.value
+        }
+      })
     }
   },
   getters: {
