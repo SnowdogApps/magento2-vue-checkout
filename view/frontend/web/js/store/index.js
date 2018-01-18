@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import request from '../api'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -49,7 +51,7 @@ const store = new Vuex.Store({
         }
       };
 
-      fetch(
+      request(
         `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`,
         {
           method: 'POST',
@@ -60,15 +62,6 @@ const store = new Vuex.Store({
         }
       )
         .then(response => {
-          if (response.ok) {
-            return response;
-          }
-          throw Error(response.statusText);
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(response => {
           commit('updateShippingMethods', response);
         })
         .catch(error => {
@@ -76,7 +69,7 @@ const store = new Vuex.Store({
         });
     },
     getPaymentMethods ({commit, state, getters}, countryId) {
-      fetch(
+      request(
         `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-methods`,
         {
           method: 'GET',
@@ -86,22 +79,53 @@ const store = new Vuex.Store({
         }
       )
         .then(response => {
-          if (response.ok) {
-            return response;
-          }
-          throw Error(response.statusText);
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(response => {
           commit('updatePaymentMethods', response);
           commit('updateStep', 'payment');
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error);
         });
-    }
+    },
+    /**
+     * Setting Payment Address
+     * Push address to data
+     * Shipping Information 2/2
+     *
+    **/
+    setShippingInformation() {
+      request(
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.getShippingInformation())
+        }
+      ).then(response => {
+        this.$store.dispatch('setMethods');
+        // Update step to summary is in setMethods method
+      }),
+    },
+    /**
+     * Return totals informations and push to store
+     *
+    **/
+    setMethods() {
+      request(
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.getSelectedMethods())
+        }
+      ).then(response => {
+        this.$store.commit('updateTotals', response);
+        this.$store.commit('updateStep', 'summary');
+      });
+    },
   },
   mutations: {
     updateStep (state, newStep) {
@@ -128,6 +152,14 @@ const store = new Vuex.Store({
           state.address[payload.type][item.name] = item.value
         }
       })
+    },
+    setBillingAddres(state, payload) {
+      if (payload.same_as_billing) {
+        state.address['billing'] = state.address['shipping'];
+      }
+      else {
+        state.address['billing'] = payload;
+      }
     }
   },
   getters: {
