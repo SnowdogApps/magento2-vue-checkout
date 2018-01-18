@@ -10,9 +10,7 @@ const store = new Vuex.Store({
     step: 'shipping',
     address: {
       billing: {
-        'region': '',
         'region_id': '',
-        'region_code': '',
         'country_id': '',
         'street': [],
         'company': '',
@@ -24,9 +22,7 @@ const store = new Vuex.Store({
         'email': ''
       },
       shipping: {
-        'region': '',
         'region_id': '',
-        'region_code': '',
         'country_id': '',
         'street': [],
         'company': '',
