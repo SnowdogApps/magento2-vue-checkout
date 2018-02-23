@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'form-group--error': required }">
+  <div :class="{ 'input--error': $v.field.$error }">
     <label :for="name">
         {{ label }}
     </label>
@@ -8,18 +8,25 @@
       :type="type"
       :id="name"
       :name="name"
-      :value="value"
-      @input="checkInput"
+      v-model="field"
+      @input="$v.field.$touch()"
     />
-    <pre>value: {{ $v.value }}</pre>
-    <span class="form-group__message" v-if="!$v.value.required">Field is required</span>
+
+    <span class="input__message" v-if="!$v.field.required">
+      Field is required
+    </span>
   </div>
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  data() {
+    return {
+      field: this.value,
+    }
+  },
   props: {
     label: {
       type: String
@@ -43,9 +50,28 @@ export default {
     }
   },
   validations: {
-    value: {
+    field: {
       required
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & > input {
+      border-color: red;
+    }
+
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+
+  &__message {
+    display: none;
+  }
+}
+</style>
