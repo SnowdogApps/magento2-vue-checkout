@@ -39,9 +39,6 @@ export default {
     },
     value: {
       type: String
-    },
-    required: {
-      type: String
     }
   },
   validations: {
