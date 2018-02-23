@@ -105,7 +105,7 @@ const store = new Vuex.Store({
       ).then(response => {
         this.$store.dispatch('setMethods');
         // Update step to summary is in setMethods method
-      }),
+      });
     },
     /**
      * Return totals informations and push to store
