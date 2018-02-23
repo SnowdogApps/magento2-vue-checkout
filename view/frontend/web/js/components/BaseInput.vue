@@ -24,7 +24,7 @@ import { required, minLength } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
-      field: this.value,
+      field: this.value
     }
   },
   props: {
@@ -42,11 +42,6 @@ export default {
     },
     required: {
       type: String
-    }
-  },
-  computed: {
-    checkInput() {
-      return $v.value.$touch();
     }
   },
   validations: {
