@@ -39,7 +39,8 @@ const store = new Vuex.Store({
     shippingInformation: shippingInformation,
     totals: {},
     selectedMethods: selectedMethods,
-    regionList: regionList
+    regionList: regionList,
+    errorHidden: true,
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
