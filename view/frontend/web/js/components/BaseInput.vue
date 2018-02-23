@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-bind:class="{ 'form-group--error': $v.name.$error }">
     <label :for="name">
         {{ label }}
     </label>
@@ -9,12 +9,14 @@
       :id="name"
       :name="name"
       :value="value"
-      @input="$emit('input', $event.target.value)"
+      @input="$v.name.$touch()"
     />
   </div>
+  <span class="form-group__message">Field is required</span>
 </template>
 
 <script>
+
 export default {
   props: {
     label: {
