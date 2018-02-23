@@ -93,6 +93,7 @@ const store = new Vuex.Store({
      *
     **/
     setShippingInformation() {
+      console.log('test');
       request(
         `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
         {
