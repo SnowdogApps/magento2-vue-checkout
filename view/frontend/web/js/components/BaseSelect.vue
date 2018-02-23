@@ -1,24 +1,19 @@
 <template>
-  <div :class="fieldClass">
+  <div>
     <label :for="name">
       {{ label }}
     </label>
 
     <select
+      :value="value"
       :name="name"
       :id="name"
-      :class="selectClass"
+      @input="$emit('input', $event.target.value)"
     >
-      <option
-        v-for="option in options"
-        :key="option.id"
-        :value="option.value"
-        :selected="option.selected"
-        :disabled="option.disabled"
-        :data-countryid="option.country_id"
-      >
-        {{ option.label }}
-      </option>
+      <slot name="default-option"/>
+      <template class="list-item" v-for="option in options">
+        <slot v-bind="option"/>
+      </template>
     </select>
   </div>
 </template>
@@ -35,10 +30,7 @@ export default {
     name: {
       type: String
     },
-    fieldClass: {
-      type: String
-    },
-    selectClass: {
+    value: {
       type: String
     }
   }
