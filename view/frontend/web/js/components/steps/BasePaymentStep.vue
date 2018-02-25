@@ -4,8 +4,12 @@
     v-if="step === 'payment'"
   >
     <h1>
-      Billing Address
+      Review & Payments Step
     </h1>
+    <hr>
+    <h2>
+      Billing Address
+    </h2>
 
     <BaseCheckbox
       id="billing-address"
@@ -83,20 +87,28 @@
       Payment methods
     </h2>
 
-    <BasePaymentMethods
-      :options="paymentMethods"
-      name="payment"
-      label-class="labels"
-      container-class="methods__handler"
-      field-class="radio methods__field"
-      input-class="methods__radio"
-    />
+    <div
+        v-for="method in paymentMethods"
+        :key="method.id"
+      >
+        <input
+          type="radio"
+          v-model="selectedPaymentMethod"
+          name="payment-method"
+          :value="method"
+          :id="method.code"
+        />
+
+        <label :for="method.code">
+          {{ method.title }}
+        </label>
+      </div>
 
     <BaseButton
       class="button"
       button-type="button"
-      text="Go to summary"
-      @click.native="setShippingInformation"
+      text="Place order"
+      @click.native="placeOrder"
     />
 
     <BaseButton
@@ -126,7 +138,6 @@
 import BaseButton from '../BaseButton.vue';
 import BaseCheckbox from '../BaseCheckbox.vue';
 import BaseInput from '../BaseInput.vue';
-import BasePaymentMethods from '../BasePaymentMethods.vue';
 import BaseSelect from '../BaseSelect.vue';
 
 export default {
@@ -134,7 +145,6 @@ export default {
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BasePaymentMethods,
     BaseSelect
   },
   data() {
@@ -145,7 +155,7 @@ export default {
       isBillingAddressHidden: true,
       isRegionIdHidden      : false,
       regionList            : regionList,
-      selectedMethods       : this.$store.state.selectedMethods
+      selectedPaymentMethod : null
     };
   },
   computed: {
@@ -155,11 +165,14 @@ export default {
     step() {
       return this.$store.state.step;
     },
-    paymentMethods() {
+    paymentMethods () {
       return this.$store.state.paymentMethods;
     },
-    shippingInformation() {
+    shippingInformation () {
       return this.$store.state.shippingInformation;
+    },
+    currencyCode () {
+      return this.$store.getters.currencyCode
     }
   },
   methods: {
@@ -195,127 +208,106 @@ export default {
           );
       });
     },
-    setShippingInformation() {
-      /**
-       * Setting Payment Address
-       * Push address to data
-       * Shipping Information 2/2
-       *
-      **/
+    // setMethods() {
+    // I don't sure if we need this request
+    //   /**
+    //    * Return totals informations and push to store
+    //    *
+    //   **/
+    //
+    //   this.request(
+    //     `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
+    //     {
+    //       method: 'PUT',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(this.getSelectedMethods())
+    //     }
+    //   ).then(response => {
+    //     this.$store.commit('updateTotals', response);
+    //     this.$store.commit('updateStep', 'summary');
+    //   });
+    // },
+    // getShippingInformation() {
+    //   /**
+    //    * Method which returnning Billing Address
+    //    * Update it in store
+    //    *
+    //   **/
 
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.getShippingInformation())
-        }
-      ).then(response => {
-        this.setMethods();
-        // Update step to summary is in setMethods method
-      });
-    },
-    setMethods() {
-      /**
-       * Return totals informations and push to store
-       *
-      **/
+    // const addressInformation     = this.shippingInformation.addressInformation,
+    //       billingAddressCheckbox = this.$el.querySelector('#billing-address'),
+    //       billingAddressForm     = this.$el.querySelector('.billing-address__form')
+    //                                     .querySelectorAll('input, select, textarea');
 
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.getSelectedMethods())
-        }
-      ).then(response => {
-        this.$store.commit('updateTotals', response);
-        this.$store.commit('updateStep', 'summary');
-      });
-    },
-    getShippingInformation() {
-      /**
-       * Method which returnning Billing Address
-       * Update it in store
-       *
-      **/
+    //   if (billingAddressCheckbox.checked) {
+    //     addressInformation.billing_address = addressInformation.shipping_address;
+    //     addressInformation.shipping_address.same_as_billing = 1;
+    //   } else {
+    //     this.settingData(billingAddressForm, addressInformation.billing_address);
+    //   }
 
-    const addressInformation     = this.shippingInformation.addressInformation,
-          billingAddressCheckbox = this.$el.querySelector('#billing-address'),
-          billingAddressForm     = this.$el.querySelector('.billing-address__form')
-                                        .querySelectorAll('input, select, textarea');
+    //   this.$store.commit('updateShippingInformation', { addressInformation });
 
-      if (billingAddressCheckbox.checked) {
-        addressInformation.billing_address = addressInformation.shipping_address;
-        addressInformation.shipping_address.same_as_billing = 1;
-      } else {
-        this.settingData(billingAddressForm, addressInformation.billing_address);
-      }
+    //   return { addressInformation };
+    // },
+    // getSelectedMethods() {
+    //   /**
+    //    * Getting data with selected methods
+    //    * Setting it into object
+    //   **/
 
-      this.$store.commit('updateShippingInformation', { addressInformation });
+    //   const returnObj      = this.selectedMethods,
+    //         shippingMethod = this.shippingInformation.addressInformation,
+    //         paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
 
-      return { addressInformation };
-    },
-    getSelectedMethods() {
-      /**
-       * Getting data with selected methods
-       * Setting it into object
-      **/
+    //   returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
+    //   returnObj.shippingMethodCode = shippingMethod.shipping_method_code;
 
-      const returnObj      = this.selectedMethods,
-            shippingMethod = this.shippingInformation.addressInformation,
-            paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
+    //   if (paymentMethod.value.length > 0) {
+    //     returnObj.paymentMethod.method = paymentMethod.value;
+    //   } else {
+    //     this.returnError();
+    //     return false;
+    //   }
 
-      returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
-      returnObj.shippingMethodCode = shippingMethod.shipping_method_code;
+    //   this.$store.commit('updateSelectedMethods', returnObj);
 
-      if (paymentMethod.value.length > 0) {
-        returnObj.paymentMethod.method = paymentMethod.value;
-      } else {
-        this.returnError();
-        return false;
-      }
+    //   return returnObj;
+    // },
+    // settingData(elements, object) {
+    //   /**
+    //    * Setting Data into fields in object from property
+    //    * Need to replace in future
+    //    *
+    //   **/
 
-      this.$store.commit('updateSelectedMethods', returnObj);
+    //   elements.forEach(element => {
+    //     const id = element.id,
+    //       value = element.value;
 
-      return returnObj;
-    },
-    settingData(elements, object) {
-      /**
-       * Setting Data into fields in object from property
-       * Need to replace in future
-       *
-      **/
+    //     if (element.tagName === 'INPUT' && value.length > 0) {
+    //       if (id === 'street[0]') {
+    //         object.street = [value];
+    //       } else if (id === 'street[1]') {
+    //         object.street.push(value);
+    //       } else {
+    //         object[id] = value;
+    //       }
+    //     } else if (id === 'region_id' && value.length > 0) {
+    //       object[id] = parseInt(value);
+    //       object['region'] = element.selectedOptions[0].innerHTML.trim();
+    //     } else if (id === 'country_id' && value.length > 0) {
+    //       object[id] = value;
+    //     } else {
+    //       this.returnError();
+    //       return false;
+    //     }
+    //   });
 
-      elements.forEach(element => {
-        const id = element.id,
-          value = element.value;
-
-        if (element.tagName === 'INPUT' && value.length > 0) {
-          if (id === 'street[0]') {
-            object.street = [value];
-          } else if (id === 'street[1]') {
-            object.street.push(value);
-          } else {
-            object[id] = value;
-          }
-        } else if (id === 'region_id' && value.length > 0) {
-          object[id] = parseInt(value);
-          object['region'] = element.selectedOptions[0].innerHTML.trim();
-        } else if (id === 'country_id' && value.length > 0) {
-          object[id] = value;
-        } else {
-          this.returnError();
-          return false;
-        }
-      });
-
-      return object;
-    },
+    //   return object;
+    // },
     changeSelection(event) {
       /**
        * Method onchange select (country/region)
@@ -420,6 +412,35 @@ export default {
       this.billingAddress = {};
       this.isBillingAddressHidden = true;
       billingCheckbox.checked = true;
+    },
+    placeOrder() {
+      this.request(
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.shippingInformation)
+        }
+      ).then(response => {
+        this.request(
+          `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/order`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              "paymentMethod": {
+                "method": this.selectedPaymentMethod.code
+              }
+            })
+          }
+        ).then(response => {
+          this.$store.commit('updateStep', 'success');
+        })
+      });
     }
   }
 };

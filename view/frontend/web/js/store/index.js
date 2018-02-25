@@ -36,7 +36,44 @@ const store = new Vuex.Store({
     },
     paymentMethods: [],
     shippingMethods: [],
-    shippingInformation: shippingInformation,
+    shippingInformation: {
+      "addressInformation": {
+        "shipping_address": {
+            "region": "string",
+            "region_id": 0,
+            "country_id": "string",
+            "street": [
+                "string"
+            ],
+            "company": "string",
+            "telephone": "string",
+            "postcode": "string",
+            "city": "string",
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string",
+            "same_as_billing": 0
+        },
+        "billing_address": {
+            "region": "string",
+            "region_id": 0,
+            "region_code": "string",
+            "country_id": "string",
+            "street": [
+                "string"
+            ],
+            "company": "string",
+            "telephone": "string",
+            "postcode": "string",
+            "city": "string",
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string"
+        },
+        "shipping_method_code": "string",
+        "shipping_carrier_code": "string"
+    }
+    },
     totals: {},
     selectedMethods: selectedMethods,
     regionList: regionList
@@ -118,6 +155,12 @@ const store = new Vuex.Store({
     },
     updateSelectedMethods(state, newSelectedMethods) {
       state.selectedMethods = newSelectedMethods;
+    },
+    setShippinInformation(state, selectedShippingMethods) {
+      state.shippingInformation.addressInformation.shipping_address = state.address.shipping;
+      state.shippingInformation.addressInformation.billing_address = state.address.shipping;
+      state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethods.method_code;
+      state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethods.carrier_code;
     },
     setAddress (state, payload) {
       payload.address.forEach(item => {

@@ -1,8 +1,12 @@
 <template>
   <section class="shipping-address" v-if="step === 'shipping'">
     <h1>
-      Shipping address
+      Shipping Step
     </h1>
+    <hr>
+    <h2>
+      Shipping address
+    </h2>
 
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
       <template v-for="field in shippingAddress">
@@ -79,9 +83,9 @@
         >
           <input
             type="radio"
-            v-model="shippingMethod"
+            v-model="selectedShippingMethod"
             name="shipping-method"
-            :value="method.carrier_code"
+            :value="method"
             :id="method.carrier_code"
           />
 
@@ -136,7 +140,7 @@ export default {
       regions: [],
       countryId: '',
       regionId: '',
-      shippingMethod: ''
+      selectedShippingMethod: null
     };
   },
   computed: {
@@ -160,10 +164,11 @@ export default {
       this.regionId = selectedOption
     },
     onFormSubmit() {
+      this.$store.commit('setShippinInformation', this.selectedShippingMethod);
       this.$store.commit('setAddress', {
         type: 'shipping',
         address: this.shippingAddress
-      })
+      });
       this.$store.dispatch('getPaymentMethods')
     }
   }
