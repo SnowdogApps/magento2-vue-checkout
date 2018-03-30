@@ -135,7 +135,7 @@ export default {
   },
   data() {
     return {
-      shippingAddress: shippingAddress,
+      shippingAddress: address,
       countries,
       regions: [],
       countryId: '',
@@ -164,12 +164,12 @@ export default {
       this.regionId = selectedOption
     },
     onFormSubmit() {
-      this.$store.commit('setShippinInformation', this.selectedShippingMethod);
       this.$store.commit('setAddress', {
         type: 'shipping',
         address: this.shippingAddress
       });
-      this.$store.dispatch('getPaymentMethods')
+      this.$store.commit('setShippinInformation', this.selectedShippingMethod);
+      this.$store.dispatch('setShippinInformation');
     }
   }
 };
