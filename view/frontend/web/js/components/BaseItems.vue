@@ -1,5 +1,5 @@
 <template>
-  <section v-if="step !== 'success'">
+  <section class="products-list" v-if="step !== 'success'">
     <h2>
       Product List
     </h2>
@@ -35,3 +35,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .products-list {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #c2c2c2;
+  }
+</style>
