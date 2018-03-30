@@ -57,6 +57,7 @@
             :label="field.label"
             :name="field.name"
             :options="regions"
+            :class="{ 'region--hidden' : isRegionHidden }"
             @input="onRegionChange"
           >
             <option slot="default-option" value="">
@@ -68,6 +69,16 @@
               </option>
             </template>
           </BaseSelect>
+
+          <BaseInput
+            type="text"
+            name="region"
+            v-model="field.value"
+            :key="field.id"
+            :label="field.label"
+            :class="{ 'region--hidden' : isRegionTextHidden }"
+            @input="onRegionChange"
+          />
         </template>
       </template>
 
@@ -140,6 +151,8 @@ export default {
       regions: [],
       countryId: '',
       regionId: '',
+      isRegionHidden: false,
+      isRegionTextHidden: true,
       selectedShippingMethod: null
     };
   },
@@ -156,8 +169,16 @@ export default {
   },
   methods: {
     onCountryChange(selectedOption) {
-      this.countryId = selectedOption
+      this.countryId = selectedOption;
       this.regions = this.$store.getters.regionsByCountryId(this.countryId);
+      if (this.regions.length !== 0) {
+        this.isRegionTextHidden = true;
+        this.isRegionHidden = false;
+      }
+      else {
+        this.isRegionTextHidden = false;
+        this.isRegionHidden = true;
+      }
       this.$store.dispatch('updateShippingMethods', this.countryId)
     },
     onRegionChange(selectedOption) {
