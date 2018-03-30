@@ -26,52 +26,65 @@
       class="billing-address__form"
       :class="{ 'billing-address--hidden': isBillingAddressHidden }"
     >
-      <template v-for="field in billingAddress">
+      <template v-for="field in address">
         <template v-if="field.type !== 'select'">
           <BaseInput
+            v-model="field.value"
             :key="field.id"
             :label="field.label"
             :name="field.name"
             :type="field.type"
-            :value="field.value"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
           />
         </template>
 
-        <template v-if="field.type === 'select' && field.name !== 'region_id'">
+        <template
+          v-else-if="
+            field.type === 'select'
+            && field.name === 'country_id'
+          "
+        >
           <BaseSelect
+            v-model="field.value"
             :key="field.id"
             :label="field.label"
             :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            @change.native="changeSelection"
-          />
+            :options="countries"
+            @input="onCountryChange"
+          >
+            <option slot="default-option" value="null">
+              Select country
+            </option>
+            <template slot-scope="option">
+              <option :value="option.value">
+                {{ option.label }}
+              </option>
+            </template>
+          </BaseSelect>
         </template>
 
-        <template v-if="field.name === 'region_id'">
+        <template
+          v-else-if="
+            field.type === 'select'
+            && field.name === 'region_id'
+          "
+        >
           <BaseSelect
+            v-model="field.value"
             :key="field.id"
             :label="field.label"
             :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            :class="{ 'region--hidden': isRegionIdHidden }"
-            @change.native="changeSelection"
-          />
-
-          <BaseInput
-            :key="field.id"
-            label="State/Province"
-            name="region"
-            type="text"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
-            :class="{ 'region--hidden': !isRegionIdHidden }"
-          />
+            :options="regions"
+            @input="onRegionChange"
+          >
+            <option slot="default-option" value="">
+              Select State/Province
+            </option>
+            <template slot-scope="option">
+              <option :value="option.value">
+                {{ option.label }}
+              </option>
+            </template>
+          </BaseSelect>
         </template>
       </template>
 
@@ -139,6 +152,7 @@ import BaseButton from '../BaseButton.vue';
 import BaseCheckbox from '../BaseCheckbox.vue';
 import BaseInput from '../BaseInput.vue';
 import BaseSelect from '../BaseSelect.vue';
+import countries from '../../data/countries.json';
 
 export default {
   components: {
@@ -150,12 +164,14 @@ export default {
   data() {
     return {
       baseUrl               : baseUrl,
-      billingAddress        : {},
+      address               : address,
       config                : this.$store.state.config,
       isBillingAddressHidden: true,
       isRegionIdHidden      : false,
       regionList            : regionList,
-      selectedPaymentMethod : null
+      selectedPaymentMethod : null,
+      countries,
+      regions: []
     };
   },
   computed: {
@@ -173,9 +189,19 @@ export default {
     },
     currencyCode () {
       return this.$store.getters.currencyCode
+    },
+    billingAddress () {
+      return this.$store.getters.billingAddress
     }
   },
   methods: {
+    onCountryChange(selectedOption) {
+      this.countryId = selectedOption
+      this.regions = this.$store.getters.regionsByCountryId(this.countryId);
+    },
+    onRegionChange(selectedOption) {
+      this.regionId = selectedOption
+    },
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
     },
@@ -287,13 +313,13 @@ export default {
       const element = event.srcElement;
 
       if (element.checked) {
-        this.billingAddress = {};
+        this.address = {};
 
         if (!this.isBillingAddressHidden) {
           this.isBillingAddressHidden = true;
         }
       } else {
-        this.billingAddress = billingAddress;
+        this.address = billingAddress;
 
         if (this.isBillingAddressHidden) {
           this.isBillingAddressHidden = false;
@@ -314,20 +340,28 @@ export default {
       billingCheckbox.checked = true;
     },
     placeOrder() {
+      this.$store.commit('setAddress', {
+        type: 'billing',
+        address: this.address
+      });
       this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/order`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-information`,
         {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            "billingAddress": this.billingAddress,
+            "email": "test@gmail.com",
             "paymentMethod": {
               "method": this.selectedPaymentMethod.code
             }
           })
         }
       ).then(response => {
+        //TODO: Show order Id on success page
+        console.log("Order id: " + response);
         this.$store.commit('updateStep', 'success');
       })
     }
