@@ -234,48 +234,6 @@ export default {
           );
       });
     },
-    changeSelection(event) {
-      /**
-       * Method onchange select (country/region)
-       * Returning country regions if exists
-       *
-      **/
-
-      const getForm       = event.srcElement.parentElement.parentElement,
-            countryId     = getForm.querySelector('#country_id'),
-            eventSelectId = event.srcElement.id,
-            inputRegion   = getForm.querySelector('#region'),
-            regionId      = getForm.querySelector('#region_id');
-
-      if (countryId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionValue = event.srcElement.selectedOptions[0].value,
-              propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
-
-        inputRegion.value = '';
-
-        if (propertyRegions.length > 1) {
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          this.isRegionIdHidden = false;
-        } else {
-          this.isRegionIdHidden = true;
-        }
-      } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
-              eventOptionValue     = event.srcElement.selectedOptions[0].value;
-
-        if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
-          const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
-
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
-          countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
-
-          this.isRegionIdHidden = false;
-        }
-      }
-    },
     returnCountryRegions(regions, optionToCompare) {
       /**
        * Rendering country region list
