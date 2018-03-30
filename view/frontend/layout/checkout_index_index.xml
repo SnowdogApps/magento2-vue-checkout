@@ -22,8 +22,8 @@
                    template="Snowdog_VueCheckout::data/selected-methods.phtml"
             />
             <block class="Magento\Framework\View\Element\Template"
-                   name="shipping-address"
-                   template="Snowdog_VueCheckout::data/shipping-address.phtml"
+                   name="address"
+                   template="Snowdog_VueCheckout::data/address.phtml"
             />
             <block class="Magento\Framework\View\Element\Template"
                    name="shipping-information"
