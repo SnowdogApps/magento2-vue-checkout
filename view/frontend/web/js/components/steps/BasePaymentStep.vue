@@ -208,106 +208,6 @@ export default {
           );
       });
     },
-    // setMethods() {
-    // I don't sure if we need this request
-    //   /**
-    //    * Return totals informations and push to store
-    //    *
-    //   **/
-    //
-    //   this.request(
-    //     `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
-    //     {
-    //       method: 'PUT',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify(this.getSelectedMethods())
-    //     }
-    //   ).then(response => {
-    //     this.$store.commit('updateTotals', response);
-    //     this.$store.commit('updateStep', 'summary');
-    //   });
-    // },
-    // getShippingInformation() {
-    //   /**
-    //    * Method which returnning Billing Address
-    //    * Update it in store
-    //    *
-    //   **/
-
-    // const addressInformation     = this.shippingInformation.addressInformation,
-    //       billingAddressCheckbox = this.$el.querySelector('#billing-address'),
-    //       billingAddressForm     = this.$el.querySelector('.billing-address__form')
-    //                                     .querySelectorAll('input, select, textarea');
-
-    //   if (billingAddressCheckbox.checked) {
-    //     addressInformation.billing_address = addressInformation.shipping_address;
-    //     addressInformation.shipping_address.same_as_billing = 1;
-    //   } else {
-    //     this.settingData(billingAddressForm, addressInformation.billing_address);
-    //   }
-
-    //   this.$store.commit('updateShippingInformation', { addressInformation });
-
-    //   return { addressInformation };
-    // },
-    // getSelectedMethods() {
-    //   /**
-    //    * Getting data with selected methods
-    //    * Setting it into object
-    //   **/
-
-    //   const returnObj      = this.selectedMethods,
-    //         shippingMethod = this.shippingInformation.addressInformation,
-    //         paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
-
-    //   returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
-    //   returnObj.shippingMethodCode = shippingMethod.shipping_method_code;
-
-    //   if (paymentMethod.value.length > 0) {
-    //     returnObj.paymentMethod.method = paymentMethod.value;
-    //   } else {
-    //     this.returnError();
-    //     return false;
-    //   }
-
-    //   this.$store.commit('updateSelectedMethods', returnObj);
-
-    //   return returnObj;
-    // },
-    // settingData(elements, object) {
-    //   /**
-    //    * Setting Data into fields in object from property
-    //    * Need to replace in future
-    //    *
-    //   **/
-
-    //   elements.forEach(element => {
-    //     const id = element.id,
-    //       value = element.value;
-
-    //     if (element.tagName === 'INPUT' && value.length > 0) {
-    //       if (id === 'street[0]') {
-    //         object.street = [value];
-    //       } else if (id === 'street[1]') {
-    //         object.street.push(value);
-    //       } else {
-    //         object[id] = value;
-    //       }
-    //     } else if (id === 'region_id' && value.length > 0) {
-    //       object[id] = parseInt(value);
-    //       object['region'] = element.selectedOptions[0].innerHTML.trim();
-    //     } else if (id === 'country_id' && value.length > 0) {
-    //       object[id] = value;
-    //     } else {
-    //       this.returnError();
-    //       return false;
-    //     }
-    //   });
-
-    //   return object;
-    // },
     changeSelection(event) {
       /**
        * Method onchange select (country/region)
@@ -415,32 +315,21 @@ export default {
     },
     placeOrder() {
       this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
+        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/order`,
         {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.shippingInformation)
+          body: JSON.stringify({
+            "paymentMethod": {
+              "method": this.selectedPaymentMethod.code
+            }
+          })
         }
       ).then(response => {
-        this.request(
-          `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/order`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              "paymentMethod": {
-                "method": this.selectedPaymentMethod.code
-              }
-            })
-          }
-        ).then(response => {
-          this.$store.commit('updateStep', 'success');
-        })
-      });
+        this.$store.commit('updateStep', 'success');
+      })
     }
   }
 };
