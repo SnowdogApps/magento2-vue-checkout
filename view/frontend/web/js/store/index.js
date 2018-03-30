@@ -36,7 +36,44 @@ const store = new Vuex.Store({
     },
     paymentMethods: [],
     shippingMethods: [],
-    shippingInformation: shippingInformation,
+    shippingInformation: {
+      "addressInformation": {
+        "shipping_address": {
+            "region": "string",
+            "region_id": 0,
+            "country_id": "string",
+            "street": [
+                "string"
+            ],
+            "company": "string",
+            "telephone": "string",
+            "postcode": "string",
+            "city": "string",
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string",
+            "same_as_billing": 0
+        },
+        "billing_address": {
+            "region": "string",
+            "region_id": 0,
+            "region_code": "string",
+            "country_id": "string",
+            "street": [
+                "string"
+            ],
+            "company": "string",
+            "telephone": "string",
+            "postcode": "string",
+            "city": "string",
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string"
+        },
+        "shipping_method_code": "string",
+        "shipping_carrier_code": "string"
+    }
+    },
     totals: {},
     selectedMethods: selectedMethods,
     regionList: regionList
@@ -75,14 +112,15 @@ const store = new Vuex.Store({
           console.log('Looks like there was a problem: \n', error);
         });
     },
-    getPaymentMethods ({commit, state, getters}, countryId) {
+    setShippinInformation ({commit, state, getters}) {
       fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-methods`,
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`,
         {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          body: JSON.stringify(state.shippingInformation)
         }
       )
         .then(response => {
@@ -95,7 +133,7 @@ const store = new Vuex.Store({
           return response.json();
         })
         .then(response => {
-          commit('updatePaymentMethods', response);
+          commit('updatePaymentMethods', response.payment_methods);
           commit('updateStep', 'payment');
         })
         .catch(error => {
@@ -119,6 +157,12 @@ const store = new Vuex.Store({
     updateSelectedMethods(state, newSelectedMethods) {
       state.selectedMethods = newSelectedMethods;
     },
+    setShippinInformation(state, selectedShippingMethod) {
+      state.shippingInformation.addressInformation.shipping_address = state.address.shipping;
+      state.shippingInformation.addressInformation.billing_address = state.address.shipping;
+      state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code;
+      state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code;
+    },
     setAddress (state, payload) {
       payload.address.forEach(item => {
         if (item.name.includes('street')) {
@@ -139,6 +183,9 @@ const store = new Vuex.Store({
     },
     regionsByCountryId: (state) => (countryId) => {
       return state.regionList.filter(region => region.country_id === countryId)
+    },
+    billingAddress (state) {
+      return state.shippingInformation.addressInformation.billing_address
     }
   }
 });
