@@ -25,10 +25,6 @@
                    name="address"
                    template="Snowdog_VueCheckout::data/address.phtml"
             />
-            <block class="Magento\Framework\View\Element\Template"
-                   name="shipping-information"
-                   template="Snowdog_VueCheckout::data/shipping-information.phtml"
-            />
         </referenceBlock>
     </body>
 </page>
