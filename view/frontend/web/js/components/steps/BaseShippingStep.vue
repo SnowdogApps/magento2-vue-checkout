@@ -10,11 +10,12 @@
 
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
       <BaseInput
-        v-model="address.email"
+        v-model="customer.email"
         label="Email"
         name="email"
         type="email"
       />
+      <hr>
       <BaseInput
         v-model="address.firstname"
         label="First name"
@@ -165,8 +166,10 @@ export default {
   },
   data () {
     return {
+      customer: {
+        email: ''
+      },
       address: {
-        email: '',
         firstname: '',
         lastname: '',
         telephone: '',
@@ -201,10 +204,8 @@ export default {
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit () {
-      this.$store.commit('setAddress', {
-        type: 'shipping_address',
-        address: this.address
-      })
+      this.$store.commit('setCustomerEmail', this.customer.email)
+      this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
       this.$store.commit('setShippinInformation', this.selectedShippingMethod)
       this.$store.dispatch('setShippinInformation')
     }

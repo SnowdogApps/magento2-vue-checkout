@@ -23,12 +23,6 @@
 
     <form class="billing-address__form" v-show="!billingAddress">
       <BaseInput
-        v-model="address.email"
-        label="Email"
-        name="email"
-        type="email"
-      />
-      <BaseInput
         v-model="address.firstname"
         label="First name"
         name="firstname"
@@ -165,7 +159,6 @@ export default {
   data () {
     return {
       address: {
-        email: '',
         firstname: '',
         lastname: '',
         telephone: '',
@@ -206,7 +199,7 @@ export default {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
     },
     changeStep (newStep) {
-      this.$store.commit('updateStep', newStep)
+      this.$store.commit('setStep', newStep)
     },
     placeOrder () {
       if (!this.billingAddress) {

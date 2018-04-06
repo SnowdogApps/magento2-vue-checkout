@@ -20,6 +20,9 @@ const store = new Vuex.Store({
         shipping_carrier_code: ''
       }
     },
+    customer: {
+      email: null
+    },
     totals: {},
     selectedMethods: {
       paymentMethod: {
@@ -86,7 +89,7 @@ const store = new Vuex.Store({
         })
         .then(response => {
           commit('updatePaymentMethods', response.payment_methods)
-          commit('updateStep', 'payment')
+          commit('setStep', 'payment')
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -102,7 +105,7 @@ const store = new Vuex.Store({
           },
           body: JSON.stringify({
             'billingAddress': state.shippingInformation.addressInformation.billing_address,
-            'email': 'test@gmail.com',
+            'email': state.customer.email,
             'paymentMethod': {
               'method': paymentMethod.code
             }
@@ -120,7 +123,7 @@ const store = new Vuex.Store({
         })
         .then(response => {
           console.log('Order id: ' + response)
-          commit('updateStep', 'success')
+          commit('setStep', 'success')
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -128,7 +131,7 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    updateStep (state, newStep) {
+    setStep (state, newStep) {
       state.step = newStep
     },
     updatePaymentMethods (state, methods) {
@@ -144,6 +147,9 @@ const store = new Vuex.Store({
       state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code
       state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code
+    },
+    setCustomerEmail (state, payload) {
+      state.customer.email = payload
     },
     setAddress (state, payload) {
       const address = payload.address
