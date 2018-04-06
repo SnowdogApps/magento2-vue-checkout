@@ -9,6 +9,8 @@ module.exports = {
   },
   extends: 'standard',
   'rules': {
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-mixed-operators': 0,
+    'no-new': 0
   }
  }
