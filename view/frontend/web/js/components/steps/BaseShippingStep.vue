@@ -9,78 +9,99 @@
     </h2>
 
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
-      <template v-for="field in shippingAddress">
-        <template v-if="field.type !== 'select'">
-          <BaseInput
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :type="field.type"
-          />
+      <BaseInput
+        v-model="address.email"
+        label="Email"
+        name="email"
+        type="email"
+      />
+      <BaseInput
+        v-model="address.firstname"
+        label="First name"
+        name="firstname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.lastname"
+        label="Last name"
+        name="lastname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.telephone"
+        label="Phone Number"
+        name="telephone"
+        type="tel"
+      />
+      <BaseInput
+        v-model="address.street0"
+        label="Street Address"
+        name="street[0]"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.street1"
+        label="Street Address"
+        name="street[1]"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.country_id"
+        label="Country"
+        name="country_id"
+        :options="countries"
+        @input="onCountryChange"
+      >
+        <option slot="default-option" value="null">
+          Select country
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template
-          v-else-if="
-            field.type === 'select'
-            && field.name === 'country_id'
-          "
-        >
-          <BaseSelect
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="countries"
-            @input="onCountryChange"
-          >
-            <option slot="default-option" value="null">
-              Select country
-            </option>
-            <template slot-scope="option">
-              <option :value="option.value">
-                {{ option.label }}
-              </option>
-            </template>
-          </BaseSelect>
+      </BaseSelect>
+      <BaseInput
+        v-model="address.city"
+        label="City"
+        name="city"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.postcode"
+        label="Zip/Postal Code"
+        name="postcode"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.region"
+        v-if="!regions.length"
+        label="State/Province"
+        name="region"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.region_id"
+        v-if="regions.length"
+        label="State/Province"
+        name="region_id"
+        :options="regions"
+      >
+        <option slot="default-option" value="">
+          Select State/Province
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template
-          v-else-if="
-            field.type === 'select'
-            && field.name === 'region_id'
-          "
-        >
-          <BaseSelect
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="regions"
-            :class="{ 'region--hidden' : isRegionHidden }"
-            @input="onRegionChange"
-          >
-            <option slot="default-option" value="">
-              Select State/Province
-            </option>
-            <template slot-scope="option">
-              <option :value="option.value">
-                {{ option.label }}
-              </option>
-            </template>
-          </BaseSelect>
-
-          <BaseInput
-            type="text"
-            name="region"
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :class="{ 'region--hidden' : isRegionTextHidden }"
-            @input="onRegionChange"
-          />
-        </template>
-      </template>
+      </BaseSelect>
+      <BaseInput
+        v-model="address.company"
+        label="Company"
+        name="company"
+        type="text"
+      />
 
       <h2>
         Shipping methods
@@ -146,13 +167,23 @@ export default {
   },
   data() {
     return {
+      address: {
+        email: '',
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region_id: '',
+        region: '',
+        company: ''
+      },
       shippingAddress: address,
       countries,
       regions: [],
-      countryId: '',
-      regionId: '',
-      isRegionHidden: false,
-      isRegionTextHidden: true,
       selectedShippingMethod: null
     };
   },
@@ -169,25 +200,13 @@ export default {
   },
   methods: {
     onCountryChange(selectedOption) {
-      this.countryId = selectedOption;
-      this.regions = this.$store.getters.regionsByCountryId(this.countryId);
-      if (this.regions.length !== 0) {
-        this.isRegionTextHidden = true;
-        this.isRegionHidden = false;
-      }
-      else {
-        this.isRegionTextHidden = false;
-        this.isRegionHidden = true;
-      }
-      this.$store.dispatch('updateShippingMethods', this.countryId)
-    },
-    onRegionChange(selectedOption) {
-      this.regionId = selectedOption
+      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id);
+      this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit() {
       this.$store.commit('setAddress', {
-        type: 'shipping',
-        address: this.shippingAddress
+        type: 'shipping_address',
+        address: this.address
       });
       this.$store.commit('setShippinInformation', this.selectedShippingMethod);
       this.$store.dispatch('setShippinInformation');
@@ -195,11 +214,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.region {
-  &--hidden {
-    display: none;
-  }
-}
-</style>

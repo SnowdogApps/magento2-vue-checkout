@@ -8,70 +8,14 @@ const store = new Vuex.Store({
     config: config,
     baseUrl: baseUrl,
     step: 'shipping',
-    address: {
-      billing: {
-        'region_id': '',
-        'country_id': '',
-        'street': [],
-        'company': '',
-        'telephone': '',
-        'postcode': '',
-        'city': '',
-        'firstname': '',
-        'lastname': '',
-        'email': ''
-      },
-      shipping: {
-        'region_id': '',
-        'country_id': '',
-        'street': [],
-        'company': '',
-        'telephone': '',
-        'postcode': '',
-        'city': '',
-        'firstname': '',
-        'lastname': '',
-        'email': ''
-      }
-    },
     paymentMethods: [],
     shippingMethods: [],
     shippingInformation: {
-      "addressInformation": {
-        "shipping_address": {
-            "region": "string",
-            "region_id": 0,
-            "country_id": "string",
-            "street": [
-                "string"
-            ],
-            "company": "string",
-            "telephone": "string",
-            "postcode": "string",
-            "city": "string",
-            "firstname": "string",
-            "lastname": "string",
-            "email": "string",
-            "same_as_billing": 0
-        },
-        "billing_address": {
-            "region": "string",
-            "region_id": 0,
-            "region_code": "string",
-            "country_id": "string",
-            "street": [
-                "string"
-            ],
-            "company": "string",
-            "telephone": "string",
-            "postcode": "string",
-            "city": "string",
-            "firstname": "string",
-            "lastname": "string",
-            "email": "string"
-        },
-        "shipping_method_code": "string",
-        "shipping_carrier_code": "string"
+      addressInformation: {
+        shipping_address: {},
+        billing_address: {},
+        shipping_method_code: '',
+        shipping_carrier_code: ''
     }
     },
     totals: {},
@@ -139,6 +83,40 @@ const store = new Vuex.Store({
         .catch(error => {
           console.log('Looks like there was a problem: \n', error);
         });
+    },
+    placeOrder ({commit, state, getters}, paymentMethod) {
+      fetch(
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "billingAddress": state.shippingInformation.addressInformation.billing_address,
+            "email": "test@gmail.com",
+            "paymentMethod": {
+              "method": paymentMethod.code
+            }
+          })
+        }
+      )
+      .then(response => {
+        if (response.ok) {
+          return response;
+        }
+        throw Error(response.statusText);
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        console.log("Order id: " + response);
+        commit('updateStep', 'success');
+      })
+      .catch(error => {
+        console.log('Looks like there was a problem: \n', error);
+      });
     }
   },
   mutations: {
@@ -158,18 +136,29 @@ const store = new Vuex.Store({
       state.selectedMethods = newSelectedMethods;
     },
     setShippinInformation(state, selectedShippingMethod) {
-      state.shippingInformation.addressInformation.shipping_address = state.address.shipping;
-      state.shippingInformation.addressInformation.billing_address = state.address.shipping;
+      state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address;
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code;
       state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code;
     },
     setAddress (state, payload) {
-      payload.address.forEach(item => {
-        if (item.name.includes('street')) {
-          state.address[payload.type]['street'].push(item.value)
+      const address = payload.address;
+      const type = payload.type;
+
+      state.shippingInformation.addressInformation[type] = {}
+      Object.keys(address).forEach(item => {
+        if (item.includes('street')) {
+          if (!state.shippingInformation.addressInformation[type].hasOwnProperty('street')) {
+            state.shippingInformation.addressInformation[type]['street'] = []
+          }
+          state.shippingInformation.addressInformation[type]['street'].push(address[item])
         }
         else {
-          state.address[payload.type][item.name] = item.value
+          if (item === 'region' && address[item] !== '' ||
+            item === 'region_id' && address[item] !== '' ||
+            item !== 'region' && item !== 'region_id'
+          ) {
+            state.shippingInformation.addressInformation[type][item] = address[item]
+          }
         }
       })
     }

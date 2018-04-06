@@ -26,67 +26,99 @@
       class="billing-address__form"
       :class="{ 'billing-address--hidden': isBillingAddressHidden }"
     >
-      <template v-for="field in address">
-        <template v-if="field.type !== 'select'">
-          <BaseInput
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :type="field.type"
-          />
+      <BaseInput
+        v-model="address.email"
+        label="Email"
+        name="email"
+        type="email"
+      />
+      <BaseInput
+        v-model="address.firstname"
+        label="First name"
+        name="firstname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.lastname"
+        label="Last name"
+        name="lastname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.telephone"
+        label="Phone Number"
+        name="telephone"
+        type="tel"
+      />
+      <BaseInput
+        v-model="address.street0"
+        label="Street Address"
+        name="street[0]"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.street1"
+        label="Street Address"
+        name="street[1]"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.country_id"
+        label="Country"
+        name="country_id"
+        :options="countries"
+        @input="onCountryChange"
+      >
+        <option slot="default-option" value="null">
+          Select country
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template
-          v-else-if="
-            field.type === 'select'
-            && field.name === 'country_id'
-          "
-        >
-          <BaseSelect
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="countries"
-            @input="onCountryChange"
-          >
-            <option slot="default-option" value="null">
-              Select country
-            </option>
-            <template slot-scope="option">
-              <option :value="option.value">
-                {{ option.label }}
-              </option>
-            </template>
-          </BaseSelect>
+      </BaseSelect>
+      <BaseInput
+        v-model="address.city"
+        label="City"
+        name="city"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.postcode"
+        label="Zip/Postal Code"
+        name="postcode"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.region"
+        v-if="!regions.length"
+        label="State/Province"
+        name="region"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.region_id"
+        v-if="regions.length"
+        label="State/Province"
+        name="region_id"
+        :options="regions"
+      >
+        <option slot="default-option" value="">
+          Select State/Province
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template
-          v-else-if="
-            field.type === 'select'
-            && field.name === 'region_id'
-          "
-        >
-          <BaseSelect
-            v-model="field.value"
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="regions"
-            @input="onRegionChange"
-          >
-            <option slot="default-option" value="">
-              Select State/Province
-            </option>
-            <template slot-scope="option">
-              <option :value="option.value">
-                {{ option.label }}
-              </option>
-            </template>
-          </BaseSelect>
-        </template>
-      </template>
+      </BaseSelect>
+      <BaseInput
+        v-model="address.company"
+        label="Company"
+        name="company"
+        type="text"
+      />
 
       <BaseButton
         class="button"
@@ -163,15 +195,25 @@ export default {
   },
   data() {
     return {
-      baseUrl               : baseUrl,
-      address               : address,
-      config                : this.$store.state.config,
+      address: {
+        email: '',
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region_id: '',
+        region: '',
+        company: ''
+      },
+      countries,
+      regions: [],
       isBillingAddressHidden: true,
       isRegionIdHidden      : false,
-      regionList            : regionList,
-      selectedPaymentMethod : null,
-      countries,
-      regions: []
+      selectedPaymentMethod : null
     };
   },
   computed: {
@@ -196,71 +238,10 @@ export default {
   },
   methods: {
     onCountryChange(selectedOption) {
-      this.countryId = selectedOption
-      this.regions = this.$store.getters.regionsByCountryId(this.countryId);
-    },
-    onRegionChange(selectedOption) {
-      this.regionId = selectedOption
+      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id);
     },
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
-    },
-    parseJSON(response) {
-      return new Promise(resolve =>
-        response.json().then(json =>
-          resolve({
-            status: response.status,
-            ok: response.ok,
-            json
-          })
-        )
-      );
-    },
-    request(url, params = {}) {
-      return new Promise((resolve, reject) => {
-        fetch(url, params)
-          .then(this.parseJSON)
-          .then(response => {
-            if (response.ok) {
-              return resolve(response.json);
-            }
-            // extract the error from the server's json
-            return reject(response.json);
-          })
-          .catch(error =>
-            reject({
-              networkError: error.message
-            })
-          );
-      });
-    },
-    returnCountryRegions(regions, optionToCompare) {
-      /**
-       * Rendering country region list
-       * Return in array and passing to select
-       * Need to replace in future
-       *
-      **/
-
-      let newRegionList = [];
-
-      newRegionList.push(`
-        <option value="">
-          <?= /* @escapeNotVerified */ __('Please select a region, state or province.'); ?>
-        </option>
-      `);
-
-      regions.forEach(region => {
-        if (region.country_id === optionToCompare) {
-          newRegionList.push(`
-            <option value="${region.value}" data-countryid="${region.country_id}">
-              ${region.label}
-            </option>
-          `);
-        }
-      });
-
-      return newRegionList;
     },
     toggleBillingAddress(event) {
       /**
@@ -271,14 +252,10 @@ export default {
       const element = event.srcElement;
 
       if (element.checked) {
-        this.address = {};
-
         if (!this.isBillingAddressHidden) {
           this.isBillingAddressHidden = true;
         }
       } else {
-        this.address = billingAddress;
-
         if (this.isBillingAddressHidden) {
           this.isBillingAddressHidden = false;
         }
@@ -298,30 +275,13 @@ export default {
       billingCheckbox.checked = true;
     },
     placeOrder() {
-      this.$store.commit('setAddress', {
-        type: 'billing',
-        address: this.address
-      });
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            "billingAddress": this.billingAddress,
-            "email": "test@gmail.com",
-            "paymentMethod": {
-              "method": this.selectedPaymentMethod.code
-            }
-          })
-        }
-      ).then(response => {
-        //TODO: Show order Id on success page
-        console.log("Order id: " + response);
-        this.$store.commit('updateStep', 'success');
-      })
+      if (!this.isBillingAddressHidden) {
+        this.$store.commit('setAddress', {
+          type: 'billing_address',
+          address: this.address
+        });
+      }
+      this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
     }
   }
 };
