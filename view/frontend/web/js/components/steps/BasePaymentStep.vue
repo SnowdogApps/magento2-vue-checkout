@@ -4,8 +4,12 @@
     v-if="step === 'payment'"
   >
     <h1>
-      Billing Address
+      Review & Payments Step
     </h1>
+    <hr>
+    <h2>
+      Billing Address
+    </h2>
 
     <BaseCheckbox
       id="billing-address"
@@ -22,54 +26,99 @@
       class="billing-address__form"
       :class="{ 'billing-address--hidden': isBillingAddressHidden }"
     >
-      <template v-for="field in billingAddress">
-        <template v-if="field.type !== 'select'">
-          <BaseInput
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :type="field.type"
-            :value="field.value"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
-          />
+      <BaseInput
+        v-model="address.email"
+        label="Email"
+        name="email"
+        type="email"
+      />
+      <BaseInput
+        v-model="address.firstname"
+        label="First name"
+        name="firstname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.lastname"
+        label="Last name"
+        name="lastname"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.telephone"
+        label="Phone Number"
+        name="telephone"
+        type="tel"
+      />
+      <BaseInput
+        v-model="address.street0"
+        label="Street Address"
+        name="street[0]"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.street1"
+        label="Street Address"
+        name="street[1]"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.country_id"
+        label="Country"
+        name="country_id"
+        :options="countries"
+        @input="onCountryChange"
+      >
+        <option slot="default-option" value="null">
+          Select country
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template v-if="field.type === 'select' && field.name !== 'region_id'">
-          <BaseSelect
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            @change.native="changeSelection"
-          />
+      </BaseSelect>
+      <BaseInput
+        v-model="address.city"
+        label="City"
+        name="city"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.postcode"
+        label="Zip/Postal Code"
+        name="postcode"
+        type="text"
+      />
+      <BaseInput
+        v-model="address.region"
+        v-if="!regions.length"
+        label="State/Province"
+        name="region"
+        type="text"
+      />
+      <BaseSelect
+        v-model="address.region_id"
+        v-if="regions.length"
+        label="State/Province"
+        name="region_id"
+        :options="regions"
+      >
+        <option slot="default-option" value="">
+          Select State/Province
+        </option>
+        <template slot-scope="option">
+          <option :value="option.value">
+            {{ option.label }}
+          </option>
         </template>
-
-        <template v-if="field.name === 'region_id'">
-          <BaseSelect
-            :key="field.id"
-            :label="field.label"
-            :name="field.name"
-            :options="field.options"
-            field-class="billing-address__field"
-            select-class="billing-address__select"
-            :class="{ 'region--hidden': isRegionIdHidden }"
-            @change.native="changeSelection"
-          />
-
-          <BaseInput
-            :key="field.id"
-            label="State/Province"
-            name="region"
-            type="text"
-            field-class="billing-address__field"
-            input-class="input billing-address__input"
-            :class="{ 'region--hidden': !isRegionIdHidden }"
-          />
-        </template>
-      </template>
+      </BaseSelect>
+      <BaseInput
+        v-model="address.company"
+        label="Company"
+        name="company"
+        type="text"
+      />
 
       <BaseButton
         class="button"
@@ -83,20 +132,28 @@
       Payment methods
     </h2>
 
-    <BasePaymentMethods
-      :options="paymentMethods"
-      name="payment"
-      label-class="labels"
-      container-class="methods__handler"
-      field-class="radio methods__field"
-      input-class="methods__radio"
-    />
+    <div
+        v-for="method in paymentMethods"
+        :key="method.id"
+      >
+        <input
+          type="radio"
+          v-model="selectedPaymentMethod"
+          name="payment-method"
+          :value="method"
+          :id="method.code"
+        />
+
+        <label :for="method.code">
+          {{ method.title }}
+        </label>
+      </div>
 
     <BaseButton
       class="button"
       button-type="button"
-      text="Go to summary"
-      @click.native="setShippingInformation"
+      text="Place order"
+      @click.native="placeOrder"
     />
 
     <BaseButton
@@ -126,26 +183,37 @@
 import BaseButton from '../BaseButton.vue';
 import BaseCheckbox from '../BaseCheckbox.vue';
 import BaseInput from '../BaseInput.vue';
-import BasePaymentMethods from '../BasePaymentMethods.vue';
 import BaseSelect from '../BaseSelect.vue';
+import countries from '../../data/countries.json';
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BasePaymentMethods,
     BaseSelect
   },
   data() {
     return {
-      baseUrl               : baseUrl,
-      billingAddress        : {},
-      config                : this.$store.state.config,
+      address: {
+        email: '',
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region_id: '',
+        region: '',
+        company: ''
+      },
+      countries,
+      regions: [],
       isBillingAddressHidden: true,
       isRegionIdHidden      : false,
-      regionList            : regionList,
-      selectedMethods       : this.$store.state.selectedMethods
+      selectedPaymentMethod : null
     };
   },
   computed: {
@@ -155,236 +223,25 @@ export default {
     step() {
       return this.$store.state.step;
     },
-    paymentMethods() {
+    paymentMethods () {
       return this.$store.state.paymentMethods;
     },
-    shippingInformation() {
+    shippingInformation () {
       return this.$store.state.shippingInformation;
+    },
+    currencyCode () {
+      return this.$store.getters.currencyCode
+    },
+    billingAddress () {
+      return this.$store.getters.billingAddress
     }
   },
   methods: {
+    onCountryChange(selectedOption) {
+      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id);
+    },
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
-    },
-    parseJSON(response) {
-      return new Promise(resolve =>
-        response.json().then(json =>
-          resolve({
-            status: response.status,
-            ok: response.ok,
-            json
-          })
-        )
-      );
-    },
-    request(url, params = {}) {
-      return new Promise((resolve, reject) => {
-        fetch(url, params)
-          .then(this.parseJSON)
-          .then(response => {
-            if (response.ok) {
-              return resolve(response.json);
-            }
-            // extract the error from the server's json
-            return reject(response.json);
-          })
-          .catch(error =>
-            reject({
-              networkError: error.message
-            })
-          );
-      });
-    },
-    setShippingInformation() {
-      /**
-       * Setting Payment Address
-       * Push address to data
-       * Shipping Information 2/2
-       *
-      **/
-
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/shipping-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.getShippingInformation())
-        }
-      ).then(response => {
-        this.setMethods();
-        // Update step to summary is in setMethods method
-      });
-    },
-    setMethods() {
-      /**
-       * Return totals informations and push to store
-       *
-      **/
-
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/collect-totals`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.getSelectedMethods())
-        }
-      ).then(response => {
-        this.$store.commit('updateTotals', response);
-        this.$store.commit('updateStep', 'summary');
-      });
-    },
-    getShippingInformation() {
-      /**
-       * Method which returnning Billing Address
-       * Update it in store
-       *
-      **/
-
-    const addressInformation     = this.shippingInformation.addressInformation,
-          billingAddressCheckbox = this.$el.querySelector('#billing-address'),
-          billingAddressForm     = this.$el.querySelector('.billing-address__form')
-                                        .querySelectorAll('input, select, textarea');
-
-      if (billingAddressCheckbox.checked) {
-        addressInformation.billing_address = addressInformation.shipping_address;
-        addressInformation.shipping_address.same_as_billing = 1;
-      } else {
-        this.settingData(billingAddressForm, addressInformation.billing_address);
-      }
-
-      this.$store.commit('updateShippingInformation', { addressInformation });
-
-      return { addressInformation };
-    },
-    getSelectedMethods() {
-      /**
-       * Getting data with selected methods
-       * Setting it into object
-      **/
-
-      const returnObj      = this.selectedMethods,
-            shippingMethod = this.shippingInformation.addressInformation,
-            paymentMethod  = this.$el.querySelector('input[name="payment"]:checked');
-
-      returnObj.shippingCarrierCode = shippingMethod.shipping_carrier_code;
-      returnObj.shippingMethodCode = shippingMethod.shipping_method_code;
-
-      if (paymentMethod.value.length > 0) {
-        returnObj.paymentMethod.method = paymentMethod.value;
-      } else {
-        this.returnError();
-        return false;
-      }
-
-      this.$store.commit('updateSelectedMethods', returnObj);
-
-      return returnObj;
-    },
-    settingData(elements, object) {
-      /**
-       * Setting Data into fields in object from property
-       * Need to replace in future
-       *
-      **/
-
-      elements.forEach(element => {
-        const id = element.id,
-          value = element.value;
-
-        if (element.tagName === 'INPUT' && value.length > 0) {
-          if (id === 'street[0]') {
-            object.street = [value];
-          } else if (id === 'street[1]') {
-            object.street.push(value);
-          } else {
-            object[id] = value;
-          }
-        } else if (id === 'region_id' && value.length > 0) {
-          object[id] = parseInt(value);
-          object['region'] = element.selectedOptions[0].innerHTML.trim();
-        } else if (id === 'country_id' && value.length > 0) {
-          object[id] = value;
-        } else {
-          this.returnError();
-          return false;
-        }
-      });
-
-      return object;
-    },
-    changeSelection(event) {
-      /**
-       * Method onchange select (country/region)
-       * Returning country regions if exists
-       *
-      **/
-
-      const getForm       = event.srcElement.parentElement.parentElement,
-            countryId     = getForm.querySelector('#country_id'),
-            eventSelectId = event.srcElement.id,
-            inputRegion   = getForm.querySelector('#region'),
-            regionId      = getForm.querySelector('#region_id');
-
-      if (countryId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionValue = event.srcElement.selectedOptions[0].value,
-              propertyRegions  = this.returnCountryRegions(this.regionList, eventOptionValue);
-
-        inputRegion.value = '';
-
-        if (propertyRegions.length > 1) {
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          this.isRegionIdHidden = false;
-        } else {
-          this.isRegionIdHidden = true;
-        }
-      } else if (regionId == getForm.querySelector('#' + eventSelectId)) {
-        const eventOptionCountryId = event.srcElement.selectedOptions[0].dataset.countryid,
-              eventOptionValue     = event.srcElement.selectedOptions[0].value;
-
-        if (!countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected) {
-          const propertyRegions = this.returnCountryRegions(this.regionList, eventOptionCountryId);
-
-          regionId.innerHTML = propertyRegions.join(' ');
-
-          regionId.querySelector(`option[value="${eventOptionValue}"]`).selected = true;
-          countryId.querySelector(`option[value="${eventOptionCountryId}"]`).selected = true;
-
-          this.isRegionIdHidden = false;
-        }
-      }
-    },
-    returnCountryRegions(regions, optionToCompare) {
-      /**
-       * Rendering country region list
-       * Return in array and passing to select
-       * Need to replace in future
-       *
-      **/
-
-      let newRegionList = [];
-
-      newRegionList.push(`
-        <option value="">
-          <?= /* @escapeNotVerified */ __('Please select a region, state or province.'); ?>
-        </option>
-      `);
-
-      regions.forEach(region => {
-        if (region.country_id === optionToCompare) {
-          newRegionList.push(`
-            <option value="${region.value}" data-countryid="${region.country_id}">
-              ${region.label}
-            </option>
-          `);
-        }
-      });
-
-      return newRegionList;
     },
     toggleBillingAddress(event) {
       /**
@@ -395,14 +252,10 @@ export default {
       const element = event.srcElement;
 
       if (element.checked) {
-        this.billingAddress = {};
-
         if (!this.isBillingAddressHidden) {
           this.isBillingAddressHidden = true;
         }
       } else {
-        this.billingAddress = billingAddress;
-
         if (this.isBillingAddressHidden) {
           this.isBillingAddressHidden = false;
         }
@@ -420,6 +273,15 @@ export default {
       this.billingAddress = {};
       this.isBillingAddressHidden = true;
       billingCheckbox.checked = true;
+    },
+    placeOrder() {
+      if (!this.isBillingAddressHidden) {
+        this.$store.commit('setAddress', {
+          type: 'billing_address',
+          address: this.address
+        });
+      }
+      this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
     }
   }
 };
