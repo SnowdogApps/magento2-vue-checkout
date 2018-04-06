@@ -140,9 +140,6 @@ const store = new Vuex.Store({
     updateTotals (state, newTotals) {
       state.totals = newTotals
     },
-    updateSelectedMethods (state, newSelectedMethods) {
-      state.selectedMethods = newSelectedMethods
-    },
     setShippinInformation (state, selectedShippingMethod) {
       state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code
