@@ -12,17 +12,16 @@
     </h2>
 
     <BaseCheckbox
+      v-model="billingAddress"
       id="billing-address-same-as-shipping-address"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
-      checked="true"
-      name="shippingAddress"
+      name="billing-address-same-as-shipping-address"
       text="My billing and shipping address are the same"
-      @change.native="toggleBillingAddress"
     />
 
-    <form class="billing-address__form" v-show="!isBillingAddressHidden">
+    <form class="billing-address__form" v-show="!billingAddress">
       <BaseInput
         v-model="address.email"
         label="Email"
@@ -116,12 +115,6 @@
         name="company"
         type="text"
       />
-      <BaseButton
-        class="button"
-        button-type="button"
-        text="Cancel"
-        @click.native="cancelBillingInformations"
-      />
     </form>
 
     <h2>
@@ -201,7 +194,7 @@ export default {
       },
       countries,
       regions: [],
-      isBillingAddressHidden: true,
+      billingAddress: true,
       selectedPaymentMethod : null
     };
   },
@@ -220,9 +213,6 @@ export default {
     },
     currencyCode () {
       return this.$store.getters.currencyCode
-    },
-    billingAddress () {
-      return this.$store.getters.billingAddress
     }
   },
   methods: {
@@ -232,39 +222,8 @@ export default {
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
     },
-    toggleBillingAddress(event) {
-      /**
-       * Showing/Hidding Billing Address by checkbox
-       *
-      **/
-
-      const element = event.srcElement;
-
-      if (element.checked) {
-        if (!this.isBillingAddressHidden) {
-          this.isBillingAddressHidden = true;
-        }
-      } else {
-        if (this.isBillingAddressHidden) {
-          this.isBillingAddressHidden = false;
-        }
-      }
-    },
-    cancelBillingInformations() {
-      /**
-       * Cancel addin a Billing Address
-       * Hidding it
-       *
-      **/
-      const billingCheckbox = this.$el.querySelector('#billing-address');
-
-
-      this.billingAddress = {};
-      this.isBillingAddressHidden = true;
-      billingCheckbox.checked = true;
-    },
     placeOrder() {
-      if (!this.isBillingAddressHidden) {
+      if (!this.billingAddress) {
         this.$store.commit('setAddress', {
           type: 'billing_address',
           address: this.address
