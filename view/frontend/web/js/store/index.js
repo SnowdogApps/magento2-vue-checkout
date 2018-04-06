@@ -144,8 +144,6 @@ const store = new Vuex.Store({
       const address = payload.address;
       const type = payload.type;
 
-      console.log(address);
-      console.log(type);
       state.shippingInformation.addressInformation[type] = {}
       Object.keys(address).forEach(item => {
         if (item.includes('street')) {
