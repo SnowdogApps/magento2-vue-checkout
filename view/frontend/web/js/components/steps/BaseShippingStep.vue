@@ -151,7 +151,6 @@
 
 <script>
 import BaseButton from '../BaseButton.vue';
-import BaseCheckbox from '../BaseCheckbox.vue';
 import BaseInput from '../BaseInput.vue';
 import BaseSelect from '../BaseSelect.vue';
 import BaseShippingMethods from '../BaseShippingMethods.vue';
@@ -160,7 +159,6 @@ import countries from '../../data/countries.json';
 export default {
   components: {
     BaseButton,
-    BaseCheckbox,
     BaseInput,
     BaseSelect,
     BaseShippingMethods
