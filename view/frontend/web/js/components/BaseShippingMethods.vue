@@ -64,6 +64,6 @@ export default {
     currencyCode () {
       return this.$store.getters.currencyCode
     }
-  },
+  }
 }
 </script>

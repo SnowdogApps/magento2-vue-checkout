@@ -179,9 +179,6 @@ const store = new Vuex.Store({
     },
     regionsByCountryId: (state) => (countryId) => {
       return state.regionList.filter(region => region.country_id === countryId)
-    },
-    billingAddress (state) {
-      return state.shippingInformation.addressInformation.billing_address
     }
   }
 })

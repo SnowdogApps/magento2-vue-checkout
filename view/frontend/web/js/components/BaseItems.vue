@@ -7,7 +7,7 @@
     <BaseProduct
       container-class="grid"
       item-class="grid__columns"
-      :products="config.totalsData.items"
+      :products="products"
     />
   </section>
 </template>
@@ -19,18 +19,12 @@ export default {
   components: {
     BaseProduct
   },
-  data() {
-    return {
-      baseUrl: baseUrl,
-      config: this.$store.state.config
-    }
-  },
   computed: {
-    cartId() {
-      return this.$store.getters.cartId;
+    products () {
+      return this.$store.state.config.totalsData.items
     },
-    step() {
-      return this.$store.state.step;
+    step () {
+      return this.$store.state.step
     }
   }
 }
