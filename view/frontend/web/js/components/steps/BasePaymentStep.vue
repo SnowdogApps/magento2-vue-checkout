@@ -205,63 +205,6 @@ export default {
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
     },
-    parseJSON(response) {
-      return new Promise(resolve =>
-        response.json().then(json =>
-          resolve({
-            status: response.status,
-            ok: response.ok,
-            json
-          })
-        )
-      );
-    },
-    request(url, params = {}) {
-      return new Promise((resolve, reject) => {
-        fetch(url, params)
-          .then(this.parseJSON)
-          .then(response => {
-            if (response.ok) {
-              return resolve(response.json);
-            }
-            // extract the error from the server's json
-            return reject(response.json);
-          })
-          .catch(error =>
-            reject({
-              networkError: error.message
-            })
-          );
-      });
-    },
-    returnCountryRegions(regions, optionToCompare) {
-      /**
-       * Rendering country region list
-       * Return in array and passing to select
-       * Need to replace in future
-       *
-      **/
-
-      let newRegionList = [];
-
-      newRegionList.push(`
-        <option value="">
-          <?= /* @escapeNotVerified */ __('Please select a region, state or province.'); ?>
-        </option>
-      `);
-
-      regions.forEach(region => {
-        if (region.country_id === optionToCompare) {
-          newRegionList.push(`
-            <option value="${region.value}" data-countryid="${region.country_id}">
-              ${region.label}
-            </option>
-          `);
-        }
-      });
-
-      return newRegionList;
-    },
     toggleBillingAddress(event) {
       /**
        * Showing/Hidding Billing Address by checkbox
@@ -302,26 +245,7 @@ export default {
         type: 'billing',
         address: this.address
       });
-      this.request(
-        `${this.baseUrl}rest/V1/guest-carts/${this.cartId}/payment-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            "billingAddress": this.billingAddress,
-            "email": "test@gmail.com",
-            "paymentMethod": {
-              "method": this.selectedPaymentMethod.code
-            }
-          })
-        }
-      ).then(response => {
-        //TODO: Show order Id on success page
-        console.log("Order id: " + response);
-        this.$store.commit('updateStep', 'success');
-      })
+      this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
     }
   }
 };

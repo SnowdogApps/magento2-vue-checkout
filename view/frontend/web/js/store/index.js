@@ -87,6 +87,40 @@ const store = new Vuex.Store({
         .catch(error => {
           console.log('Looks like there was a problem: \n', error);
         });
+    },
+    placeOrder ({commit, state, getters}, paymentMethod) {
+      fetch(
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "billingAddress": state.shippingInformation.addressInformation.billing_address,
+            "email": "test@gmail.com",
+            "paymentMethod": {
+              "method": paymentMethod.code
+            }
+          })
+        }
+      )
+      .then(response => {
+        if (response.ok) {
+          return response;
+        }
+        throw Error(response.statusText);
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        console.log("Order id: " + response);
+        commit('updateStep', 'success');
+      })
+      .catch(error => {
+        console.log('Looks like there was a problem: \n', error);
+      });
     }
   },
   mutations: {
