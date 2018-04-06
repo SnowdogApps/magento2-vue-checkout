@@ -8,10 +8,6 @@ const store = new Vuex.Store({
     config: config,
     baseUrl: baseUrl,
     step: 'shipping',
-    address: {
-      billing: {},
-      shipping: {}
-    },
     paymentMethods: [],
     shippingMethods: [],
     shippingInformation: {
@@ -140,28 +136,30 @@ const store = new Vuex.Store({
       state.selectedMethods = newSelectedMethods;
     },
     setShippinInformation(state, selectedShippingMethod) {
-      state.shippingInformation.addressInformation.shipping_address = state.address.shipping;
-      state.shippingInformation.addressInformation.billing_address = state.address.shipping;
+      state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address;
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code;
       state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code;
     },
     setAddress (state, payload) {
       const address = payload.address;
       const type = payload.type;
-      state.address[type] = {}
+
+      console.log(address);
+      console.log(type);
+      state.shippingInformation.addressInformation[type] = {}
       Object.keys(address).forEach(item => {
         if (item.includes('street')) {
-          if (!state.address[type].hasOwnProperty('street')) {
-            state.address[type]['street'] = []
+          if (!state.shippingInformation.addressInformation[type].hasOwnProperty('street')) {
+            state.shippingInformation.addressInformation[type]['street'] = []
           }
-          state.address[type]['street'].push(address[item])
+          state.shippingInformation.addressInformation[type]['street'].push(address[item])
         }
         else {
           if (item === 'region' && address[item] !== '' ||
             item === 'region_id' && address[item] !== '' ||
             item !== 'region' && item !== 'region_id'
           ) {
-            state.address[type][item] = address[item]
+            state.shippingInformation.addressInformation[type][item] = address[item]
           }
         }
       })

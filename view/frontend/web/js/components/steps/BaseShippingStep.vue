@@ -205,7 +205,7 @@ export default {
     },
     onFormSubmit() {
       this.$store.commit('setAddress', {
-        type: 'shipping',
+        type: 'shipping_address',
         address: this.address
       });
       this.$store.commit('setShippinInformation', this.selectedShippingMethod);
