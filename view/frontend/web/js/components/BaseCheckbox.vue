@@ -5,13 +5,10 @@
       :id="id"
       :name="name"
       :class="inputClass"
-      :checked="checked"
+      :checked="value"
+      @change="$emit('input', $event.target.checked)"
     />
-
-    <label
-      :class="labelClass"
-      :for="id"
-    >
+    <label :class="labelClass" :for="id">
       {{ text }}
     </label>
   </div>
@@ -38,8 +35,8 @@ export default {
     text: {
       type: String
     },
-    checked: {
-      type: String
+    value: {
+      type: Boolean
     }
   }
 }

@@ -12,20 +12,16 @@
     </h2>
 
     <BaseCheckbox
-      id="billing-address"
+      v-model="billingAddress"
+      id="billing-address-same-as-shipping-address"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
-      checked="true"
-      name="shippingAddress"
+      name="billing-address-same-as-shipping-address"
       text="My billing and shipping address are the same"
-      @change.native="toggleBillingAddress"
     />
 
-    <form
-      class="billing-address__form"
-      :class="{ 'billing-address--hidden': isBillingAddressHidden }"
-    >
+    <form class="billing-address__form" v-show="!billingAddress">
       <BaseInput
         v-model="address.email"
         label="Email"
@@ -119,36 +115,23 @@
         name="company"
         type="text"
       />
-
-      <BaseButton
-        class="button"
-        button-type="button"
-        text="Cancel"
-        @click.native="cancelBillingInformations"
-      />
     </form>
 
     <h2>
       Payment methods
     </h2>
-
-    <div
-        v-for="method in paymentMethods"
-        :key="method.id"
-      >
-        <input
-          type="radio"
-          v-model="selectedPaymentMethod"
-          name="payment-method"
-          :value="method"
-          :id="method.code"
-        />
-
-        <label :for="method.code">
-          {{ method.title }}
-        </label>
-      </div>
-
+    <div v-for="method in paymentMethods" :key="method.id">
+      <input
+        type="radio"
+        v-model="selectedPaymentMethod"
+        name="payment-method"
+        :value="method"
+        :id="method.code"
+      />
+      <label :for="method.code">
+        {{ method.title }}
+      </label>
+    </div>
     <BaseButton
       class="button"
       button-type="button"
@@ -164,20 +147,6 @@
     />
   </section>
 </template>
-
-<style lang="scss" scoped>
-.billing-address {
-  &--hidden {
-    display: none;
-  }
-}
-
-.region {
-  &--hidden {
-    display: none;
-  }
-}
-</style>
 
 <script>
 import BaseButton from '../BaseButton.vue';
@@ -211,8 +180,7 @@ export default {
       },
       countries,
       regions: [],
-      isBillingAddressHidden: true,
-      isRegionIdHidden      : false,
+      billingAddress: true,
       selectedPaymentMethod : null
     };
   },
@@ -231,9 +199,6 @@ export default {
     },
     currencyCode () {
       return this.$store.getters.currencyCode
-    },
-    billingAddress () {
-      return this.$store.getters.billingAddress
     }
   },
   methods: {
@@ -243,39 +208,8 @@ export default {
     changeStep(newStep) {
       this.$store.commit('updateStep', newStep);
     },
-    toggleBillingAddress(event) {
-      /**
-       * Showing/Hidding Billing Address by checkbox
-       *
-      **/
-
-      const element = event.srcElement;
-
-      if (element.checked) {
-        if (!this.isBillingAddressHidden) {
-          this.isBillingAddressHidden = true;
-        }
-      } else {
-        if (this.isBillingAddressHidden) {
-          this.isBillingAddressHidden = false;
-        }
-      }
-    },
-    cancelBillingInformations() {
-      /**
-       * Cancel addin a Billing Address
-       * Hidding it
-       *
-      **/
-      const billingCheckbox = this.$el.querySelector('#billing-address');
-
-
-      this.billingAddress = {};
-      this.isBillingAddressHidden = true;
-      billingCheckbox.checked = true;
-    },
     placeOrder() {
-      if (!this.isBillingAddressHidden) {
+      if (!this.billingAddress) {
         this.$store.commit('setAddress', {
           type: 'billing_address',
           address: this.address
