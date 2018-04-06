@@ -16,7 +16,7 @@ const store = new Vuex.Store({
         billing_address: {},
         shipping_method_code: '',
         shipping_carrier_code: ''
-    }
+      }
     },
     totals: {},
     selectedMethods: selectedMethods,
