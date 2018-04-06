@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from './store'
 import index from './index.vue'
 import * as filters from './filters';
-import Vuelidate from 'vuelidate';
+import VeeValidate from 'vee-validate';
 
-Vue.use(Vuelidate);
+Vue.use(VeeValidate);
 
 // register global filters
 Object.keys(filters).forEach((key) => {
