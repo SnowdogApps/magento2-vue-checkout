@@ -150,11 +150,11 @@
 </template>
 
 <script>
-import BaseButton from '../BaseButton.vue';
-import BaseInput from '../BaseInput.vue';
-import BaseSelect from '../BaseSelect.vue';
-import BaseShippingMethods from '../BaseShippingMethods.vue';
-import countries from '../../data/countries.json';
+import BaseButton from '../BaseButton.vue'
+import BaseInput from '../BaseInput.vue'
+import BaseSelect from '../BaseSelect.vue'
+import BaseShippingMethods from '../BaseShippingMethods.vue'
+import countries from '../../data/countries.json'
 
 export default {
   components: {
@@ -163,7 +163,7 @@ export default {
     BaseSelect,
     BaseShippingMethods
   },
-  data() {
+  data () {
     return {
       address: {
         email: '',
@@ -179,36 +179,35 @@ export default {
         region: '',
         company: ''
       },
-      shippingAddress: address,
       countries,
       regions: [],
       selectedShippingMethod: null
-    };
+    }
   },
   computed: {
-    step() {
-      return this.$store.state.step;
+    step () {
+      return this.$store.state.step
     },
-    shippingMethods() {
-      return this.$store.state.shippingMethods;
+    shippingMethods () {
+      return this.$store.state.shippingMethods
     },
     currencyCode () {
       return this.$store.getters.currencyCode
     }
   },
   methods: {
-    onCountryChange(selectedOption) {
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id);
+    onCountryChange (selectedOption) {
+      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
-    onFormSubmit() {
+    onFormSubmit () {
       this.$store.commit('setAddress', {
         type: 'shipping_address',
         address: this.address
-      });
-      this.$store.commit('setShippinInformation', this.selectedShippingMethod);
-      this.$store.dispatch('setShippinInformation');
+      })
+      this.$store.commit('setShippinInformation', this.selectedShippingMethod)
+      this.$store.dispatch('setShippinInformation')
     }
   }
-};
+}
 </script>

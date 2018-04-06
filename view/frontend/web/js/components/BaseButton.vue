@@ -12,13 +12,13 @@
 export default {
   props: {
     buttonType: {
-        type: String
+      type: String
     },
     text: {
-        type: String
+      type: String
     },
     buttonTitle: {
-        type: String
+      type: String
     }
   }
 }

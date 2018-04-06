@@ -149,11 +149,11 @@
 </template>
 
 <script>
-import BaseButton from '../BaseButton.vue';
-import BaseCheckbox from '../BaseCheckbox.vue';
-import BaseInput from '../BaseInput.vue';
-import BaseSelect from '../BaseSelect.vue';
-import countries from '../../data/countries.json';
+import BaseButton from '../BaseButton.vue'
+import BaseCheckbox from '../BaseCheckbox.vue'
+import BaseInput from '../BaseInput.vue'
+import BaseSelect from '../BaseSelect.vue'
+import countries from '../../data/countries.json'
 
 export default {
   components: {
@@ -162,7 +162,7 @@ export default {
     BaseInput,
     BaseSelect
   },
-  data() {
+  data () {
     return {
       address: {
         email: '',
@@ -181,42 +181,42 @@ export default {
       countries,
       regions: [],
       billingAddress: true,
-      selectedPaymentMethod : null
-    };
+      selectedPaymentMethod: null
+    }
   },
   computed: {
-    cartId() {
-      return this.$store.getters.cartId;
+    cartId () {
+      return this.$store.getters.cartId
     },
-    step() {
-      return this.$store.state.step;
+    step () {
+      return this.$store.state.step
     },
     paymentMethods () {
-      return this.$store.state.paymentMethods;
+      return this.$store.state.paymentMethods
     },
     shippingInformation () {
-      return this.$store.state.shippingInformation;
+      return this.$store.state.shippingInformation
     },
     currencyCode () {
       return this.$store.getters.currencyCode
     }
   },
   methods: {
-    onCountryChange(selectedOption) {
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id);
+    onCountryChange (selectedOption) {
+      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
     },
-    changeStep(newStep) {
-      this.$store.commit('updateStep', newStep);
+    changeStep (newStep) {
+      this.$store.commit('updateStep', newStep)
     },
-    placeOrder() {
+    placeOrder () {
       if (!this.billingAddress) {
         this.$store.commit('setAddress', {
           type: 'billing_address',
           address: this.address
-        });
+        })
       }
       this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
     }
   }
-};
+}
 </script>
