@@ -12,6 +12,7 @@
     </h2>
 
     <BaseCheckbox
+      id="billing-address-same-as-shipping-address"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
@@ -21,10 +22,7 @@
       @change.native="toggleBillingAddress"
     />
 
-    <form
-      class="billing-address__form"
-      :class="{ 'billing-address--hidden': isBillingAddressHidden }"
-    >
+    <form class="billing-address__form" v-show="!isBillingAddressHidden">
       <BaseInput
         v-model="address.email"
         label="Email"
@@ -118,7 +116,6 @@
         name="company"
         type="text"
       />
-
       <BaseButton
         class="button"
         button-type="button"
@@ -130,11 +127,7 @@
     <h2>
       Payment methods
     </h2>
-
-    <div
-      v-for="method in paymentMethods"
-      :key="method.id"
-    >
+    <div v-for="method in paymentMethods" :key="method.id">
       <input
         type="radio"
         v-model="selectedPaymentMethod"
