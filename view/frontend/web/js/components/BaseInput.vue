@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'input--error': $v.field.$error }">
+  <div :class="{'input--error': errors.has(name) }">
     <label :for="name">
         {{ label }}
     </label>
@@ -8,25 +8,18 @@
       :type="type"
       :id="name"
       :name="name"
-      v-model="field"
-      @input="$v.field.$touch()"
+      :data-vv-as="label"
+      v-validate="validateType"
     />
 
-    <span class="input__message" v-if="!$v.field.required">
-      Field is required
+    <span v-show="errors.has(name)" class="input__message">
+      {{ errors.first(name) }}
     </span>
   </div>
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
-
 export default {
-  data() {
-    return {
-      field: this.value
-    }
-  },
   props: {
     label: {
       type: String
@@ -39,11 +32,9 @@ export default {
     },
     value: {
       type: String
-    }
-  },
-  validations: {
-    field: {
-      required
+    },
+    validateType: {
+      type: String
     }
   }
 }
@@ -60,10 +51,6 @@ export default {
       display: block;
       color: red;
     }
-  }
-
-  &__message {
-    display: none;
   }
 }
 </style>

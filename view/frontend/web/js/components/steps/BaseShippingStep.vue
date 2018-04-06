@@ -14,30 +14,35 @@
         label="Email"
         name="email"
         type="email"
+        :validateType="'required|email'"
       />
       <BaseInput
         v-model="address.firstname"
         label="First name"
         name="firstname"
         type="text"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.street1"
@@ -66,12 +71,14 @@
         label="City"
         name="city"
         type="text"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
+        :validateType="'required'"
       />
       <BaseInput
         v-model="address.region"
@@ -101,6 +108,7 @@
         label="Company"
         name="company"
         type="text"
+        :validateType="'required'"
       />
 
       <h2>
@@ -204,12 +212,21 @@ export default {
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit() {
-      this.$store.commit('setAddress', {
-        type: 'shipping_address',
-        address: this.address
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.$store.commit('setAddress', {
+            type: 'shipping_address',
+            address: this.address
+          });
+          this.$store.commit('setShippinInformation', this.selectedShippingMethod);
+          this.$store.dispatch('setShippinInformation');
+
+          return;
+        }
+      })
+      .catch(() => {
+        console.log('error');
       });
-      this.$store.commit('setShippinInformation', this.selectedShippingMethod);
-      this.$store.dispatch('setShippinInformation');
     }
   }
 };
