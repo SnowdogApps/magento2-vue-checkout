@@ -23,7 +23,6 @@ const store = new Vuex.Store({
     customer: {
       email: null
     },
-    totals: {},
     selectedMethods: {
       paymentMethod: {
         method: ''
@@ -31,7 +30,8 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    regionList: regionList
+    regionList: regionList,
+    totals: {}
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -61,7 +61,7 @@ const store = new Vuex.Store({
           return response.json()
         })
         .then(response => {
-          commit('updateShippingMethods', response)
+          commit('setShippingMethods', response)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -88,7 +88,7 @@ const store = new Vuex.Store({
           return response.json()
         })
         .then(response => {
-          commit('updatePaymentMethods', response.payment_methods)
+          commit('setPaymentMethods', response.payment_methods)
           commit('setStep', 'payment')
         })
         .catch(error => {
@@ -131,17 +131,17 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    setStep (state, newStep) {
-      state.step = newStep
+    setStep (state, payload) {
+      state.step = payload
     },
-    updatePaymentMethods (state, methods) {
-      state.paymentMethods = methods
+    setPaymentMethods (state, payload) {
+      state.paymentMethods = payload
     },
-    updateShippingMethods (state, methods) {
-      state.shippingMethods = methods
+    setShippingMethods (state, payload) {
+      state.shippingMethods = payload
     },
-    updateTotals (state, newTotals) {
-      state.totals = newTotals
+    updateTotals (state, payload) {
+      state.totals = payload
     },
     setShippinInformation (state, selectedShippingMethod) {
       state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
