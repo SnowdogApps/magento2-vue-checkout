@@ -8,11 +8,11 @@ Vue.use(VeeValidate);
 
 // register global filters
 Object.keys(filters).forEach((key) => {
-  Vue.filter(key, filters[key]);
-});
+  Vue.filter(key, filters[key])
+})
 
-var app = new Vue({
+new Vue({
   el: '#checkout',
   store,
   render: h => h(index)
-});
+})

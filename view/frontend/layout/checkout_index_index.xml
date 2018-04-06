@@ -13,18 +13,6 @@
                    name="region-list"
                    template="Snowdog_VueCheckout::data/region-list.phtml"
             />
-            <block class="Magento\Framework\View\Element\Template"
-                   name="billing-address"
-                   template="Snowdog_VueCheckout::data/billing-address.phtml"
-            />
-            <block class="Magento\Framework\View\Element\Template"
-                   name="selected-methods"
-                   template="Snowdog_VueCheckout::data/selected-methods.phtml"
-            />
-            <block class="Magento\Framework\View\Element\Template"
-                   name="address"
-                   template="Snowdog_VueCheckout::data/address.phtml"
-            />
         </referenceBlock>
     </body>
 </page>

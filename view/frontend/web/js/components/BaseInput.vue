@@ -1,9 +1,8 @@
 <template>
   <div :class="{'input--error': errors.has(name) }">
     <label :for="name">
-        {{ label }}
+      {{ label }}
     </label>
-
     <input
       :type="type"
       :id="name"

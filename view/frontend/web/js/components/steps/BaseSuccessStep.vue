@@ -11,11 +11,11 @@
 <script>
 export default {
   computed: {
-    cartId() {
-      return this.$store.getters.cartId;
+    cartId () {
+      return this.$store.getters.cartId
     },
-    step() {
-      return this.$store.state.step;
+    step () {
+      return this.$store.state.step
     }
   }
 }

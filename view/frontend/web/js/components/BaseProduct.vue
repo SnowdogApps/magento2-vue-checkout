@@ -69,13 +69,13 @@
 export default {
   props: {
     products: {
-        type: Array
+      type: Array
     },
     containerClass: {
-        type: String
+      type: String
     },
     itemClass: {
-        type: String
+      type: String
     }
   },
   computed: {
