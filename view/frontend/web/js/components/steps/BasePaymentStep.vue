@@ -12,7 +12,6 @@
     </h2>
 
     <BaseCheckbox
-      id="billing-address"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
@@ -133,22 +132,20 @@
     </h2>
 
     <div
-        v-for="method in paymentMethods"
-        :key="method.id"
-      >
-        <input
-          type="radio"
-          v-model="selectedPaymentMethod"
-          name="payment-method"
-          :value="method"
-          :id="method.code"
-        />
-
-        <label :for="method.code">
-          {{ method.title }}
-        </label>
-      </div>
-
+      v-for="method in paymentMethods"
+      :key="method.id"
+    >
+      <input
+        type="radio"
+        v-model="selectedPaymentMethod"
+        name="payment-method"
+        :value="method"
+        :id="method.code"
+      />
+      <label :for="method.code">
+        {{ method.title }}
+      </label>
+    </div>
     <BaseButton
       class="button"
       button-type="button"
@@ -212,7 +209,6 @@ export default {
       countries,
       regions: [],
       isBillingAddressHidden: true,
-      isRegionIdHidden      : false,
       selectedPaymentMethod : null
     };
   },
