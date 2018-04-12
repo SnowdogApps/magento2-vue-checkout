@@ -11,10 +11,17 @@
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
       <BaseInput
         v-model="customer.email"
+        @input="checkIsEmailAvailable"
         label="Email"
         name="email"
         type="email"
       />
+      <span v-if="customer.email !== '' && !customer.emailAvailable">
+        You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
+      </span>
+      <span v-else-if="customer.email !== '' && customer.emailAvailable">
+        You can create an account after checkout.
+      </span>
       <hr>
       <BaseInput
         v-model="address.firstname"
@@ -167,7 +174,8 @@ export default {
   data () {
     return {
       customer: {
-        email: ''
+        email: '',
+        emailAvailable: false
       },
       address: {
         firstname: '',
@@ -188,6 +196,9 @@ export default {
     }
   },
   computed: {
+    baseUrl () {
+      return this.$store.state.baseUrl
+    },
     step () {
       return this.$store.state.step
     },
@@ -196,9 +207,41 @@ export default {
     },
     currencyCode () {
       return this.$store.getters.currencyCode
+    },
+    loginUrl () {
+      return this.baseUrl + 'customer/account/login/'
     }
   },
   methods: {
+    checkIsEmailAvailable () {
+      fetch(
+        `${this.baseUrl}rest/V1/customers/isEmailAvailable`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'customerEmail': this.customer.email
+          })
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            return response
+          }
+          throw Error(response.statusText)
+        })
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          this.customer.emailAvailable = response
+        })
+        .catch(error => {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
     onCountryChange (selectedOption) {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
