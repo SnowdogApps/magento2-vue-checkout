@@ -223,22 +223,20 @@ export default {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
-    onFormSubmit() {
+    onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.$store.commit('setAddress', {
             type: 'shipping_address',
             address: this.address
-          });
-          this.$store.commit('setShippinInformation', this.selectedShippingMethod);
-          this.$store.dispatch('setShippinInformation');
-
-          return;
+          })
+          this.$store.commit('setShippinInformation', this.selectedShippingMethod)
+          this.$store.dispatch('setShippinInformation')
         }
       })
-      .catch(() => {
-        console.log('error');
-      });
+        .catch(() => {
+          console.log('error')
+        })
     }
   }
 }
