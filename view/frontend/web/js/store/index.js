@@ -20,7 +20,9 @@ const store = new Vuex.Store({
         shipping_carrier_code: ''
       }
     },
-    totals: {},
+    customer: {
+      email: null
+    },
     selectedMethods: {
       paymentMethod: {
         method: ''
@@ -28,7 +30,8 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    regionList: regionList
+    regionList: regionList,
+    totals: {}
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -58,7 +61,7 @@ const store = new Vuex.Store({
           return response.json()
         })
         .then(response => {
-          commit('updateShippingMethods', response)
+          commit('setShippingMethods', response)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -85,8 +88,8 @@ const store = new Vuex.Store({
           return response.json()
         })
         .then(response => {
-          commit('updatePaymentMethods', response.payment_methods)
-          commit('updateStep', 'payment')
+          commit('setPaymentMethods', response.payment_methods)
+          commit('setStep', 'payment')
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -102,7 +105,7 @@ const store = new Vuex.Store({
           },
           body: JSON.stringify({
             'billingAddress': state.shippingInformation.addressInformation.billing_address,
-            'email': 'test@gmail.com',
+            'email': state.customer.email,
             'paymentMethod': {
               'method': paymentMethod.code
             }
@@ -120,7 +123,7 @@ const store = new Vuex.Store({
         })
         .then(response => {
           console.log('Order id: ' + response)
-          commit('updateStep', 'success')
+          commit('setStep', 'success')
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -128,22 +131,25 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    updateStep (state, newStep) {
-      state.step = newStep
+    setStep (state, payload) {
+      state.step = payload
     },
-    updatePaymentMethods (state, methods) {
-      state.paymentMethods = methods
+    setPaymentMethods (state, payload) {
+      state.paymentMethods = payload
     },
-    updateShippingMethods (state, methods) {
-      state.shippingMethods = methods
+    setShippingMethods (state, payload) {
+      state.shippingMethods = payload
     },
-    updateTotals (state, newTotals) {
-      state.totals = newTotals
+    updateTotals (state, payload) {
+      state.totals = payload
     },
     setShippinInformation (state, selectedShippingMethod) {
       state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code
       state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code
+    },
+    setCustomerEmail (state, payload) {
+      state.customer.email = payload
     },
     setAddress (state, payload) {
       const address = payload.address
