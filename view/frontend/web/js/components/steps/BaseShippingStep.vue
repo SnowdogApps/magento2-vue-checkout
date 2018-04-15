@@ -108,7 +108,6 @@
         label="Company"
         name="company"
         type="text"
-        :validateType="'required'"
       />
 
       <h2>
@@ -120,15 +119,16 @@
           v-for="method in shippingMethods"
           v-if="method.available"
           :key="method.id"
+          :class="{'input--error': errors.has('shipping-method') }"
         >
           <input
             type="radio"
             v-model="selectedShippingMethod"
             name="shipping-method"
-            :value="method"
+            :value="method.method_code"
             :id="method.carrier_code"
+            v-validate="'required'"
           />
-
           <label
             :for="method.carrier_code"
           >
@@ -140,6 +140,10 @@
                 {{ method.price_incl_tax | currency(currencyCode) }}
             </span>
           </label>
+
+          <p v-show="errors.has('shipping-method')" class="input__message">
+            {{ errors.first('shipping-method') }}
+          </p>
         </div>
       </template>
       <template v-else>
@@ -156,6 +160,17 @@
     </form>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
 
 <script>
 import BaseButton from '../BaseButton.vue'

@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  inject: ['$validator'],
   props: {
     options: {
       type: Array

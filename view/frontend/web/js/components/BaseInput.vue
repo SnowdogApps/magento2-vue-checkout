@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  inject: ['$validator'],
   props: {
     label: {
       type: String
