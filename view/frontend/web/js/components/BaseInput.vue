@@ -3,12 +3,14 @@
     <label :for="name">
       {{ label }}
     </label>
+
     <input
       :type="type"
       :id="name"
       :name="name"
       :data-vv-as="label"
       v-validate="validateType"
+      @input="$emit('input', $event.target.value)"
     />
 
     <span v-show="errors.has(name)" class="input__message">

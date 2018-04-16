@@ -136,6 +136,7 @@
             :value="method.method_code"
             :id="method.carrier_code"
             v-validate="'required'"
+            data-vv-as="Shipping method"
           />
           <label
             :for="method.carrier_code"
