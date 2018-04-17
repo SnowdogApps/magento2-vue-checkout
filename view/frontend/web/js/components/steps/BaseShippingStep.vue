@@ -133,7 +133,7 @@
             type="radio"
             v-model="selectedShippingMethod"
             name="shipping-method"
-            :value="method.method_code"
+            :value="method"
             :id="method.carrier_code"
             v-validate="'required'"
             data-vv-as="Shipping method"
