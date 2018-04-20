@@ -66,7 +66,7 @@
         :validateType="'required'"
         @input="onCountryChange"
       >
-        <option slot="default-option" value="null">
+        <option slot="default-option" value="">
           Select country
         </option>
         <template slot-scope="option">
