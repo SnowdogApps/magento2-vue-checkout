@@ -63,6 +63,7 @@
         label="Country"
         name="country_id"
         :options="countries"
+        :validateType="'required'"
         @input="onCountryChange"
       >
         <option slot="default-option" value="null">
@@ -146,7 +147,7 @@
             </span>
 
             <span class="label__price">
-                {{ method.price_incl_tax | currency(currencyCode) }}
+              {{ method.price_incl_tax | currency(currencyCode) }}
             </span>
           </label>
 
@@ -280,7 +281,7 @@ export default {
         }
       })
         .catch(() => {
-          console.log('error')
+          console.log('Error with process your Shipping step and process your order - please try again later')
         })
     }
   }
