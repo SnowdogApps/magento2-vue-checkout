@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'input--error': errors.has(name) }">
     <label :for="name">
       {{ label }}
     </label>
@@ -8,6 +8,8 @@
       :value="value"
       :name="name"
       :id="name"
+      :data-vv-as="label"
+      v-validate="validateType"
       @input="$emit('input', $event.target.value)"
     >
       <slot name="default-option"/>
@@ -15,8 +17,27 @@
         <slot v-bind="option"/>
       </template>
     </select>
+
+    <span v-show="errors.has(name)" class="input__message">
+      {{ errors.first(name) }}
+    </span>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & > select {
+      border-color: red;
+    }
+
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
 
 <script>
 export default {
@@ -32,6 +53,9 @@ export default {
       type: String
     },
     value: {
+      type: String
+    },
+    validateType: {
       type: String
     }
   }
