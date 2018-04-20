@@ -92,6 +92,7 @@
         v-if="!regions.length"
         label="State/Province"
         name="region"
+        :validateType="!regions.length ? 'required' : ''"
         type="text"
       />
       <BaseSelect
@@ -99,6 +100,7 @@
         v-if="regions.length"
         label="State/Province"
         name="region_id"
+        :validateType="!regions.length ? '' : 'required'"
         :options="regions"
       >
         <option slot="default-option" value="">
