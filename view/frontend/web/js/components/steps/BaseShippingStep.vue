@@ -29,28 +29,28 @@
         label="First name"
         name="firstname"
         type="text"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street1"
@@ -63,7 +63,7 @@
         label="Country"
         name="country_id"
         :options="countries"
-        :validateType="'required'"
+        validateType="required"
         @input="onCountryChange"
       >
         <option slot="default-option" value="">
@@ -80,14 +80,14 @@
         label="City"
         name="city"
         type="text"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
-        :validateType="'required'"
+        validateType="required"
       />
       <BaseInput
         v-model="address.region"
