@@ -95,6 +95,32 @@ const store = new Vuex.Store({
           console.log('Looks like there was a problem: \n', error)
         })
     },
+    applyDiscount ({commit, state, getters}, discountCode) {
+      fetch(
+        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/${discountCode}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+        .then(response => {
+          if (response.ok) {
+            return response
+          }
+          throw Error(response.statusText)
+        })
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          console.log('Discount code is: ' + response)
+        })
+        .catch(error => {
+          console.log('Looks like there was a problem: \n', error)
+        })
+    },
     placeOrder ({commit, state, getters}, paymentMethod) {
       fetch(
         `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`,

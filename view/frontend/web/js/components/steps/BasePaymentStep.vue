@@ -126,6 +126,26 @@
         {{ method.title }}
       </label>
     </div>
+    <h2>
+      Discount
+    </h2>
+    <div class="discount-code">
+      <form class="discount__form">
+        <BaseInput
+          type="text"
+          v-model="discountCode"
+          label="Apply Discount Code"
+          name="discount_code"
+        />
+        <BaseButton
+          class="button"
+          button-type="button"
+          text="Apply Discount"
+          @click.native="applyDiscount()"
+        />
+      </form>
+    </div>
+
     <BaseButton
       class="button"
       button-type="button"
@@ -174,7 +194,8 @@ export default {
       countries,
       regions: [],
       billingAddress: true,
-      selectedPaymentMethod: null
+      selectedPaymentMethod: null,
+      discountCode: ''
     }
   },
   computed: {
@@ -209,6 +230,9 @@ export default {
         })
       }
       this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+    },
+    applyDiscount () {
+      this.$store.dispatch('applyDiscount', this.discountCode)
     }
   }
 }
