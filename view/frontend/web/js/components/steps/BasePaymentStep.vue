@@ -27,24 +27,28 @@
         label="First name"
         name="firstname"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street1"
@@ -57,6 +61,7 @@
         label="Country"
         name="country_id"
         :options="countries"
+        validateType="required"
         @input="onCountryChange"
       >
         <option slot="default-option" value="null">
@@ -73,18 +78,21 @@
         label="City"
         name="city"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.region"
         v-if="!regions.length"
         label="State/Province"
         name="region"
+        :validateType="!regions.length ? 'required' : ''"
         type="text"
       />
       <BaseSelect
@@ -92,6 +100,7 @@
         v-if="regions.length"
         label="State/Province"
         name="region_id"
+        :validateType="!regions.length ? '' : 'required'"
         :options="regions"
       >
         <option slot="default-option" value="">
@@ -114,17 +123,27 @@
     <h2>
       Payment methods
     </h2>
-    <div v-for="method in paymentMethods" :key="method.id">
+    <div
+      v-for="method in paymentMethods"
+      :key="method.id"
+      :class="{'input--error': errors.has('payment-method') }"
+    >
       <input
         type="radio"
         v-model="selectedPaymentMethod"
         name="payment-method"
         :value="method"
         :id="method.code"
+        v-validate="'required'"
+        data-vv-as="Payment method"
       />
       <label :for="method.code">
         {{ method.title }}
       </label>
+
+      <p v-show="errors.has('payment-method')" class="input__message">
+        {{ errors.first('payment-method') }}
+      </p>
     </div>
     <BaseButton
       class="button"
@@ -141,6 +160,17 @@
     />
   </section>
 </template>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
 
 <script>
 import BaseButton from '../BaseButton.vue'
@@ -203,12 +233,24 @@ export default {
     },
     placeOrder () {
       if (!this.billingAddress) {
-        this.$store.commit('setAddress', {
-          type: 'billing_address',
-          address: this.address
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$store.commit('setAddress', {
+              type: 'billing_address',
+              address: this.address
+            })
+          }
         })
       }
-      this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+
+      this.$validator.validate('payment-method').then((result) => {
+        if (result) {
+          this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+        }
+      })
+        .catch(() => {
+          console.log('Error with process your Payment step and finalize your order - please try again later')
+        })
     }
   }
 }

@@ -15,6 +15,7 @@
         label="Email"
         name="email"
         type="email"
+        :validateType="'required|email'"
       />
       <span v-if="customer.email !== '' && !customer.emailAvailable">
         You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
@@ -28,24 +29,28 @@
         label="First name"
         name="firstname"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.street1"
@@ -58,9 +63,10 @@
         label="Country"
         name="country_id"
         :options="countries"
+        validateType="required"
         @input="onCountryChange"
       >
-        <option slot="default-option" value="null">
+        <option slot="default-option" value="">
           Select country
         </option>
         <template slot-scope="option">
@@ -74,12 +80,14 @@
         label="City"
         name="city"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
+        validateType="required"
       />
       <BaseInput
         v-model="address.region"
@@ -87,12 +95,14 @@
         label="State/Province"
         name="region"
         type="text"
+        :validateType="!regions.length ? 'required' : ''"
       />
       <BaseSelect
         v-model="address.region_id"
         v-if="regions.length"
         label="State/Province"
         name="region_id"
+        :validateType="!regions.length ? '' : 'required'"
         :options="regions"
       >
         <option slot="default-option" value="">
@@ -120,6 +130,7 @@
           v-for="method in shippingMethods"
           v-if="method.available"
           :key="method.id"
+          :class="{'input--error': errors.has('shipping-method') }"
         >
           <input
             type="radio"
@@ -127,8 +138,9 @@
             name="shipping-method"
             :value="method"
             :id="method.carrier_code"
+            v-validate="'required'"
+            data-vv-as="Shipping method"
           />
-
           <label
             :for="method.carrier_code"
           >
@@ -137,9 +149,13 @@
             </span>
 
             <span class="label__price">
-                {{ method.price_incl_tax | currency(currencyCode) }}
+              {{ method.price_incl_tax | currency(currencyCode) }}
             </span>
           </label>
+
+          <p v-show="errors.has('shipping-method')" class="input__message">
+            {{ errors.first('shipping-method') }}
+          </p>
         </div>
       </template>
       <template v-else>
@@ -156,6 +172,17 @@
     </form>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
 
 <script>
 import BaseButton from '../BaseButton.vue'
@@ -247,10 +274,17 @@ export default {
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit () {
-      this.$store.commit('setCustomerEmail', this.customer.email)
-      this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
-      this.$store.commit('setShippinInformation', this.selectedShippingMethod)
-      this.$store.dispatch('setShippinInformation')
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.$store.commit('setCustomerEmail', this.customer.email)
+          this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
+          this.$store.commit('setShippinInformation', this.selectedShippingMethod)
+          this.$store.dispatch('setShippinInformation')
+        }
+      })
+        .catch(() => {
+          console.log('Error with process your Shipping step and process your order - please try again later')
+        })
     }
   }
 }
