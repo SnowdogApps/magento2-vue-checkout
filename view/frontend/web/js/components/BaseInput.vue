@@ -9,6 +9,7 @@
       :id="name"
       :name="name"
       :data-vv-as="label"
+      :value="value"
       v-validate="validateType"
       @input="$emit('input', $event.target.value)"
     />
