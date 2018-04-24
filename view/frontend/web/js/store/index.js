@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import regions from '../data/regions.json'
 
 Vue.use(Vuex)
 
-/* global config, baseUrl, regionList */
+/* global config, baseUrl */
 
 const store = new Vuex.Store({
   state: {
-    config: config,
-    baseUrl: baseUrl,
+    config,
+    baseUrl,
+    regions,
     step: 'shipping',
     paymentMethods: [],
     shippingMethods: [],
@@ -30,7 +32,6 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    regionList: regionList,
     totals: {}
   },
   actions: {
@@ -181,7 +182,7 @@ const store = new Vuex.Store({
       return state.config.quoteData.entity_id
     },
     regionsByCountryId: (state) => (countryId) => {
-      return state.regionList.filter(region => region.country_id === countryId)
+      return state.regions.filter(region => region.country_id === countryId)
     }
   }
 })
