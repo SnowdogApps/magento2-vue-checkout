@@ -5,12 +5,6 @@
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
-        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml">
-            <block
-                class="Magento\Framework\View\Element\Template"
-                name="region-list"
-                template="Snowdog_VueCheckout::data/region-list.phtml"
-            />
-        </referenceBlock>
+        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml"/>
     </body>
 </page>
