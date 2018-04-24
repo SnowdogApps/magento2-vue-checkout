@@ -15,7 +15,7 @@
         label="Email"
         name="email"
         type="email"
-        :validateType="'required|email'"
+        validate-type="required|email"
       />
       <span v-if="customer.email !== '' && !customer.emailAvailable">
         You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
@@ -29,28 +29,28 @@
         label="First name"
         name="firstname"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.street1"
@@ -63,7 +63,7 @@
         label="Country"
         name="country_id"
         :options="countries"
-        validateType="required"
+        validate-type="required"
         @input="onCountryChange"
       >
         <option slot="default-option" value="">
@@ -80,14 +80,14 @@
         label="City"
         name="city"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.region"
@@ -95,14 +95,14 @@
         label="State/Province"
         name="region"
         type="text"
-        :validateType="!regions.length ? 'required' : ''"
+        :validate-type="!regions.length ? 'required' : ''"
       />
       <BaseSelect
         v-model="address.region_id"
         v-if="regions.length"
         label="State/Province"
         name="region_id"
-        :validateType="!regions.length ? '' : 'required'"
+        :validate-type="!regions.length ? '' : 'required'"
         :options="regions"
       >
         <option slot="default-option" value="">

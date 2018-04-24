@@ -27,28 +27,28 @@
         label="First name"
         name="firstname"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.lastname"
         label="Last name"
         name="lastname"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.telephone"
         label="Phone Number"
         name="telephone"
         type="tel"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.street0"
         label="Street Address"
         name="street[0]"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.street1"
@@ -61,7 +61,7 @@
         label="Country"
         name="country_id"
         :options="countries"
-        validateType="required"
+        validate-type="required"
         @input="onCountryChange"
       >
         <option slot="default-option" value="null">
@@ -78,21 +78,21 @@
         label="City"
         name="city"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.postcode"
         label="Zip/Postal Code"
         name="postcode"
         type="text"
-        validateType="required"
+        validate-type="required"
       />
       <BaseInput
         v-model="address.region"
         v-if="!regions.length"
         label="State/Province"
         name="region"
-        :validateType="!regions.length ? 'required' : ''"
+        :validate-type="!regions.length ? 'required' : ''"
         type="text"
       />
       <BaseSelect
@@ -100,7 +100,7 @@
         v-if="regions.length"
         label="State/Province"
         name="region_id"
-        :validateType="!regions.length ? '' : 'required'"
+        :validate-type="!regions.length ? '' : 'required'"
         :options="regions"
       >
         <option slot="default-option" value="">
