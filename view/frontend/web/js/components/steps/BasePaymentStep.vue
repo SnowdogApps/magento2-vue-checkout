@@ -52,22 +52,18 @@
         name="street[1]"
         type="text"
       />
-      <BaseSelect
-        v-model="address.country_id"
-        label="Country"
-        name="country_id"
+      <label>
+        Select Country
+      </label>
+      <multiselect
+        v-model="countryWatcher"
         :options="countries"
-        @input="onCountryChange"
-      >
-        <option slot="default-option" value="null">
-          Select country
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
+        :allow-empty="false"
+        :show-labels="false"
+        track-by="value"
+        label="label"
+        placeholder="Select country"
+      />
       <BaseInput
         v-model="address.city"
         label="City"
@@ -87,22 +83,19 @@
         name="region"
         type="text"
       />
-      <BaseSelect
-        v-model="address.region_id"
+      <label>
+        Select State/Province
+      </label>
+      <multiselect
         v-if="regions.length"
-        label="State/Province"
-        name="region_id"
+        v-model="regionWatcher"
         :options="regions"
-      >
-        <option slot="default-option" value="">
-          Select State/Province
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
+        :allow-empty="false"
+        :show-labels="false"
+        track-by="value"
+        label="label"
+        placeholder="Select State/Province"
+      />
       <BaseInput
         v-model="address.company"
         label="Company"
@@ -146,15 +139,15 @@
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
 import BaseInput from '../BaseInput.vue'
-import BaseSelect from '../BaseSelect.vue'
 import countries from '../../data/countries.json'
+import Multiselect from 'vue-multiselect'
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BaseSelect
+    Multiselect
   },
   data () {
     return {
@@ -172,6 +165,8 @@ export default {
         company: ''
       },
       countries,
+      countryWatcher: '',
+      regionWatcher: '',
       regions: [],
       billingAddress: true,
       selectedPaymentMethod: null
@@ -209,6 +204,16 @@ export default {
         })
       }
       this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+    }
+  },
+  watch: {
+    countryWatcher (newCountry) {
+      this.address.country_id = newCountry.value;
+      this.regionWatcher = '';
+      this.onCountryChange();
+    },
+    regionWatcher (newRegion) {
+      this.address.region_id = newRegion.value;
     }
   }
 }

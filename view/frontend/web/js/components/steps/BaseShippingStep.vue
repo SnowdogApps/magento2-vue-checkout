@@ -53,22 +53,18 @@
         name="street[1]"
         type="text"
       />
-      <BaseSelect
-        v-model="address.country_id"
-        label="Country"
-        name="country_id"
+      <label>
+        Select Country
+      </label>
+      <multiselect
+        v-model="countryWatcher"
         :options="countries"
-        @input="onCountryChange"
-      >
-        <option slot="default-option" value="null">
-          Select country
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
+        :allow-empty="false"
+        :show-labels="false"
+        track-by="value"
+        label="label"
+        placeholder="Select country"
+      />
       <BaseInput
         v-model="address.city"
         label="City"
@@ -88,22 +84,19 @@
         name="region"
         type="text"
       />
-      <BaseSelect
-        v-model="address.region_id"
+      <label>
+        Select State/Province
+      </label>
+      <multiselect
         v-if="regions.length"
-        label="State/Province"
-        name="region_id"
+        v-model="regionWatcher"
         :options="regions"
-      >
-        <option slot="default-option" value="">
-          Select State/Province
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
+        :allow-empty="false"
+        :show-labels="false"
+        track-by="value"
+        label="label"
+        placeholder="Select State/Province"
+      />
       <BaseInput
         v-model="address.company"
         label="Company"
@@ -160,16 +153,16 @@
 <script>
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
-import BaseSelect from '../BaseSelect.vue'
 import BaseShippingMethods from '../BaseShippingMethods.vue'
 import countries from '../../data/countries.json'
+import Multiselect from 'vue-multiselect'
 
 export default {
   components: {
     BaseButton,
     BaseInput,
-    BaseSelect,
-    BaseShippingMethods
+    BaseShippingMethods,
+    Multiselect
   },
   data () {
     return {
@@ -191,6 +184,8 @@ export default {
         company: ''
       },
       countries,
+      countryWatcher: '',
+      regionWatcher: '',
       regions: [],
       selectedShippingMethod: null
     }
@@ -242,7 +237,7 @@ export default {
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    onCountryChange (selectedOption) {
+    onCountryChange () {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
@@ -251,6 +246,16 @@ export default {
       this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
       this.$store.commit('setShippinInformation', this.selectedShippingMethod)
       this.$store.dispatch('setShippinInformation')
+    }
+  },
+  watch: {
+    countryWatcher (newCountry) {
+      this.address.country_id = newCountry.value;
+      this.regionWatcher = '';
+      this.onCountryChange();
+    },
+    regionWatcher (newRegion) {
+      this.address.region_id = newRegion.value;
     }
   }
 }

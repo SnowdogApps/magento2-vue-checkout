@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^2.4.4",
+    "vue-multiselect": "^2.1.0",
     "vuex": "^3.0.0"
   },
   "devDependencies": {
