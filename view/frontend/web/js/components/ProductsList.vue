@@ -3,21 +3,22 @@
     <h2>
       Product List
     </h2>
-
-    <BaseProduct
-      container-class="grid"
-      item-class="grid__columns"
-      :products="products"
-    />
+    <div>
+      <ProductsListItem
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+      />
+    </div>
   </section>
 </template>
 
 <script>
-import BaseProduct from './BaseProduct.vue'
+import ProductsListItem from './ProductsListItem.vue'
 
 export default {
   components: {
-    BaseProduct
+    ProductsListItem
   },
   computed: {
     products () {

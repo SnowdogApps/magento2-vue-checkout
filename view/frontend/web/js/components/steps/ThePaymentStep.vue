@@ -228,8 +228,8 @@ export default {
     onCountryChange (selectedOption) {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
     },
-    changeStep (newStep) {
-      this.$store.commit('setStep', newStep)
+    changeStep (step) {
+      this.$store.commit('setStep', step)
     },
     placeOrder () {
       if (!this.billingAddress) {
@@ -239,18 +239,19 @@ export default {
               type: 'billing_address',
               address: this.address
             })
+            this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
-      }
-
-      this.$validator.validate('payment-method').then((result) => {
-        if (result) {
-          this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
-        }
-      })
-        .catch(() => {
-          console.log('Error with process your Payment step and finalize your order - please try again later')
+      } else {
+        this.$validator.validate('payment-method').then((result) => {
+          if (result) {
+            this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+          }
         })
+          .catch(() => {
+            console.log('Error with process your Payment step and finalize your order - please try again later')
+          })
+      }
     }
   }
 }
