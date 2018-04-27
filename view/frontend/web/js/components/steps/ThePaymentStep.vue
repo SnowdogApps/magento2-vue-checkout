@@ -56,18 +56,29 @@
         name="street[1]"
         type="text"
       />
-      <label>
-        Select Country
-      </label>
-      <multiselect
-        v-model="countryWatcher"
-        :options="countries"
-        :allow-empty="false"
-        :show-labels="false"
-        track-by="value"
-        label="label"
-        placeholder="Select country"
-      />
+      <div :class="{'input--error': errors.has('country') }">
+        <label for="country">
+          Select Country
+        </label>
+
+        <multiselect
+          v-model="countryWatcher"
+          v-validate="'required'"
+          :options="countries"
+          :allow-empty="false"
+          :show-labels="false"
+          data-vv-as="Country"
+          id="country"
+          name="country"
+          track-by="value"
+          label="label"
+          placeholder="Select country"
+        />
+
+        <span v-show="errors.has('country')" class="input__message">
+          {{ errors.first('country') }}
+        </span>
+      </div>
       <BaseInput
         v-model="address.city"
         label="City"
@@ -90,19 +101,29 @@
         :validate-type="!regions.length ? 'required' : ''"
         type="text"
       />
-      <label>
-        Select State/Province
-      </label>
-      <multiselect
-        v-if="regions.length"
-        v-model="regionWatcher"
-        :options="regions"
-        :allow-empty="false"
-        :show-labels="false"
-        track-by="value"
-        label="label"
-        placeholder="Select State/Province"
-      />
+      <div v-if="regions.length" :class="{'input--error': errors.has('region') }">
+        <label>
+          Select State/Province
+        </label>
+
+        <multiselect
+          v-model="regionWatcher"
+          v-validate="!regions.length ? 'required' : ''"
+          :options="regions"
+          :allow-empty="false"
+          :show-labels="false"
+          data-vv-as="Region"
+          id="region"
+          name="region"
+          track-by="value"
+          label="label"
+          placeholder="Select State/Province"
+        />
+
+        <span v-show="errors.has('region')" class="input__message">
+          {{ errors.first('region') }}
+        </span>
+      </div>
       <BaseInput
         v-model="address.company"
         label="Company"
@@ -249,12 +270,12 @@ export default {
   },
   watch: {
     countryWatcher (newCountry) {
-      this.address.country_id = newCountry.value;
-      this.regionWatcher = '';
-      this.onCountryChange();
+      this.address.country_id = newCountry.value
+      this.regionWatcher = ''
+      this.onCountryChange()
     },
     regionWatcher (newRegion) {
-      this.address.region_id = newRegion.value;
+      this.address.region_id = newRegion.value
     }
   }
 }
