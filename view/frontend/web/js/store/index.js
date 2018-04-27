@@ -57,7 +57,7 @@ const store = new Vuex.Store({
 
       axios(options)
         .then(({data}) => {
-          commit('setShippingMethods',data)
+          commit('setShippingMethods', data)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
