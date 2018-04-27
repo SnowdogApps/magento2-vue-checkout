@@ -33,7 +33,8 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    totals: {}
+    totals: {},
+    loader: false
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -157,6 +158,9 @@ const store = new Vuex.Store({
           }
         }
       })
+    },
+    setLoading (state, payload) {
+      state.loader = payload
     }
   },
   getters: {

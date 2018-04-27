@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BaseLoader/>
     <TheShippingStep/>
     <ThePaymentStep/>
     <TheSuccessStep/>
@@ -11,6 +12,7 @@
 import TheShippingStep from './components/steps/TheShippingStep.vue'
 import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 import TheSuccessStep from './components/steps/TheSuccessStep.vue'
+import BaseLoader from './components/BaseLoader.vue'
 import ProductsList from './components/ProductsList.vue'
 
 export default {
@@ -18,7 +20,8 @@ export default {
     TheShippingStep,
     ThePaymentStep,
     TheSuccessStep,
-    ProductsList
+    ProductsList,
+    BaseLoader
   }
 }
 </script>
