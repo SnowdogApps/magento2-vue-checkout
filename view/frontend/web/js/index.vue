@@ -3,7 +3,7 @@
     <TheShippingStep/>
     <ThePaymentStep/>
     <TheSuccessStep/>
-    <BaseItems/>
+    <ProductsList/>
   </div>
 </template>
 
@@ -11,14 +11,14 @@
 import TheShippingStep from './components/steps/TheShippingStep.vue'
 import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 import TheSuccessStep from './components/steps/TheSuccessStep.vue'
-import BaseItems from './components/BaseItems.vue'
+import ProductsList from './components/ProductsList.vue'
 
 export default {
   components: {
     TheShippingStep,
     ThePaymentStep,
     TheSuccessStep,
-    BaseItems
+    ProductsList
   }
 }
 </script>
