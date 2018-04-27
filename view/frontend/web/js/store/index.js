@@ -59,6 +59,7 @@ const store = new Vuex.Store({
       axios(options)
         .then(({data}) => {
           commit('setShippingMethods', data)
+          commit('setLoading', false)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -81,6 +82,7 @@ const store = new Vuex.Store({
         .then(({data}) => {
           commit('setPaymentMethods', data.payment_methods)
           commit('setStep', 'payment')
+          commit('setLoading', false)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -111,6 +113,7 @@ const store = new Vuex.Store({
         .then(({data}) => {
           console.log('Order id: ' + data)
           commit('setStep', 'success')
+          commit('setLoading', false)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)

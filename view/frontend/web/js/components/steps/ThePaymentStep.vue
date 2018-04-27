@@ -235,6 +235,7 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
+            this.$store.commit('setLoading', true)
             this.$store.commit('setAddress', {
               type: 'billing_address',
               address: this.address
@@ -245,6 +246,7 @@ export default {
       } else {
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
+            this.$store.commit('setLoading', true)
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })

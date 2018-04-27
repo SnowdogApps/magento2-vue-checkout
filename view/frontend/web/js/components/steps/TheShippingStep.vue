@@ -265,12 +265,14 @@ export default {
         })
     },
     onCountryChange (selectedOption) {
+      this.$store.commit('setLoading', true)
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
       this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
+          this.$store.commit('setLoading', true)
           this.$store.commit('setCustomerEmail', this.customer.email)
           this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
           this.$store.commit('setShippinInformation', this.selectedShippingMethod)
