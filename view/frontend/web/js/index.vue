@@ -1,26 +1,26 @@
 <template>
   <div>
-    <BaseShippingStep/>
-    <BasePaymentStep/>
-    <BaseSuccessStep/>
-    <BaseItems/>
+    <TheShippingStep/>
+    <ThePaymentStep/>
+    <TheSuccessStep/>
+    <ProductsList/>
   </div>
 </template>
 
 <style src="./assets/vue-multiselect.min.css"></style>
 
 <script>
-import BaseShippingStep from './components/steps/BaseShippingStep.vue'
-import BasePaymentStep from './components/steps/BasePaymentStep.vue'
-import BaseSuccessStep from './components/steps/BaseSuccessStep.vue'
-import BaseItems from './components/BaseItems.vue'
+import TheShippingStep from './components/steps/TheShippingStep.vue'
+import ThePaymentStep from './components/steps/ThePaymentStep.vue'
+import TheSuccessStep from './components/steps/TheSuccessStep.vue'
+import ProductsList from './components/ProductsList.vue'
 
 export default {
   components: {
-    BaseShippingStep,
-    BasePaymentStep,
-    BaseSuccessStep,
-    BaseItems
+    TheShippingStep,
+    ThePaymentStep,
+    TheSuccessStep,
+    ProductsList
   }
 }
 </script>
