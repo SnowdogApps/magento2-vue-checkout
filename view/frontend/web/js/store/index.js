@@ -43,11 +43,16 @@ const store = new Vuex.Store({
         }
       }
 
+      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`
+      if (getters.isCustomerLoggedIn) {
+        url = `${state.baseUrl}rest/V1/carts/mine/estimate-shipping-methods`
+      }
+
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(data),
-        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`
+        url
       }
 
       axios(options)
@@ -153,6 +158,9 @@ const store = new Vuex.Store({
     },
     regionsByCountryId: (state) => (countryId) => {
       return state.regions.filter(region => region.country_id === countryId)
+    },
+    isCustomerLoggedIn (state) {
+      return state.config.isCustomerLoggedIn
     }
   }
 })
