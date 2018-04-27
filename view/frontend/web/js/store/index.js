@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import regions from '../data/regions.json'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -36,60 +37,38 @@ const store = new Vuex.Store({
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
-      const conuntry = {
+      const data = {
         'address': {
           'country_id': countryId
         }
       }
 
-      fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(conuntry)
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
-          }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          commit('setShippingMethods', response)
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(data),
+        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`
+      }
+
+      axios(options)
+        .then(({data}) => {
+          commit('setShippingMethods',data)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
         })
     },
     setShippinInformation ({commit, state, getters}) {
-      fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(state.shippingInformation)
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
-          }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          commit('setPaymentMethods', response.payment_methods)
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(state.shippingInformation),
+        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
+      }
+
+      axios(options)
+        .then(({data}) => {
+          commit('setPaymentMethods', data.payment_methods)
           commit('setStep', 'payment')
         })
         .catch(error => {
@@ -97,33 +76,24 @@ const store = new Vuex.Store({
         })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
-      fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'billingAddress': state.shippingInformation.addressInformation.billing_address,
-            'email': state.customer.email,
-            'paymentMethod': {
-              'method': paymentMethod.code
-            }
-          })
+      const data = {
+        'billingAddress': state.shippingInformation.addressInformation.billing_address,
+        'email': state.customer.email,
+        'paymentMethod': {
+          'method': paymentMethod.code
         }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
-          }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          console.log('Order id: ' + response)
+      }
+
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(data),
+        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+      }
+
+      axios(options)
+        .then(({data}) => {
+          console.log('Order id: ' + data)
           commit('setStep', 'success')
         })
         .catch(error => {
