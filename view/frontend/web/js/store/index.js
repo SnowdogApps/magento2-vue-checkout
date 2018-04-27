@@ -64,11 +64,16 @@ const store = new Vuex.Store({
         })
     },
     setShippinInformation ({commit, state, getters}) {
+      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
+      if (getters.isCustomerLoggedIn) {
+        url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
+      }
+
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(state.shippingInformation),
-        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
+        url
       }
 
       axios(options)
@@ -81,6 +86,11 @@ const store = new Vuex.Store({
         })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
+      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+      if (getters.isCustomerLoggedIn) {
+        url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
+      }
+
       const data = {
         'billingAddress': state.shippingInformation.addressInformation.billing_address,
         'email': state.customer.email,
@@ -93,7 +103,7 @@ const store = new Vuex.Store({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(data),
-        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+        url
       }
 
       axios(options)
