@@ -183,7 +183,7 @@
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
 import BaseSelect from '../BaseSelect.vue'
-import BaseShippingMethods from '../BaseShippingMethods.vue'
+import ShippingMethods from '../ShippingMethods.vue'
 import countries from '../../data/countries.json'
 
 export default {
@@ -191,7 +191,7 @@ export default {
     BaseButton,
     BaseInput,
     BaseSelect,
-    BaseShippingMethods
+    ShippingMethods
   },
   data () {
     return {
