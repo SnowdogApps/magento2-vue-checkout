@@ -76,33 +76,24 @@ const store = new Vuex.Store({
         })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
-      fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'billingAddress': state.shippingInformation.addressInformation.billing_address,
-            'email': state.customer.email,
-            'paymentMethod': {
-              'method': paymentMethod.code
-            }
-          })
+      const data = {
+        'billingAddress': state.shippingInformation.addressInformation.billing_address,
+        'email': state.customer.email,
+        'paymentMethod': {
+          'method': paymentMethod.code
         }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
-          }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          console.log('Order id: ' + response)
+      }
+
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(data),
+        url: `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+      }
+
+      axios(options)
+        .then(({data}) => {
+          console.log('Order id: ' + data)
           commit('setStep', 'success')
         })
         .catch(error => {
