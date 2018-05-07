@@ -19,7 +19,7 @@
     />
 
     <form class="billing-address__form" v-show="!billingAddress">
-      <AddressFields :address="address" type="billing" />
+      <AddressFields type="billing_address" />
     </form>
     <h2>
       Payment methods
@@ -79,6 +79,7 @@ import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
 import BaseInput from '../BaseInput.vue'
 import BaseSelect from '../BaseSelect.vue'
+import EventBus from '../../event-bus'
 
 export default {
   components: {
@@ -90,19 +91,6 @@ export default {
   },
   data () {
     return {
-      address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region_id: '',
-        region: '',
-        company: ''
-      },
       billingAddress: true,
       selectedPaymentMethod: null
     }
@@ -132,10 +120,7 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            this.$store.commit('setAddress', {
-              type: 'billing_address',
-              address: this.address
-            })
+            EventBus.$emit('save-address')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })

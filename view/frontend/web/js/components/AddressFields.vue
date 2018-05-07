@@ -103,11 +103,25 @@
 import BaseInput from './BaseInput.vue'
 import BaseSelect from './BaseSelect.vue'
 import countries from '../data/countries.json'
+import EventBus from '../event-bus'
 
 export default {
   inject: ['$validator'],
   data () {
     return {
+      address: {
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region_id: '',
+        region: '',
+        company: ''
+      },
       countries,
       regions: []
     }
@@ -117,10 +131,6 @@ export default {
     BaseSelect
   },
   props: {
-    address: {
-      type: Object,
-      required: true
-    },
     type: {
       type: String,
       required: true
@@ -129,10 +139,15 @@ export default {
   methods: {
     onCountryChange (selectedOption) {
       this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
-      if (this.type === 'shipping') {
+      if (this.type === 'shipping_address') {
         this.$store.dispatch('updateShippingMethods', this.address.country_id)
       }
     }
+  },
+  created () {
+    EventBus.$on('save-address', () => {
+      this.$store.commit('setAddress', { type: this.type, address: this.address })
+    })
   }
 }
 </script>

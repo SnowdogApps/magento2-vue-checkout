@@ -23,7 +23,7 @@
         You can create an account after checkout.
       </span>
       <hr>
-      <AddressFields :address="address" type="shipping" />
+      <AddressFields type="shipping_address" />
       <h2>
         Shipping methods
       </h2>
@@ -87,6 +87,7 @@ import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
 import BaseSelect from '../BaseSelect.vue'
 import ShippingMethods from '../ShippingMethods.vue'
+import EventBus from '../../event-bus'
 
 export default {
   components: {
@@ -101,19 +102,6 @@ export default {
       customer: {
         email: '',
         emailAvailable: false
-      },
-      address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region_id: '',
-        region: '',
-        company: ''
       },
       selectedShippingMethod: null
     }
@@ -169,7 +157,7 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.$store.commit('setCustomerEmail', this.customer.email)
-          this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
+          EventBus.$emit('save-address')
           this.$store.commit('setShippinInformation', this.selectedShippingMethod)
           this.$store.dispatch('setShippinInformation')
         }
