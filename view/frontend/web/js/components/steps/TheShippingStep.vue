@@ -85,7 +85,6 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
-import BaseSelect from '../BaseSelect.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import EventBus from '../../event-bus'
 
@@ -93,7 +92,6 @@ export default {
   components: {
     BaseButton,
     BaseInput,
-    BaseSelect,
     ShippingMethods,
     AddressFields
   },

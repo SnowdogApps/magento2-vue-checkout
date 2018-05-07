@@ -77,16 +77,12 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
-import BaseInput from '../BaseInput.vue'
-import BaseSelect from '../BaseSelect.vue'
 import EventBus from '../../event-bus'
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
-    BaseInput,
-    BaseSelect,
     AddressFields
   },
   data () {
