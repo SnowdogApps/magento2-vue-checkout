@@ -70,17 +70,6 @@
   </section>
 </template>
 
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
-}
-</style>
-
 <script>
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
@@ -167,3 +156,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
