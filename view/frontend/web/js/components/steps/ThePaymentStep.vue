@@ -101,15 +101,17 @@ export default {
     paymentMethods () {
       return this.$store.state.paymentMethods
     },
-    shippingInformation () {
-      return this.$store.state.shippingInformation
-    },
     currencyCode () {
       return this.$store.getters.currencyCode
     }
   },
   methods: {
     changeStep (step) {
+      if (!this.billingAddress) {
+        EventBus.$emit('save-address', 'billing_address')
+      } else {
+        this.$store.commit('copyShippingAddress')
+      }
       this.$store.commit('setStep', step)
     },
     placeOrder () {
@@ -121,6 +123,7 @@ export default {
           }
         })
       } else {
+        this.$store.commit('copyShippingAddress')
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
