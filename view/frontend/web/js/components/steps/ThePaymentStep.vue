@@ -107,7 +107,7 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            EventBus.$emit('save-address')
+            EventBus.$emit('save-address', 'billing_address')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
