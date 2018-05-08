@@ -17,8 +17,30 @@ const store = new Vuex.Store({
     shippingMethods: [],
     shippingInformation: {
       addressInformation: {
-        shipping_address: {},
-        billing_address: {},
+        shipping_address: {
+          city: '',
+          company: '',
+          country_id: '',
+          firstname: '',
+          lastname: '',
+          postcode: '',
+          region: '',
+          region_id: '',
+          street: [],
+          telephone: ''
+        },
+        billing_address: {
+          city: '',
+          company: '',
+          country_id: '',
+          firstname: '',
+          lastname: '',
+          postcode: '',
+          region: '',
+          region_id: '',
+          street: [],
+          telephone: ''
+        },
         shipping_method_code: '',
         shipping_carrier_code: ''
       }
@@ -130,9 +152,14 @@ const store = new Vuex.Store({
       state.totals = payload
     },
     setShippinInformation (state, selectedShippingMethod) {
-      state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
       state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code
       state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code
+      if (state.shippingInformation.addressInformation.billing_address.city === '') {
+        state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
+      }
+    },
+    copyShippingAddress (state) {
+      state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
     },
     setCustomerEmail (state, payload) {
       state.customer.email = payload
@@ -165,6 +192,13 @@ const store = new Vuex.Store({
     },
     cartId (state) {
       return state.config.quoteData.entity_id
+    },
+    addressByType: (state) => (type) => {
+      let address = Object.assign({}, state.shippingInformation.addressInformation[type])
+      address.street0 = address.street.length ? address.street[0] : ''
+      address.street1 = address.street.length ? address.street[1] : ''
+      delete address.street
+      return address
     },
     regionsByCountryId: (state) => (countryId) => {
       return state.regions.filter(region => region.country_id === countryId)

@@ -109,21 +109,14 @@ export default {
   inject: ['$validator'],
   data () {
     return {
-      address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region_id: '',
-        region: '',
-        company: ''
-      },
+      address: {},
       countries,
       regions: []
+    }
+  },
+  computed: {
+    addressData () {
+      return this.$store.getters.addressByType(this.type)
     }
   },
   components: {
@@ -145,8 +138,9 @@ export default {
     }
   },
   created () {
-    EventBus.$on('save-address', () => {
-      this.$store.commit('setAddress', { type: this.type, address: this.address })
+    this.address = this.addressData
+    EventBus.$once('save-address', (type) => {
+      this.$store.commit('setAddress', { type, address: this.address })
     })
   }
 }
