@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     baseUrl,
     regions,
     step: 'shipping',
+    orderId: null,
     paymentMethods: [],
     shippingMethods: [],
     shippingInformation: {
@@ -130,8 +131,8 @@ const store = new Vuex.Store({
 
       axios(options)
         .then(({data}) => {
-          console.log('Order id: ' + data)
           commit('setStep', 'success')
+          commit('setOrderId', data)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -141,6 +142,9 @@ const store = new Vuex.Store({
   mutations: {
     setStep (state, payload) {
       state.step = payload
+    },
+    setOrderId (state, payload) {
+      state.orderId = payload
     },
     setPaymentMethods (state, payload) {
       state.paymentMethods = payload
