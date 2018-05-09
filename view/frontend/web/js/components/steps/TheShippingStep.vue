@@ -76,6 +76,7 @@ import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import EventBus from '../../event-bus'
+import axios from 'axios'
 
 export default {
   components: {
@@ -112,32 +113,28 @@ export default {
   },
   methods: {
     checkIsEmailAvailable () {
-      fetch(
-        `${this.baseUrl}rest/V1/customers/isEmailAvailable`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'customerEmail': this.customer.email
-          })
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
+      this.$validator.validate('email').then((result) => {
+        if (result) {
+          const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify({
+              'customerEmail': this.customer.email
+            }),
+            url: `${this.baseUrl}rest/V1/customers/isEmailAvailable`
           }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          this.customer.emailAvailable = response
-        })
-        .catch(error => {
-          console.log('Looks like there was a problem: \n', error)
+
+          axios(options)
+            .then(({data}) => {
+              this.customer.emailAvailable = data
+            })
+            .catch(error => {
+              console.log('Looks like there was a problem: \n', error)
+            })
+        }
+      })
+        .catch(() => {
+          console.log('Error with process your Payment step and finalize your order - please try again later')
         })
     },
     onFormSubmit () {
