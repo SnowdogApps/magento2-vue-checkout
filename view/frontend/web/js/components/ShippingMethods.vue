@@ -1,11 +1,7 @@
 <template>
   <div :class="containerClass">
     <template v-for="option in options" v-if="options.length > 0">
-      <div
-        v-if="option.available"
-        :key="option.id"
-        :class="fieldClass"
-      >
+      <div v-if="option.available" :key="option.id" :class="fieldClass">
         <input
           type="radio"
           :id="option.carrier_code"
@@ -15,10 +11,7 @@
           :data-method-code="option.method_code"
         />
 
-        <label
-          :class="labelClass"
-          :for="option.carrier_code"
-        >
+        <label :class="labelClass" :for="option.carrier_code">
           <span class="label__text">
             {{ option.carrier_title }} - {{ option.method_title }}
           </span>

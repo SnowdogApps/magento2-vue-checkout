@@ -24,21 +24,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & > select {
-      border-color: red;
-    }
-
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
-}
-</style>
-
 <script>
 export default {
   inject: ['$validator'],
@@ -61,3 +46,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & > select {
+      border-color: red;
+    }
+
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
