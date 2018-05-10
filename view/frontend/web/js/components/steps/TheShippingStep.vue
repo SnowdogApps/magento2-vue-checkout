@@ -16,10 +16,10 @@
         type="email"
         validate-type="required|email"
       />
-      <span v-if="customer.email !== '' && !customer.emailAvailable">
+      <span v-if="customer.email !== '' && !errors.has('email')  && !customer.emailAvailable">
         You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
       </span>
-      <span v-else-if="customer.email !== '' && customer.emailAvailable">
+      <span v-else-if="customer.email !== '' && !errors.has('email') && customer.emailAvailable">
         You can create an account after checkout.
       </span>
       <hr>
