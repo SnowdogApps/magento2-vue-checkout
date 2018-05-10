@@ -7,7 +7,6 @@
     <h2>
       Shipping address
     </h2>
-
     <form @submit.prevent="onFormSubmit" class="shipping-address__form">
       <BaseInput
         v-model="customer.email"
@@ -17,114 +16,17 @@
         type="email"
         validate-type="required|email"
       />
-      <span v-if="customer.email !== '' && !customer.emailAvailable">
+      <span v-if="customer.email !== '' && !errors.has('email')  && !customer.emailAvailable">
         You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
       </span>
-      <span v-else-if="customer.email !== '' && customer.emailAvailable">
+      <span v-else-if="customer.email !== '' && !errors.has('email') && customer.emailAvailable">
         You can create an account after checkout.
       </span>
       <hr>
-      <BaseInput
-        v-model="address.firstname"
-        label="First name"
-        name="firstname"
-        type="text"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.lastname"
-        label="Last name"
-        name="lastname"
-        type="text"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.telephone"
-        label="Phone Number"
-        name="telephone"
-        type="tel"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.street0"
-        label="Street Address"
-        name="street[0]"
-        type="text"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.street1"
-        label="Street Address"
-        name="street[1]"
-        type="text"
-      />
-      <BaseSelect
-        v-model="address.country_id"
-        label="Country"
-        name="country_id"
-        :options="countries"
-        validate-type="required"
-        @input="onCountryChange"
-      >
-        <option slot="default-option" value="">
-          Select country
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
-      <BaseInput
-        v-model="address.city"
-        label="City"
-        name="city"
-        type="text"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.postcode"
-        label="Zip/Postal Code"
-        name="postcode"
-        type="text"
-        validate-type="required"
-      />
-      <BaseInput
-        v-model="address.region"
-        v-if="!regions.length"
-        label="State/Province"
-        name="region"
-        type="text"
-        :validate-type="!regions.length ? 'required' : ''"
-      />
-      <BaseSelect
-        v-model="address.region_id"
-        v-if="regions.length"
-        label="State/Province"
-        name="region_id"
-        :validate-type="!regions.length ? '' : 'required'"
-        :options="regions"
-      >
-        <option slot="default-option" value="">
-          Select State/Province
-        </option>
-        <template slot-scope="option">
-          <option :value="option.value">
-            {{ option.label }}
-          </option>
-        </template>
-      </BaseSelect>
-      <BaseInput
-        v-model="address.company"
-        label="Company"
-        name="company"
-        type="text"
-      />
-
+      <AddressFields type="shipping_address" />
       <h2>
         Shipping methods
       </h2>
-
       <template v-if="shippingMethods.length > 0">
         <div
           v-for="method in shippingMethods"
@@ -168,30 +70,20 @@
   </section>
 </template>
 
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
-}
-</style>
-
 <script>
+import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
-import BaseSelect from '../BaseSelect.vue'
 import ShippingMethods from '../ShippingMethods.vue'
-import countries from '../../data/countries.json'
+import EventBus from '../../event-bus'
+import axios from 'axios'
 
 export default {
   components: {
     BaseButton,
     BaseInput,
-    BaseSelect,
-    ShippingMethods
+    ShippingMethods,
+    AddressFields
   },
   data () {
     return {
@@ -199,21 +91,6 @@ export default {
         email: '',
         emailAvailable: false
       },
-      address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region_id: '',
-        region: '',
-        company: ''
-      },
-      countries,
-      regions: [],
       selectedShippingMethod: null
     }
   },
@@ -236,43 +113,35 @@ export default {
   },
   methods: {
     checkIsEmailAvailable () {
-      fetch(
-        `${this.baseUrl}rest/V1/customers/isEmailAvailable`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'customerEmail': this.customer.email
-          })
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
+      this.$validator.validate('email').then((result) => {
+        if (result) {
+          const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify({
+              'customerEmail': this.customer.email
+            }),
+            url: `${this.baseUrl}rest/V1/customers/isEmailAvailable`
           }
-          throw Error(response.statusText)
+
+          axios(options)
+            .then(({data}) => {
+              this.customer.emailAvailable = data
+            })
+            .catch(error => {
+              console.log('Looks like there was a problem: \n', error)
+            })
+        }
+      })
+        .catch(() => {
+          console.log('Error with process your Payment step and finalize your order - please try again later')
         })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          this.customer.emailAvailable = response
-        })
-        .catch(error => {
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    onCountryChange (selectedOption) {
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
-      this.$store.dispatch('updateShippingMethods', this.address.country_id)
     },
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.$store.commit('setCustomerEmail', this.customer.email)
-          this.$store.commit('setAddress', { type: 'shipping_address', address: this.address })
+          EventBus.$emit('save-address', 'shipping_address')
           this.$store.commit('setShippinInformation', this.selectedShippingMethod)
           this.$store.dispatch('setShippinInformation')
         }
@@ -284,3 +153,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
+    }
+  }
+}
+</style>
