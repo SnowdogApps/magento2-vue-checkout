@@ -7,8 +7,6 @@
   </div>
 </template>
 
-<style src="./assets/vue-multiselect.min.css"></style>
-
 <script>
 import TheShippingStep from './components/steps/TheShippingStep.vue'
 import ThePaymentStep from './components/steps/ThePaymentStep.vue'
@@ -24,3 +22,5 @@ export default {
   }
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css">
