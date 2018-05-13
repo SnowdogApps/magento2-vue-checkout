@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint --ext .vue,.js view"
   },
   "dependencies": {
     "axios": "^0.18.0",

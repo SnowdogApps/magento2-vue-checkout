@@ -1,7 +1,9 @@
 <template>
   <section v-if="step === 'success'">
     We did it!
-
+    <template v-if="orderId !== null">
+      Your order id is {{ orderId }}.
+    </template>
     <a href="/what-is-new.html">
       Back to category
     </a>
@@ -16,6 +18,9 @@ export default {
     },
     step () {
       return this.$store.state.step
+    },
+    orderId () {
+      return this.$store.state.orderId
     }
   }
 }
