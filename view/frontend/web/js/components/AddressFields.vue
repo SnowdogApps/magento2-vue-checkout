@@ -48,7 +48,6 @@
         data-vv-as="Country"
         id="country"
         name="country"
-        track-by="value"
         label="label"
         placeholder="Select country"
       />
@@ -93,7 +92,6 @@
         data-vv-as="Region"
         id="region"
         name="region"
-        track-by="value"
         label="label"
         placeholder="Select State/Province"
       />
