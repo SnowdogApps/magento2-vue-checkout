@@ -16,7 +16,11 @@
     "vuex": "^3.0.0"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
