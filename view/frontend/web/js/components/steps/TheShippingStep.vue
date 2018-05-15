@@ -140,8 +140,7 @@ export default {
         if (result) {
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shipping_address')
-          this.$store.commit('setShippinInformation', this.selectedShippingMethod)
-          this.$store.dispatch('setShippinInformation')
+          this.$store.dispatch('setShippinInformation', this.selectedShippingMethod)
         }
       })
         .catch(() => {

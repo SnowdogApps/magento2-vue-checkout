@@ -14,38 +14,34 @@ const store = new Vuex.Store({
     regions,
     step: 'shipping',
     orderId: null,
-    paymentMethods: [],
     shippingMethods: [],
-    shippingInformation: {
-      addressInformation: {
-        shipping_address: {
-          city: '',
-          company: '',
-          country_id: '',
-          firstname: '',
-          lastname: '',
-          postcode: '',
-          region: '',
-          region_id: '',
-          street: [],
-          telephone: ''
-        },
-        billing_address: {
-          city: '',
-          company: '',
-          country_id: '',
-          firstname: '',
-          lastname: '',
-          postcode: '',
-          region: '',
-          region_id: '',
-          street: [],
-          telephone: ''
-        },
-        shipping_method_code: '',
-        shipping_carrier_code: ''
-      }
+    shipping_address: {
+      city: '',
+      company: '',
+      country_id: '',
+      firstname: '',
+      lastname: '',
+      postcode: '',
+      region: '',
+      region_id: '',
+      street: [],
+      telephone: ''
     },
+    billing_address: {
+      city: '',
+      company: '',
+      country_id: '',
+      firstname: '',
+      lastname: '',
+      postcode: '',
+      region: '',
+      region_id: '',
+      street: [],
+      telephone: ''
+    },
+    shipping_method_code: '',
+    shipping_carrier_code: '',
+    paymentMethods: [],
     customer: {
       email: null
     },
@@ -86,16 +82,52 @@ const store = new Vuex.Store({
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    setShippinInformation ({commit, state, getters}) {
+    setShippinInformation ({commit, state, getters}, selectedShippingMethod) {
       let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
       if (getters.isCustomerLoggedIn) {
         url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
       }
 
+      const shippingInformation = {
+        addressInformation: {
+          shipping_method_code: selectedShippingMethod.method_code,
+          shipping_carrier_code: selectedShippingMethod.carrier_code
+        }
+      }
+
+      const shippingAddress = { ...state.shipping_address }
+      shippingAddress.country_id = state.shipping_address.country_id.value
+
+      if (getters.regionsByCountryId(shippingAddress.country_id).length) {
+        shippingAddress.region_id = state.shipping_address.region_id.value
+        delete shippingAddress.region
+      } else {
+        delete shippingAddress.region_id
+      }
+
+      shippingInformation.addressInformation.shipping_address = shippingAddress
+
+      if (state.billing_address.city === '') {
+        shippingInformation.addressInformation.billing_address = shippingAddress
+      } else {
+        const billingAddress = { ...state.billing_address }
+
+        billingAddress.country_id = state.billing_address.country_id.value
+
+        if (getters.regionsByCountryId(billingAddress.country_id).length) {
+          billingAddress.region_id = state.shipping_address.region_id.value
+          delete billingAddress.region
+        } else {
+          delete billingAddress.region_id
+        }
+
+        shippingInformation.addressInformation.billing_address = billingAddress
+      }
+
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify(state.shippingInformation),
+        data: JSON.stringify(shippingInformation),
         url
       }
 
@@ -114,8 +146,18 @@ const store = new Vuex.Store({
         url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
       }
 
+      const billingAddress = { ...state.billing_address }
+      billingAddress.country_id = state.billing_address.country_id.value
+
+      if (getters.regionsByCountryId(billingAddress.country_id).length) {
+        billingAddress.region_id = state.shipping_address.region_id.value
+        delete billingAddress.region
+      } else {
+        delete billingAddress.region_id
+      }
+
       const data = {
-        'billingAddress': state.shippingInformation.addressInformation.billing_address,
+        'billingAddress': billingAddress,
         'email': state.customer.email,
         'paymentMethod': {
           'method': paymentMethod.code
@@ -155,15 +197,8 @@ const store = new Vuex.Store({
     updateTotals (state, payload) {
       state.totals = payload
     },
-    setShippinInformation (state, selectedShippingMethod) {
-      state.shippingInformation.addressInformation.shipping_method_code = selectedShippingMethod.method_code
-      state.shippingInformation.addressInformation.shipping_carrier_code = selectedShippingMethod.carrier_code
-      if (state.shippingInformation.addressInformation.billing_address.city === '') {
-        state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
-      }
-    },
     copyShippingAddress (state) {
-      state.shippingInformation.addressInformation.billing_address = state.shippingInformation.addressInformation.shipping_address
+      state.billing_address = state.shipping_address
     },
     setCustomerEmail (state, payload) {
       state.customer.email = payload
@@ -172,20 +207,15 @@ const store = new Vuex.Store({
       const address = payload.address
       const type = payload.type
 
-      state.shippingInformation.addressInformation[type] = {}
+      state[type] = {}
       Object.keys(address).forEach(item => {
         if (item.includes('street')) {
-          if (!state.shippingInformation.addressInformation[type].hasOwnProperty('street')) {
-            state.shippingInformation.addressInformation[type]['street'] = []
+          if (!state[type].hasOwnProperty('street')) {
+            state[type]['street'] = []
           }
-          state.shippingInformation.addressInformation[type]['street'].push(address[item])
+          state[type]['street'].push(address[item])
         } else {
-          if (item === 'region' && address[item] !== '' ||
-            item === 'region_id' && address[item] !== '' ||
-            item !== 'region' && item !== 'region_id'
-          ) {
-            state.shippingInformation.addressInformation[type][item] = address[item]
-          }
+          state[type][item] = address[item]
         }
       })
     }
@@ -198,7 +228,7 @@ const store = new Vuex.Store({
       return state.config.quoteData.entity_id
     },
     addressByType: (state) => (type) => {
-      let address = Object.assign({}, state.shippingInformation.addressInformation[type])
+      let address = Object.assign({}, state[type])
       address.street0 = address.street.length ? address.street[0] : ''
       address.street1 = address.street.length ? address.street[1] : ''
       delete address.street

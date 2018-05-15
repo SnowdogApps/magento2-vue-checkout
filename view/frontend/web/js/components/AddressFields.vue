@@ -40,7 +40,7 @@
       </label>
 
       <multiselect
-        v-model="countryWatcher"
+        v-model="address.country_id"
         v-validate="'required'"
         :options="countries"
         :allow-empty="false"
@@ -49,6 +49,7 @@
         id="country"
         name="country"
         label="label"
+        @input="onCountryChange"
         placeholder="Select country"
       />
 
@@ -78,26 +79,25 @@
       type="text"
       :validate-type="!regions.length ? 'required' : ''"
     />
-    <div v-if="regions.length" :class="{'input--error': errors.has('region') }">
-      <label>
+    <div v-if="regions.length" :class="{'input--error': errors.has('region_id') }">
+      <label for="region_id">
         Select State/Province
       </label>
-
       <multiselect
-        v-model="regionWatcher"
-        v-validate="!regions.length ? 'required' : ''"
+        v-model="address.region_id"
+        v-validate="!regions.length ? '' : 'required'"
         :options="regions"
         :allow-empty="false"
         :show-labels="false"
         data-vv-as="Region"
-        id="region"
-        name="region"
+        id="region_id"
+        name="region_id"
         label="label"
         placeholder="Select State/Province"
       />
 
-      <span v-show="errors.has('region')" class="input__message">
-        {{ errors.first('region') }}
+      <span v-show="errors.has('region_id')" class="input__message">
+        {{ errors.first('region_id') }}
       </span>
     </div>
     <BaseInput
@@ -120,15 +120,19 @@ export default {
   data () {
     return {
       address: {},
-      countryWatcher: '',
-      regionWatcher: '',
-      countries,
-      regions: []
+      countries
     }
   },
   computed: {
     addressData () {
       return this.$store.getters.addressByType(this.type)
+    },
+    regions () {
+      if (this.address.country_id.value === null) {
+        return []
+      } else {
+        return this.$store.getters.regionsByCountryId(this.address.country_id.value)
+      }
     }
   },
   components: {
@@ -142,10 +146,9 @@ export default {
     }
   },
   methods: {
-    onCountryChange (selectedOption) {
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
+    onCountryChange () {
       if (this.type === 'shipping_address') {
-        this.$store.dispatch('updateShippingMethods', this.address.country_id)
+        this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
       }
     }
   },
@@ -154,16 +157,6 @@ export default {
     EventBus.$once('save-address', (type) => {
       this.$store.commit('setAddress', { type, address: this.address })
     })
-  },
-  watch: {
-    countryWatcher (newCountry) {
-      this.address.country_id = newCountry.value
-      this.regionWatcher = ''
-      this.onCountryChange()
-    },
-    regionWatcher (newRegion) {
-      this.address.region_id = newRegion.value
-    }
   }
 }
 </script>

@@ -98,8 +98,6 @@ export default {
     changeStep (step) {
       if (!this.billingAddress) {
         EventBus.$emit('save-address', 'billing_address')
-      } else {
-        this.$store.commit('copyShippingAddress')
       }
       this.$store.commit('setStep', step)
     },
