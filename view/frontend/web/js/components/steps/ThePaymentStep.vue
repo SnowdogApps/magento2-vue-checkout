@@ -102,7 +102,7 @@ export default {
       this.$store.commit('setStep', step)
     },
     placeOrder () {
-        if (!this.billingAddress) {
+      if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
             EventBus.$emit('save-address', 'billing_address')
