@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     onCountryChange () {
-      if (this.type === 'shippingAddress') {
+      if (this.type === 'shippingddress') {
         this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
       }
     }
@@ -161,13 +161,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & .input__message {
-      display: block;
-      color: red;
+<style lang="scss">
+  .input {
+    &--error {
+      & .input__message {
+        display: block;
+        color: red;
+      }
     }
   }
-}
+
+  input[type="text"] {
+    &.multiselect__input {
+      height: auto;
+      border: none;
+    }
+  }
+
 </style>
