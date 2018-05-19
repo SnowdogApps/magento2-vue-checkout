@@ -43,9 +43,7 @@
             v-validate="'required'"
             data-vv-as="Shipping method"
           />
-          <label
-            :for="method.carrier_code"
-          >
+          <label :for="method.carrier_code">
             <span class="label__text">
               {{ method.carrier_title }} - {{ method.method_title }}
             </span>
@@ -136,7 +134,7 @@ export default {
         }
       })
         .catch(() => {
-          console.log('Error with process your Payment step and finalize your order - please try again later')
+          console.log('Error with checking email availability')
         })
     },
     onFormSubmit () {
@@ -148,7 +146,7 @@ export default {
         }
       })
         .catch(() => {
-          console.log('Error with process your Shipping step and process your order - please try again later')
+          console.log('Error with process your Shipping step - please try again later')
         })
     }
   }
