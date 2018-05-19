@@ -19,7 +19,7 @@
     />
 
     <form class="billing-address__form" v-show="!billingAddress">
-      <AddressFields type="billing_address" />
+      <AddressFields type="billingAddress" />
     </form>
     <h2>
       Payment methods
@@ -97,7 +97,7 @@ export default {
   methods: {
     changeStep (step) {
       if (!this.billingAddress) {
-        EventBus.$emit('save-address', 'billing_address')
+        EventBus.$emit('save-address', 'billingAddress')
       }
       this.$store.commit('setStep', step)
     },
@@ -105,7 +105,7 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            EventBus.$emit('save-address', 'billing_address')
+            EventBus.$emit('save-address', 'billingAddress')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })

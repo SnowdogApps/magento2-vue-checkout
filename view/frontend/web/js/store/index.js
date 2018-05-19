@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     step: 'shipping',
     orderId: null,
     shippingMethods: [],
-    shipping_address: {
+    shippingAddress: {
       city: '',
       company: '',
       country_id: '',
@@ -27,7 +27,7 @@ const store = new Vuex.Store({
       street: [],
       telephone: ''
     },
-    billing_address: {
+    billingAddress: {
       city: '',
       company: '',
       country_id: '',
@@ -39,8 +39,7 @@ const store = new Vuex.Store({
       street: [],
       telephone: ''
     },
-    shipping_method_code: '',
-    shipping_carrier_code: '',
+    selectedShippingMethod: null,
     paymentMethods: [],
     customer: {
       email: null
@@ -82,7 +81,7 @@ const store = new Vuex.Store({
           console.log('Looks like there was a problem: \n', error)
         })
     },
-    setShippinInformation ({commit, state, getters}, selectedShippingMethod) {
+    setShippinInformation ({commit, state, getters}) {
       let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
       if (getters.isCustomerLoggedIn) {
         url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
@@ -90,16 +89,16 @@ const store = new Vuex.Store({
 
       const shippingInformation = {
         addressInformation: {
-          shipping_method_code: selectedShippingMethod.method_code,
-          shipping_carrier_code: selectedShippingMethod.carrier_code
+          shipping_method_code: state.selectedShippingMethod.method_code,
+          shipping_carrier_code: state.selectedShippingMethod.carrier_code
         }
       }
 
-      const shippingAddress = { ...state.shipping_address }
-      shippingAddress.country_id = state.shipping_address.country_id.value
+      const shippingAddress = { ...state.shippingAddress }
+      shippingAddress.country_id = state.shippingAddress.country_id.value
 
       if (getters.regionsByCountryId(shippingAddress.country_id).length) {
-        shippingAddress.region_id = state.shipping_address.region_id.value
+        shippingAddress.region_id = state.shippingAddress.region_id.value
         delete shippingAddress.region
       } else {
         delete shippingAddress.region_id
@@ -107,15 +106,15 @@ const store = new Vuex.Store({
 
       shippingInformation.addressInformation.shipping_address = shippingAddress
 
-      if (state.billing_address.city === '') {
+      if (state.billingAddress.city === '') {
         shippingInformation.addressInformation.billing_address = shippingAddress
       } else {
         const billingAddress = { ...state.billing_address }
 
-        billingAddress.country_id = state.billing_address.country_id.value
+        billingAddress.country_id = state.billingAddress.country_id.value
 
         if (getters.regionsByCountryId(billingAddress.country_id).length) {
-          billingAddress.region_id = state.shipping_address.region_id.value
+          billingAddress.region_id = state.billingAddress.region_id.value
           delete billingAddress.region
         } else {
           delete billingAddress.region_id
@@ -146,21 +145,21 @@ const store = new Vuex.Store({
         url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
       }
 
-      const billingAddress = { ...state.billing_address }
-      billingAddress.country_id = state.billing_address.country_id.value
+      const billingAddress = { ...state.billingAddress }
+      billingAddress.country_id = state.billingAddress.country_id.value
 
       if (getters.regionsByCountryId(billingAddress.country_id).length) {
-        billingAddress.region_id = state.shipping_address.region_id.value
+        billingAddress.region_id = state.billingAddress.region_id.value
         delete billingAddress.region
       } else {
         delete billingAddress.region_id
       }
 
       const data = {
-        'billingAddress': billingAddress,
-        'email': state.customer.email,
-        'paymentMethod': {
-          'method': paymentMethod.code
+        billingAddress,
+        email: state.customer.email,
+        paymentMethod: {
+          method: paymentMethod.code
         }
       }
 
@@ -188,6 +187,9 @@ const store = new Vuex.Store({
     setOrderId (state, payload) {
       state.orderId = payload
     },
+    setSelectedShippingMethod (state, payload) {
+      state.selectedShippingMethod = payload
+    },
     setPaymentMethods (state, payload) {
       state.paymentMethods = payload
     },
@@ -198,7 +200,7 @@ const store = new Vuex.Store({
       state.totals = payload
     },
     copyShippingAddress (state) {
-      state.billing_address = state.shipping_address
+      state.billingAddress = state.shippingAddress
     },
     setCustomerEmail (state, payload) {
       state.customer.email = payload

@@ -23,7 +23,7 @@
         You can create an account after checkout.
       </span>
       <hr>
-      <AddressFields type="shipping_address" />
+      <AddressFields type="shippingAddress" />
       <h2>
         Shipping methods
       </h2>
@@ -109,6 +109,11 @@ export default {
       return this.baseUrl + 'customer/account/login/'
     }
   },
+  watch: {
+    selectedShippingMethod (val) {
+      this.$store.commit('setSelectedShippingMethod', val)
+    }
+  },
   methods: {
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
@@ -139,8 +144,8 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.$store.commit('setCustomerEmail', this.customer.email)
-          EventBus.$emit('save-address', 'shipping_address')
-          this.$store.dispatch('setShippinInformation', this.selectedShippingMethod)
+          EventBus.$emit('save-address', 'shippingAddress')
+          this.$store.dispatch('setShippinInformation')
         }
       })
         .catch(() => {
