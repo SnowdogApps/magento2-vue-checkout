@@ -54,11 +54,10 @@
               {{ method.price_incl_tax | currency(currencyCode) }}
             </span>
           </label>
-
-          <p v-show="errors.has('shipping-method')" class="input__message">
-            {{ errors.first('shipping-method') }}
-          </p>
         </div>
+        <p v-show="errors.has('shipping-method')" class="input__message">
+          {{ errors.first('shipping-method') }}
+        </p>
       </template>
       <template v-else>
         <p>
