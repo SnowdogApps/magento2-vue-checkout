@@ -136,7 +136,7 @@ const store = new Vuex.Store({
           commit('setStep', 'payment')
         })
         .catch(error => {
-          console.log('Looks like there was a problem: \n', error)
+          console.error('Looks like there was a problem: \n', error)
         })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
@@ -176,7 +176,7 @@ const store = new Vuex.Store({
           commit('setOrderId', data)
         })
         .catch(error => {
-          console.log('Looks like there was a problem: \n', error)
+          console.error('Looks like there was a problem: \n', error)
         })
     }
   },

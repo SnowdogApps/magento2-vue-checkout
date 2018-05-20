@@ -1,8 +1,5 @@
 <template>
-  <button
-    :type="buttonType"
-    :title="buttonTitle"
-  >
+  <button :type="buttonType" :title="buttonTitle">
     {{ text }}
   </button>
 </template>

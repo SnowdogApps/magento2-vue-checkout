@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     onCountryChange () {
-      if (this.type === 'shippingddress') {
+      if (this.type === 'shippingAddress') {
         this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
       }
     }

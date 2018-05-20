@@ -129,12 +129,12 @@ export default {
               this.customer.emailAvailable = data
             })
             .catch(error => {
-              console.log('Looks like there was a problem: \n', error)
+              console.error('Looks like there was a problem: \n', error)
             })
         }
       })
         .catch(() => {
-          console.log('Error with checking email availability')
+          console.error('Error with checking email availability')
         })
     },
     onFormSubmit () {
@@ -146,7 +146,7 @@ export default {
         }
       })
         .catch(() => {
-          console.log('Error with process your Shipping step - please try again later')
+          console.error('Error with process your Shipping step - please try again later')
         })
     }
   }

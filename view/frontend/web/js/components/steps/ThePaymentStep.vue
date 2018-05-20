@@ -117,7 +117,7 @@ export default {
           }
         })
           .catch(() => {
-            console.log('Error with process your Payment step and finalize your order - please try again later')
+            console.error('Error with finalize your order - please try again later')
           })
       }
     }
