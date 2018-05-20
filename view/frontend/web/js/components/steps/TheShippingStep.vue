@@ -108,7 +108,7 @@ export default {
         } else {
           return `
             You already have an account with us.
-            Sign in <a :href="loginUrl">here</a> or continue as guest.
+            Sign in <a href="${this.loginUrl}">here</a> or continue as guest.
           `
         }
       } else {
