@@ -230,7 +230,7 @@ const store = new Vuex.Store({
       return state.config.quoteData.entity_id
     },
     addressByType: (state) => (type) => {
-      let address = Object.assign({}, state[type])
+      let address = { ...state[type] }
       address.street0 = address.street.length ? address.street[0] : ''
       address.street1 = address.street.length ? address.street[1] : ''
       delete address.street
