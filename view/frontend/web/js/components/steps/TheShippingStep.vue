@@ -16,12 +16,10 @@
         type="email"
         validate-type="required|email"
       />
-      <span v-if="customer.email !== '' && !errors.has('email')  && !customer.emailAvailable">
-        You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
-      </span>
-      <span v-else-if="customer.email !== '' && !errors.has('email') && customer.emailAvailable">
-        You can create an account after checkout.
-      </span>
+      <span
+        v-if="emailAvailabilityMessage"
+        v-html="emailAvailabilityMessage"
+      ></span>
       <hr>
       <AddressFields type="shippingAddress" />
       <h2>
@@ -42,6 +40,7 @@
             :id="method.carrier_code"
             v-validate="'required'"
             data-vv-as="Shipping method"
+            @change="setSelectedShippingMethod"
           />
           <label :for="method.carrier_code">
             <span class="label__text">
@@ -102,16 +101,28 @@ export default {
     currencyCode () {
       return this.$store.getters.currencyCode
     },
+    emailAvailabilityMessage () {
+      if (this.customer.email !== '' && !this.errors.has('email')) {
+        if (this.customer.emailAvailable) {
+          return `You can create an account after checkout.`
+        } else {
+          return `
+            You already have an account with us.
+            Sign in <a :href="loginUrl">here</a> or continue as guest.
+          `
+        }
+      } else {
+        return false
+      }
+    },
     loginUrl () {
       return this.baseUrl + 'customer/account/login/'
     }
   },
-  watch: {
-    selectedShippingMethod (val) {
-      this.$store.commit('setSelectedShippingMethod', val)
-    }
-  },
   methods: {
+    setSelectedShippingMethod (val) {
+      this.$store.commit('setSelectedShippingMethod', this.selectedShippingMethod)
+    },
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
         if (result) {
