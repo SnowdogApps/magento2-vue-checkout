@@ -145,7 +145,7 @@ export default {
         }
       })
         .catch(() => {
-          console.error('Error with checking email availability')
+          console.error('Error with checking email availability. \n', error)
         })
     },
     onFormSubmit () {
@@ -156,8 +156,8 @@ export default {
           this.$store.dispatch('setShippinInformation')
         }
       })
-        .catch(() => {
-          console.error('Error with process your Shipping step - please try again later')
+        .catch(error => {
+          console.error('Error with process your Shipping step. \n', error)
         })
     }
   }
