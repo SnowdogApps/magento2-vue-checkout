@@ -52,7 +52,6 @@
       text="Place order"
       @click.native="placeOrder"
     />
-
     <BaseButton
       class="button"
       button-type="button"
