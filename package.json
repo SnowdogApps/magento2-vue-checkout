@@ -1,0 +1,40 @@
+{
+  "name": "magento2-vue-checkout",
+  "version": "1.0.0",
+  "description": "Magento 2 Checkout module based on Vue.js",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dev": "webpack --watch",
+    "build": "webpack",
+    "lint": "eslint --ext .vue,.js view"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "vee-validate": "^2.0.6",
+    "vue": "^2.4.4",
+    "vue-multiselect": "^2.1.0",
+    "vuex": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-friendly-formatter": "^4.0.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-html": "^4.0.2",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^13.3.0",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.7.1"
+  }
+}
