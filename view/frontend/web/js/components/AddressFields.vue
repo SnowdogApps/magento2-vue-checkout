@@ -34,23 +34,29 @@
       name="street[1]"
       type="text"
     />
-    <BaseSelect
-      v-model="address.country_id"
-      label="Country"
-      name="country_id"
-      :options="countries"
-      validate-type="required"
-      @input="onCountryChange"
-    >
-      <option slot="default-option" value="">
-        Select country
-      </option>
-      <template slot-scope="option">
-        <option :value="option.value">
-          {{ option.label }}
-        </option>
-      </template>
-    </BaseSelect>
+    <div :class="{'input--error': errors.has('country') }">
+      <label for="country">
+        Select Country
+      </label>
+
+      <multiselect
+        v-model="address.country_id"
+        v-validate="'required'"
+        :options="countries"
+        :allow-empty="false"
+        :show-labels="false"
+        data-vv-as="Country"
+        id="country"
+        name="country"
+        label="label"
+        @input="onCountryChange"
+        placeholder="Select country"
+      />
+
+      <span v-show="errors.has('country')" class="input__message">
+        {{ errors.first('country') }}
+      </span>
+    </div>
     <BaseInput
       v-model="address.city"
       label="City"
@@ -73,23 +79,27 @@
       type="text"
       :validate-type="!regions.length ? 'required' : ''"
     />
-    <BaseSelect
-      v-model="address.region_id"
-      v-if="regions.length"
-      label="State/Province"
-      name="region_id"
-      :validate-type="!regions.length ? '' : 'required'"
-      :options="regions"
-    >
-      <option slot="default-option" value="">
+    <div v-if="regions.length" :class="{'input--error': errors.has('region_id') }">
+      <label for="region_id">
         Select State/Province
-      </option>
-      <template slot-scope="option">
-        <option :value="option.value">
-          {{ option.label }}
-        </option>
-      </template>
-    </BaseSelect>
+      </label>
+      <multiselect
+        v-model="address.region_id"
+        v-validate="!regions.length ? '' : 'required'"
+        :options="regions"
+        :allow-empty="false"
+        :show-labels="false"
+        data-vv-as="Region"
+        id="region_id"
+        name="region_id"
+        label="label"
+        placeholder="Select State/Province"
+      />
+
+      <span v-show="errors.has('region_id')" class="input__message">
+        {{ errors.first('region_id') }}
+      </span>
+    </div>
     <BaseInput
       v-model="address.company"
       label="Company"
@@ -101,8 +111,8 @@
 
 <script>
 import BaseInput from './BaseInput.vue'
-import BaseSelect from './BaseSelect.vue'
 import countries from '../data/countries.json'
+import Multiselect from 'vue-multiselect'
 import EventBus from '../event-bus'
 
 export default {
@@ -110,18 +120,24 @@ export default {
   data () {
     return {
       address: {},
-      countries,
-      regions: []
+      countries
     }
   },
   computed: {
     addressData () {
       return this.$store.getters.addressByType(this.type)
+    },
+    regions () {
+      if (this.address.country_id.value === null) {
+        return []
+      } else {
+        return this.$store.getters.regionsByCountryId(this.address.country_id.value)
+      }
     }
   },
   components: {
     BaseInput,
-    BaseSelect
+    Multiselect
   },
   props: {
     type: {
@@ -130,10 +146,9 @@ export default {
     }
   },
   methods: {
-    onCountryChange (selectedOption) {
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
-      if (this.type === 'shipping_address') {
-        this.$store.dispatch('updateShippingMethods', this.address.country_id)
+    onCountryChange () {
+      if (this.type === 'shippingAddress') {
+        this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
       }
     }
   },
@@ -145,3 +160,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .input {
+    &--error {
+      & .input__message {
+        display: block;
+        color: red;
+      }
+    }
+  }
+
+  input[type="text"] {
+    &.multiselect__input {
+      height: auto;
+      border: none;
+    }
+  }
+
+</style>

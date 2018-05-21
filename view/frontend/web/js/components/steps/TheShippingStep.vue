@@ -16,14 +16,12 @@
         type="email"
         validate-type="required|email"
       />
-      <span v-if="customer.email !== '' && !errors.has('email')  && !customer.emailAvailable">
-        You already have an account with us. Sign in <a :href="loginUrl">here</a> or continue as guest.
-      </span>
-      <span v-else-if="customer.email !== '' && !errors.has('email') && customer.emailAvailable">
-        You can create an account after checkout.
-      </span>
+      <span
+        v-if="emailAvailabilityMessage"
+        v-html="emailAvailabilityMessage"
+      ></span>
       <hr>
-      <AddressFields type="shipping_address" />
+      <AddressFields type="shippingAddress" />
       <h2>
         Shipping methods
       </h2>
@@ -42,10 +40,9 @@
             :id="method.carrier_code"
             v-validate="'required'"
             data-vv-as="Shipping method"
+            @change="setSelectedShippingMethod"
           />
-          <label
-            :for="method.carrier_code"
-          >
+          <label :for="method.carrier_code">
             <span class="label__text">
               {{ method.carrier_title }} - {{ method.method_title }}
             </span>
@@ -54,11 +51,10 @@
               {{ method.price_incl_tax | currency(currencyCode) }}
             </span>
           </label>
-
-          <p v-show="errors.has('shipping-method')" class="input__message">
-            {{ errors.first('shipping-method') }}
-          </p>
         </div>
+        <p v-show="errors.has('shipping-method')" class="input__message">
+          {{ errors.first('shipping-method') }}
+        </p>
       </template>
       <template v-else>
         <p>
@@ -74,7 +70,6 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
-import ShippingMethods from '../ShippingMethods.vue'
 import EventBus from '../../event-bus'
 import axios from 'axios'
 
@@ -82,7 +77,6 @@ export default {
   components: {
     BaseButton,
     BaseInput,
-    ShippingMethods,
     AddressFields
   },
   data () {
@@ -107,11 +101,28 @@ export default {
     currencyCode () {
       return this.$store.getters.currencyCode
     },
+    emailAvailabilityMessage () {
+      if (this.customer.email !== '' && !this.errors.has('email')) {
+        if (this.customer.emailAvailable) {
+          return `You can create an account after checkout.`
+        } else {
+          return `
+            You already have an account with us.
+            Sign in <a href="${this.loginUrl}">here</a> or continue as guest.
+          `
+        }
+      } else {
+        return false
+      }
+    },
     loginUrl () {
       return this.baseUrl + 'customer/account/login/'
     }
   },
   methods: {
+    setSelectedShippingMethod (val) {
+      this.$store.commit('setSelectedShippingMethod', this.selectedShippingMethod)
+    },
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
         if (result) {
@@ -129,38 +140,26 @@ export default {
               this.customer.emailAvailable = data
             })
             .catch(error => {
-              console.log('Looks like there was a problem: \n', error)
+              console.error('Looks like there was a problem: \n', error)
             })
         }
       })
-        .catch(() => {
-          console.log('Error with process your Payment step and finalize your order - please try again later')
+        .catch(error => {
+          console.error('Error with checking email availability. \n', error)
         })
     },
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.$store.commit('setCustomerEmail', this.customer.email)
-          EventBus.$emit('save-address', 'shipping_address')
-          this.$store.commit('setShippinInformation', this.selectedShippingMethod)
+          EventBus.$emit('save-address', 'shippingAddress')
           this.$store.dispatch('setShippinInformation')
         }
       })
-        .catch(() => {
-          console.log('Error with process your Shipping step and process your order - please try again later')
+        .catch(error => {
+          console.error('Error with process your Shipping step. \n', error)
         })
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
-}
-</style>

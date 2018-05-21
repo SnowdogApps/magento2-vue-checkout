@@ -16,4 +16,4 @@ module.exports = {
     'no-mixed-operators': 0,
     'no-new': 0
   }
- }
+}

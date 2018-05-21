@@ -19,7 +19,7 @@
     />
 
     <form class="billing-address__form" v-show="!billingAddress">
-      <AddressFields type="billing_address" />
+      <AddressFields type="billingAddress" />
     </form>
     <h2>
       Payment methods
@@ -52,7 +52,6 @@
       text="Place order"
       @click.native="placeOrder"
     />
-
     <BaseButton
       class="button"
       button-type="button"
@@ -97,9 +96,7 @@ export default {
   methods: {
     changeStep (step) {
       if (!this.billingAddress) {
-        EventBus.$emit('save-address', 'billing_address')
-      } else {
-        this.$store.commit('copyShippingAddress')
+        EventBus.$emit('save-address', 'billingAddress')
       }
       this.$store.commit('setStep', step)
     },
@@ -107,7 +104,7 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            EventBus.$emit('save-address', 'billing_address')
+            EventBus.$emit('save-address', 'billingAddress')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
@@ -119,21 +116,10 @@ export default {
           }
         })
           .catch(() => {
-            console.log('Error with process your Payment step and finalize your order - please try again later')
+            console.error('Error with finalize your order - please try again later')
           })
       }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
-}
-</style>
