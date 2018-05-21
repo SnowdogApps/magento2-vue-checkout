@@ -144,7 +144,7 @@ export default {
             })
         }
       })
-        .catch(() => {
+        .catch(error => {
           console.error('Error with checking email availability. \n', error)
         })
     },

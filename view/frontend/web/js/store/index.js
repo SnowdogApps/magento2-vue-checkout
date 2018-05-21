@@ -12,9 +12,13 @@ const store = new Vuex.Store({
     config,
     baseUrl,
     regions,
+    customer: {
+      email: null
+    },
     step: 'shipping',
     orderId: null,
     shippingMethods: [],
+    selectedShippingMethod: null,
     shippingAddress: {
       city: '',
       company: '',
@@ -39,11 +43,7 @@ const store = new Vuex.Store({
       street: [],
       telephone: ''
     },
-    selectedShippingMethod: null,
     paymentMethods: [],
-    customer: {
-      email: null
-    },
     selectedMethods: {
       paymentMethod: {
         method: ''
@@ -51,7 +51,7 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    totals: {}
+    totals: null
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
