@@ -50,6 +50,7 @@
       class="button"
       button-type="button"
       text="Place order"
+      with-loader="true"
       @click.native="placeOrder"
     />
     <BaseButton

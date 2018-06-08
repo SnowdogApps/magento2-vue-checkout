@@ -61,7 +61,7 @@
           In this country we don't handle any shipping methods.
         </p>
       </template>
-      <BaseButton class="button" button-type="submit" text="Next Step"/>
+      <BaseButton class="button" button-type="submit" text="Next Step" with-loader="true"/>
     </form>
   </section>
 </template>
