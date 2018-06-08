@@ -1,9 +1,12 @@
 <template>
   <section v-if="step === 'success'">
-    We did it!
-
-    <a href="/what-is-new.html">
-      Back to category
+    <h1>Thank you for your purchase!</h1>
+    <template v-if="orderId !== null">
+      Your order number is: {{ orderId }}.
+    </template>
+    <p>We'll email you an order confirmation with details and tracking info.</p>
+    <a href="/">
+      Continue shopping
     </a>
   </section>
 </template>
@@ -16,6 +19,9 @@ export default {
     },
     step () {
       return this.$store.state.step
+    },
+    orderId () {
+      return this.$store.state.orderId
     }
   }
 }
