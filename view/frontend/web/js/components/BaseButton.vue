@@ -47,7 +47,7 @@ export default {
   }
 
   &:disabled {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 </style>
