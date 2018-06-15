@@ -148,11 +148,6 @@ export default {
           console.error('Error with checking email availability. \n', error)
         })
     },
-    onCountryChange (selectedOption) {
-      this.$store.commit('setLoading', true)
-      this.regions = this.$store.getters.regionsByCountryId(this.address.country_id)
-      this.$store.dispatch('updateShippingMethods', this.address.country_id)
-    },
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
