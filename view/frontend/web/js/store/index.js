@@ -51,7 +51,7 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    totals: {},
+    totals: null,
     loader: false
   },
   actions: {
