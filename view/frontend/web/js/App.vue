@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="checkout">
     <TheShippingStep/>
     <ThePaymentStep/>
     <TheSuccessStep/>
