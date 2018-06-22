@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductsListItem.test.js has received [] as the products property 1`] = `
+<div
+  class="product"
+>
+  <p
+    class="products__title"
+  >
+    
+    Product name:
+    
+    <strong>
+      
+      Hera Pullover Hoodie
+    
+    </strong>
+  </p>
+   
+  <span
+    class="product__price"
+  >
+    
+    Price:
+    
+    <strong>
+      
+      48.0000
+    
+    </strong>
+  </span>
+   
+  <div
+    class="products__handler"
+  >
+    <p
+      class="products__information"
+    >
+      
+      Product details:
+    
+    </p>
+     
+    <span
+      class="products__detail"
+    >
+      
+        Color:
+        
+      <strong>
+        
+          Blue
+        
+      </strong>
+    </span>
+    <span
+      class="products__detail"
+    >
+      
+        Size:
+        
+      <strong>
+        
+          XS
+        
+      </strong>
+    </span>
+     
+    <span
+      class="products__detail"
+    >
+      
+      Qty:
+      
+      <strong>
+        
+        1
+      
+      </strong>
+    </span>
+     
+    <!---->
+  </div>
+   
+  <div
+    class="action"
+  >
+    <div
+      class="action__handler"
+    >
+      <a
+        class="link action__link"
+        href="#"
+      >
+        
+        Go to product
+      
+      </a>
+    </div>
+  </div>
+</div>
+`;
