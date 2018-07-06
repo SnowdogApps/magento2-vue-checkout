@@ -7,7 +7,7 @@
     "dev": "webpack --watch",
     "build": "webpack",
     "lint": "eslint --ext .vue,.js view",
-    "e2e": "testcafe chrome tests/e2e/*.test.js --app \"npm run dev\" --app-init-delay 10000 -S -s screenshots"
+    "e2e": "testcafe chrome tests/e2e/*.test.js --app \"npm run dev\" --app-init-delay 10000"
   },
   "dependencies": {
     "axios": "^0.18.0",
