@@ -3,13 +3,13 @@
     <h2>
       Product List
     </h2>
-    <div>
+    <ul class="products">
       <ProductsListItem
         v-for="product in products"
         :key="product.id"
         :product="product"
       />
-    </div>
+    </ul>
   </section>
 </template>
 
