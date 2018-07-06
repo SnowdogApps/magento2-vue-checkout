@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <li class="product">
     <p class="products__title">
       Product name:
       <strong>
@@ -44,15 +44,7 @@
         </span>
       </template>
     </div>
-
-    <div class="action">
-      <div class="action__handler">
-        <a href="#" class="link action__link">
-          Go to product
-        </a>
-      </div>
-    </div>
-  </div>
+  </li>
 </template>
 
 <script>

@@ -221,9 +221,6 @@ const store = new Vuex.Store({
     }
   },
   getters: {
-    currencyCode (state) {
-      return state.config.totalsData.base_currency_code
-    },
     cartId (state) {
       return state.config.quoteData.entity_id
     },
