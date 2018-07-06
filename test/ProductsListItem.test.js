@@ -1,11 +1,17 @@
+import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 import ProductsListItem from '../view/frontend/web/js/components/ProductsListItem.vue'
 
+Vue.filter('currency', function (price) {
+  const pattern = '$%s'
+  price = parseFloat(price).toFixed(2)
+  return pattern.replace('%s', price)
+})
+
 describe('ProductsListItem.test.js', () => {
 
-  it('has received [] as the products property', () => {
+  it('has the expected html structure', () => {
     const wrapper = mount(ProductsListItem, {
-      // Beaware that props is overriden using `propsData`
       propsData: {
         product: {
           base_discount_amount: '0.0000',
@@ -33,8 +39,6 @@ describe('ProductsListItem.test.js', () => {
       }
     })
 
-    // expect(cmp.vm.products).toEqual([])
-    // expect(wrapper.is('div')).toBe(true)
     expect(wrapper.element).toMatchSnapshot()
   })
 })

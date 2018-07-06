@@ -44,14 +44,6 @@
         </span>
       </template>
     </div>
-
-    <div class="action">
-      <div class="action__handler">
-        <a href="#" class="link action__link">
-          Go to product
-        </a>
-      </div>
-    </div>
   </div>
 </template>
 

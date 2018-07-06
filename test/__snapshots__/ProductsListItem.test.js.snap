@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductsListItem.test.js has received [] as the products property 1`] = `
+exports[`ProductsListItem.test.js has the expected html structure 1`] = `
 <div
   class="product"
 >
@@ -25,7 +25,7 @@ exports[`ProductsListItem.test.js has received [] as the products property 1`] =
     
     <strong>
       
-      48.0000
+      $48.00
     
     </strong>
   </span>
@@ -80,23 +80,6 @@ exports[`ProductsListItem.test.js has received [] as the products property 1`] =
     </span>
      
     <!---->
-  </div>
-   
-  <div
-    class="action"
-  >
-    <div
-      class="action__handler"
-    >
-      <a
-        class="link action__link"
-        href="#"
-      >
-        
-        Go to product
-      
-      </a>
-    </div>
   </div>
 </div>
 `;
