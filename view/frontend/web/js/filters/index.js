@@ -1,5 +1,6 @@
-export function currency (price, code) {
-  return parseFloat(price).toFixed(2) + ' ' + code
+export function currency (price) {
+  price = parseFloat(price).toFixed(2)
+  return window.config.basePriceFormat.pattern.replace('%s', price)
 }
 
 export function quantity (value) {
