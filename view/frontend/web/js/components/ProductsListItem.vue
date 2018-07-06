@@ -10,7 +10,7 @@
     <span class="product__price">
       Price:
       <strong>
-        {{ product.price | currency(currencyCode) }}
+        {{ product.price | currency }}
       </strong>
     </span>
 
@@ -61,11 +61,6 @@ export default {
     product: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    currencyCode () {
-      return this.$store.getters.currencyCode
     }
   }
 }
