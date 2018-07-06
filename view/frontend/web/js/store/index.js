@@ -5,12 +5,10 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-/* global config, baseUrl */
-
 const store = new Vuex.Store({
   state: {
-    config,
-    baseUrl,
+    config: window.config,
+    baseUrl: window.baseUrl,
     regions,
     customer: {
       email: null

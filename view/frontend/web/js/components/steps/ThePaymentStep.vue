@@ -88,9 +88,6 @@ export default {
     },
     paymentMethods () {
       return this.$store.state.paymentMethods
-    },
-    currencyCode () {
-      return this.$store.getters.currencyCode
     }
   },
   methods: {

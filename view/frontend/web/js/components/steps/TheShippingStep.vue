@@ -48,7 +48,7 @@
             </span>
 
             <span class="label__price">
-              {{ method.price_incl_tax | currency(currencyCode) }}
+              {{ method.price_incl_tax | currency }}
             </span>
           </label>
         </div>
@@ -97,9 +97,6 @@ export default {
     },
     shippingMethods () {
       return this.$store.state.shippingMethods
-    },
-    currencyCode () {
-      return this.$store.getters.currencyCode
     },
     emailAvailabilityMessage () {
       if (this.customer.email !== '' && !this.errors.has('email')) {
