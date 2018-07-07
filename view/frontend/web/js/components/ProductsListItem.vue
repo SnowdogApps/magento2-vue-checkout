@@ -21,8 +21,8 @@
 
       <template v-for="detail in JSON.parse(product.options)">
         <span
-          class="products__detail"
           :key="detail.id"
+          class="products__detail"
         >
           {{ detail.label }}:
           <strong>

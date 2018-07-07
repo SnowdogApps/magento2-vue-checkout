@@ -1,5 +1,8 @@
 <template>
-  <section class="shipping-address" v-if="step === 'shipping'">
+  <section
+    v-if="step === 'shipping'"
+    class="shipping-address"
+  >
     <h1>
       Shipping Step
     </h1>
@@ -7,19 +10,22 @@
     <h2>
       Shipping address
     </h2>
-    <form @submit.prevent="onFormSubmit" class="shipping-address__form">
+    <form
+      class="shipping-address__form"
+      @submit.prevent="onFormSubmit"
+    >
       <BaseInput
         v-model="customer.email"
-        @input="checkIsEmailAvailable"
         label="Email"
         name="email"
         type="email"
         validate-type="required|email"
+        @input="checkIsEmailAvailable"
       />
       <span
         v-if="emailAvailabilityMessage"
         v-html="emailAvailabilityMessage"
-      ></span>
+      />
       <hr>
       <AddressFields type="shippingAddress" />
       <h2>
@@ -33,15 +39,15 @@
           :class="{'input--error': errors.has('shipping-method') }"
         >
           <input
-            type="radio"
+            v-validate="'required'"
             v-model="selectedShippingMethod"
-            name="shipping-method"
             :value="method"
             :id="method.carrier_code"
-            v-validate="'required'"
+            type="radio"
+            name="shipping-method"
             data-vv-as="Shipping method"
             @change="setSelectedShippingMethod"
-          />
+          >
           <label :for="method.carrier_code">
             <span class="label__text">
               {{ method.carrier_title }} - {{ method.method_title }}
@@ -52,7 +58,10 @@
             </span>
           </label>
         </div>
-        <p v-show="errors.has('shipping-method')" class="input__message">
+        <p
+          v-show="errors.has('shipping-method')"
+          class="input__message"
+        >
           {{ errors.first('shipping-method') }}
         </p>
       </template>
@@ -61,7 +70,10 @@
           In this country we don't handle any shipping methods.
         </p>
       </template>
-      <BaseButton class="button" button-type="submit" text="Next Step"/>
+      <BaseButton
+        class="button"
+        button-type="submit"
+        text="Next Step"/>
     </form>
   </section>
 </template>

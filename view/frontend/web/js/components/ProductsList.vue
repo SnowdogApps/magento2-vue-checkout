@@ -1,5 +1,8 @@
 <template>
-  <section class="products-list" v-if="step !== 'success'">
+  <section
+    v-if="step !== 'success'"
+    class="products-list"
+  >
     <h2>
       Product List
     </h2>

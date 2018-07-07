@@ -1,21 +1,19 @@
 <template>
-  <button :type="buttonType" :title="buttonTitle">
+  <button :type="buttonType">
     {{ text }}
   </button>
 </template>
-
 
 <script>
 export default {
   props: {
     buttonType: {
-      type: String
+      type: String,
+      required: true
     },
     text: {
-      type: String
-    },
-    buttonTitle: {
-      type: String
+      type: String,
+      required: true
     }
   }
 }

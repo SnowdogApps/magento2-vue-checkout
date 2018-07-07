@@ -1,5 +1,8 @@
 <template>
-  <section class="billing-address" v-if="step === 'payment'">
+  <section
+    v-if="step === 'payment'"
+    class="billing-address"
+  >
     <h1>
       Review & Payments Step
     </h1>
@@ -9,8 +12,8 @@
     </h2>
 
     <BaseCheckbox
-      v-model="billingAddress"
       id="billing-address-same-as-shipping-address"
+      v-model="billingAddress"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
@@ -18,7 +21,10 @@
       text="My billing and shipping address are the same"
     />
 
-    <form class="billing-address__form" v-show="!billingAddress">
+    <form
+      v-show="!billingAddress"
+      class="billing-address__form"
+    >
       <AddressFields type="billingAddress" />
     </form>
     <h2>
@@ -30,19 +36,22 @@
       :class="{'input--error': errors.has('payment-method') }"
     >
       <input
-        type="radio"
+        v-validate="'required'"
         v-model="selectedPaymentMethod"
-        name="payment-method"
         :value="method"
         :id="method.code"
-        v-validate="'required'"
+        type="radio"
+        name="payment-method"
         data-vv-as="Payment method"
-      />
+      >
       <label :for="method.code">
         {{ method.title }}
       </label>
 
-      <p v-show="errors.has('payment-method')" class="input__message">
+      <p
+        v-show="errors.has('payment-method')"
+        class="input__message"
+      >
         {{ errors.first('payment-method') }}
       </p>
     </div>
