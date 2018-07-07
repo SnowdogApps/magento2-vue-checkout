@@ -1,9 +1,9 @@
 <template>
-  <div :class="containerClass">
-    <template
-      v-for="option in options"
-      v-if="options.length > 0"
-    >
+  <div
+    v-if="options.length > 0"
+    :class="containerClass"
+  >
+    <template v-for="option in options">
       <div
         v-if="option.available"
         :key="option.id"
@@ -45,22 +45,28 @@ export default {
   inject: ['$validator'],
   props: {
     options: {
-      type: Array
+      type: Array,
+      required: true
     },
     labelClass: {
-      type: String
+      type: String,
+      required: true
     },
     name: {
-      type: String
+      type: String,
+      required: true
     },
     containerClass: {
-      type: String
+      type: String,
+      required: true
     },
     fieldClass: {
-      type: String
+      type: String,
+      required: true
     },
     inputClass: {
-      type: String
+      type: String,
+      required: true
     }
   }
 }
