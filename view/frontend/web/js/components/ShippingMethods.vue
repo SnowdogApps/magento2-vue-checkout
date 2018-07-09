@@ -1,23 +1,32 @@
 <template>
-  <div :class="containerClass">
-    <template v-for="option in options" v-if="options.length > 0">
-      <div v-if="option.available" :key="option.id" :class="fieldClass">
+  <div
+    v-if="options.length > 0"
+    :class="containerClass"
+  >
+    <template v-for="option in options">
+      <div
+        v-if="option.available"
+        :key="option.id"
+        :class="fieldClass"
+      >
         <input
-          type="radio"
           :id="option.carrier_code"
           :name="name"
           :value="option.carrier_code"
           :class="inputClass"
           :data-method-code="option.method_code"
-        />
-
-        <label :class="labelClass" :for="option.carrier_code">
+          type="radio"
+        >
+        <label
+          :class="labelClass"
+          :for="option.carrier_code"
+        >
           <span class="label__text">
             {{ option.carrier_title }} - {{ option.method_title }}
           </span>
 
           <span class="label__price">
-              {{ option.price_incl_tax | currency(currencyCode) }}
+            {{ option.price_incl_tax | currency }}
           </span>
         </label>
       </div>
@@ -36,27 +45,28 @@ export default {
   inject: ['$validator'],
   props: {
     options: {
-      type: Array
+      type: Array,
+      required: true
     },
     labelClass: {
-      type: String
+      type: String,
+      required: true
     },
     name: {
-      type: String
+      type: String,
+      required: true
     },
     containerClass: {
-      type: String
+      type: String,
+      required: true
     },
     fieldClass: {
-      type: String
+      type: String,
+      required: true
     },
     inputClass: {
-      type: String
-    }
-  },
-  computed: {
-    currencyCode () {
-      return this.$store.getters.currencyCode
+      type: String,
+      required: true
     }
   }
 }

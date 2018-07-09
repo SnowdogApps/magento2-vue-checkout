@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <li class="product">
     <p class="products__title">
       Product name:
       <strong>
@@ -10,7 +10,7 @@
     <span class="product__price">
       Price:
       <strong>
-        {{ product.price | currency(currencyCode) }}
+        {{ product.price | currency }}
       </strong>
     </span>
 
@@ -21,8 +21,8 @@
 
       <template v-for="detail in JSON.parse(product.options)">
         <span
-          class="products__detail"
           :key="detail.id"
+          class="products__detail"
         >
           {{ detail.label }}:
           <strong>
@@ -44,15 +44,7 @@
         </span>
       </template>
     </div>
-
-    <div class="action">
-      <div class="action__handler">
-        <a href="#" class="link action__link">
-          Go to product
-        </a>
-      </div>
-    </div>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -61,11 +53,6 @@ export default {
     product: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    currencyCode () {
-      return this.$store.getters.currencyCode
     }
   }
 }

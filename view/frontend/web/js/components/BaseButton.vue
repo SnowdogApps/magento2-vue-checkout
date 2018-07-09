@@ -2,7 +2,6 @@
   <button
     class="button"
     :type="buttonType"
-    :title="buttonTitle"
     :disabled="isBlocked"
   >
     <div class="button__handler">
@@ -17,7 +16,6 @@
   </button>
 </template>
 
-
 <script>
 import BaseLoader from './BaseLoader.vue'
 
@@ -25,7 +23,19 @@ export default {
   components: {
     BaseLoader
   },
-  props: ['buttonType', 'text', 'buttonTitle', 'withLoader'],
+  props: {
+    buttonType: {
+      type: String,
+      required: true
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    withLoader: {
+      type: Boolean
+    }
+  },
   computed: {
     isBlocked () {
       return this.$store.state.loader

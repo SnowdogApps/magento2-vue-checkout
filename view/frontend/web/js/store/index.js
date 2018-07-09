@@ -5,12 +5,10 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-/* global config, baseUrl */
-
 const store = new Vuex.Store({
   state: {
-    config,
-    baseUrl,
+    config: window.config,
+    baseUrl: window.baseUrl,
     regions,
     customer: {
       email: null
@@ -230,9 +228,6 @@ const store = new Vuex.Store({
     }
   },
   getters: {
-    currencyCode (state) {
-      return state.config.totalsData.base_currency_code
-    },
     cartId (state) {
       return state.config.quoteData.entity_id
     },

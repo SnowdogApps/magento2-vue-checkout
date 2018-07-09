@@ -38,22 +38,23 @@
       <label for="country">
         Select Country
       </label>
-
       <multiselect
-        v-model="address.country_id"
         v-validate="'required'"
+        id="country"
+        v-model="address.country_id"
         :options="countries"
         :allow-empty="false"
         :show-labels="false"
         data-vv-as="Country"
-        id="country"
         name="country"
         label="label"
-        @input="onCountryChange"
         placeholder="Select country"
+        @input="onCountryChange"
       />
-
-      <span v-show="errors.has('country')" class="input__message">
+      <span
+        v-show="errors.has('country')"
+        class="input__message"
+      >
         {{ errors.first('country') }}
       </span>
     </div>
@@ -72,31 +73,37 @@
       validate-type="required"
     />
     <BaseInput
-      v-model="address.region"
       v-if="!regions.length"
+      v-model="address.region"
+      :validate-type="!regions.length ? 'required' : ''"
       label="State/Province"
       name="region"
       type="text"
-      :validate-type="!regions.length ? 'required' : ''"
     />
-    <div v-if="regions.length" :class="{'input--error': errors.has('region_id') }">
+    <div
+      v-if="regions.length"
+      :class="{'input--error': errors.has('region_id') }"
+    >
       <label for="region_id">
         Select State/Province
       </label>
       <multiselect
-        v-model="address.region_id"
         v-validate="!regions.length ? '' : 'required'"
+        id="region_id"
+        v-model="address.region_id"
         :options="regions"
         :allow-empty="false"
         :show-labels="false"
         data-vv-as="Region"
-        id="region_id"
         name="region_id"
         label="label"
         placeholder="Select State/Province"
       />
 
-      <span v-show="errors.has('region_id')" class="input__message">
+      <span
+        v-show="errors.has('region_id')"
+        class="input__message"
+      >
         {{ errors.first('region_id') }}
       </span>
     </div>
@@ -117,6 +124,16 @@ import EventBus from '../event-bus'
 
 export default {
   inject: ['$validator'],
+  components: {
+    BaseInput,
+    Multiselect
+  },
+  props: {
+    type: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       address: {},
@@ -135,15 +152,11 @@ export default {
       }
     }
   },
-  components: {
-    BaseInput,
-    Multiselect
-  },
-  props: {
-    type: {
-      type: String,
-      required: true
-    }
+  created () {
+    this.address = this.addressData
+    EventBus.$once('save-address', (type) => {
+      this.$store.commit('setAddress', { type, address: this.address })
+    })
   },
   methods: {
     onCountryChange () {
@@ -151,12 +164,6 @@ export default {
         this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
       }
     }
-  },
-  created () {
-    this.address = this.addressData
-    EventBus.$once('save-address', (type) => {
-      this.$store.commit('setAddress', { type, address: this.address })
-    })
   }
 }
 </script>
