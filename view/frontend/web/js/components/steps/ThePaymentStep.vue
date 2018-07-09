@@ -59,7 +59,7 @@
       class="button"
       button-type="button"
       text="Place order"
-      with-loader="true"
+      with-loader
       @click.native="placeOrder"
     />
     <BaseButton
