@@ -1,8 +1,8 @@
 <template>
   <button
-    class="button"
     :type="buttonType"
     :disabled="isBlocked"
+    class="button"
   >
     <div class="button__handler">
       <span class="button__text">
@@ -33,6 +33,7 @@ export default {
       required: true
     },
     withLoader: {
+      default: false,
       type: Boolean
     }
   },
