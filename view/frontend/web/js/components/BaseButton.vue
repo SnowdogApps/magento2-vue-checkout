@@ -1,6 +1,6 @@
 <template>
   <button
-    :type="buttonType"
+    :type="type"
     :disabled="isBlocked"
     class="button"
   >
@@ -8,10 +8,7 @@
       <span class="button__text">
         {{ text }}
       </span>
-
-      <template v-if="withLoader">
-        <BaseLoader/>
-      </template>
+      <BaseLoader v-if="withLoader"/>
     </div>
   </button>
 </template>
@@ -24,9 +21,9 @@ export default {
     BaseLoader
   },
   props: {
-    buttonType: {
+    type: {
       type: String,
-      required: true
+      default: 'button'
     },
     text: {
       type: String,

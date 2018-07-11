@@ -56,15 +56,11 @@
       </p>
     </div>
     <BaseButton
-      class="button"
-      button-type="button"
       text="Place order"
       with-loader
       @click.native="placeOrder"
     />
     <BaseButton
-      class="button"
-      button-type="button"
       text="Back"
       @click.native="changeStep('shipping')"
     />

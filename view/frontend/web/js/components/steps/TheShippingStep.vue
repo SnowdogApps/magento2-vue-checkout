@@ -72,8 +72,7 @@
       </template>
 
       <BaseButton
-        class="button"
-        button-type="submit"
+        type="submit"
         text="Next Step"
         with-loader
       />
