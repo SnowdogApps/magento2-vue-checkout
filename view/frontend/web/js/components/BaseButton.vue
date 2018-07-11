@@ -4,12 +4,12 @@
     :disabled="isBlocked"
     class="button"
   >
-    <div class="button__handler">
+    <span class="button__handler">
       <span class="button__text">
         {{ text }}
       </span>
       <BaseLoader v-if="withLoader"/>
-    </div>
+    </span>
   </button>
 </template>
 
