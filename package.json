@@ -11,7 +11,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^vue$": "vue/dist/vue.common.js"
+      "^vue$": "vue/dist/vue.common.js",
+      "\\.(svg)$": "<rootDir>/node_modules/vue-svg-loader"
     },
     "moduleFileExtensions": [
       "js",
@@ -30,7 +31,7 @@
     "vuex": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/test-utils": "^1.0.0-beta.19",
+    "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",
