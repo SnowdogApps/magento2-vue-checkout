@@ -1,18 +1,10 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      layout="checkout"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    layout="checkout"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
 >
     <body>
-        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml">
-            <block class="Magento\Framework\View\Element\Template"
-                   name="country-list"
-                   template="Snowdog_VueCheckout::data/country-list.phtml"
-            />
-            <block class="Magento\Framework\View\Element\Template"
-                   name="region-list"
-                   template="Snowdog_VueCheckout::data/region-list.phtml"
-            />
-        </referenceBlock>
+        <referenceBlock name="checkout.root" template="Snowdog_VueCheckout::onepage.phtml"/>
     </body>
 </page>

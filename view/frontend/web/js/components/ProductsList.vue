@@ -1,23 +1,27 @@
 <template>
-  <section class="products-list" v-if="step !== 'success'">
+  <section
+    v-if="step !== 'success'"
+    class="products-list"
+  >
     <h2>
       Product List
     </h2>
-
-    <BaseProduct
-      container-class="grid"
-      item-class="grid__columns"
-      :products="products"
-    />
+    <ul class="products">
+      <ProductsListItem
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+      />
+    </ul>
   </section>
 </template>
 
 <script>
-import BaseProduct from './BaseProduct.vue'
+import ProductsListItem from './ProductsListItem.vue'
 
 export default {
   components: {
-    BaseProduct
+    ProductsListItem
   },
   computed: {
     products () {
