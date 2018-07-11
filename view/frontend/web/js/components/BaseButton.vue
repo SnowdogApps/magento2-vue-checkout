@@ -1,20 +1,61 @@
 <template>
-  <button :type="buttonType">
-    {{ text }}
+  <button
+    :type="type"
+    :disabled="isBlocked"
+    class="button"
+  >
+    <span class="button__handler">
+      <span class="button__text">
+        {{ text }}
+      </span>
+      <BaseLoader v-if="withLoader"/>
+    </span>
   </button>
 </template>
 
 <script>
+import BaseLoader from './BaseLoader.vue'
+
 export default {
+  components: {
+    BaseLoader
+  },
   props: {
-    buttonType: {
+    type: {
       type: String,
-      required: true
+      default: 'button'
     },
     text: {
       type: String,
       required: true
+    },
+    withLoader: {
+      default: false,
+      type: Boolean
+    }
+  },
+  computed: {
+    isBlocked () {
+      return this.$store.state.loader
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.button {
+  &__handler {
+    display: flex;
+    align-items: center;
+  }
+
+  &__text {
+    display: block;
+    white-space: nowrap;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+</style>

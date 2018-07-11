@@ -70,10 +70,12 @@
           In this country we don't handle any shipping methods.
         </p>
       </template>
+
       <BaseButton
-        class="button"
-        button-type="submit"
-        text="Next Step"/>
+        type="submit"
+        text="Next Step"
+        with-loader
+      />
     </form>
   </section>
 </template>
@@ -160,6 +162,7 @@ export default {
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
+          this.$store.commit('setLoading', true)
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
           this.$store.dispatch('setShippinInformation')

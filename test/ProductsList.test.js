@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
-import ProductsListItem from '../view/frontend/web/js/components/ProductsList.vue'
+import ProductsList from '../view/frontend/web/js/components/ProductsList.vue'
 
 Vue.filter('currency', function (price) {
   const pattern = '$%s'
@@ -8,12 +8,12 @@ Vue.filter('currency', function (price) {
   return pattern.replace('%s', price)
 })
 
-describe('ProductsListItem.test.js', () => {
+describe('ProductsList.test.js', () => {
 
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(ProductsListItem, {
+    wrapper = mount(ProductsList, {
       computed: {
         products: () => [
           {

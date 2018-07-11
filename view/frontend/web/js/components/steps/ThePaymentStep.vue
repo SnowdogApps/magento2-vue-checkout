@@ -56,14 +56,11 @@
       </p>
     </div>
     <BaseButton
-      class="button"
-      button-type="button"
       text="Place order"
+      with-loader
       @click.native="placeOrder"
     />
     <BaseButton
-      class="button"
-      button-type="button"
       text="Back"
       @click.native="changeStep('shipping')"
     />
@@ -111,6 +108,7 @@ export default {
         this.$validator.validateAll().then((result) => {
           if (result) {
             EventBus.$emit('save-address', 'billingAddress')
+            this.$store.commit('setLoading', true)
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
@@ -118,6 +116,7 @@ export default {
         this.$store.commit('copyShippingAddress')
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
+            this.$store.commit('setLoading', true)
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })

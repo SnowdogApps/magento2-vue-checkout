@@ -49,7 +49,8 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    totals: null
+    totals: null,
+    loader: false
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -74,6 +75,7 @@ const store = new Vuex.Store({
       axios(options)
         .then(({data}) => {
           commit('setShippingMethods', data)
+          commit('setLoading', false)
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -132,6 +134,7 @@ const store = new Vuex.Store({
         .then(({data}) => {
           commit('setPaymentMethods', data.payment_methods)
           commit('setStep', 'payment')
+          commit('setLoading', false)
         })
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
@@ -172,6 +175,7 @@ const store = new Vuex.Store({
         .then(({data}) => {
           commit('setStep', 'success')
           commit('setOrderId', data)
+          commit('setLoading', false)
         })
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
@@ -218,6 +222,9 @@ const store = new Vuex.Store({
           state[type][item] = address[item]
         }
       })
+    },
+    setLoading (state, payload) {
+      state.loader = payload
     }
   },
   getters: {

@@ -45,6 +45,10 @@ module.exports = {
         ]
       },
       {
+        test: /\.svg$/,
+        loader: 'vue-svg-loader'
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
