@@ -56,25 +56,7 @@
       </p>
     </div>
 
-    <h2>
-      Discount
-    </h2>
-    <div class="discount-code">
-      <form class="discount__form">
-        <BaseInput
-          type="text"
-          v-model="discountCode"
-          label="Apply Discount Code"
-          name="discount_code"
-        />
-        <BaseButton
-          class="button"
-          button-type="button"
-          text="Apply Discount"
-          @click.native="applyDiscount()"
-        />
-      </form>
-    </div>
+    <DiscountCodeForm/>
 
     <BaseButton
       class="button"
@@ -95,19 +77,20 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
+import DiscountCodeForm from '../DiscountCodeForm.vue'
 import EventBus from '../../event-bus'
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
+    DiscountCodeForm,
     AddressFields
   },
   data () {
     return {
       billingAddress: true,
-      selectedPaymentMethod: null,
-      discountCode: ''
+      selectedPaymentMethod: null
     }
   },
   computed: {
@@ -147,9 +130,6 @@ export default {
             console.error('Error with finalize your order - please try again later')
           })
       }
-    },
-    applyDiscount () {
-      this.$store.dispatch('applyDiscount', this.discountCode)
     }
   }
 }

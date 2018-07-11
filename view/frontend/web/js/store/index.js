@@ -49,6 +49,7 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
+    discountCodes: {},
     totals: null
   },
   actions: {
@@ -137,30 +138,44 @@ const store = new Vuex.Store({
           console.error('Looks like there was a problem: \n', error)
         })
     },
-    applyDiscount ({commit, state, getters}, discountCode) {
-      fetch(
-        `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/${discountCode}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
+    applyDiscount ({dispatch, state, getters}, discountCode) {
+      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/${discountCode}`
+      if (getters.isCustomerLoggedIn) {
+        url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons/${discountCode}`
+      }
+
+      const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        url
+      }
+
+      axios(options)
+        .then(response => {
+          if (response.data) {
+            // commit to state discount code and value of discount
+            // show it in totals
+            dispatch('showAllDiscounts')
           }
-        }
-      )
-        .then(response => {
-          if (response.ok) {
-            return response
-          }
-          throw Error(response.statusText)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          console.log('Discount code is: ' + response)
         })
         .catch(error => {
+          // If error we should show user is this coupon code was not found i.e.
+          // What if coupon code expires/was used already?
           console.log('Looks like there was a problem: \n', error)
+        })
+    },
+    showAllDiscounts ({ state, getters }) {
+      let secondUrl = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons`
+      if (getters.isCustomerLoggedIn) {
+        secondUrl = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons`
+      }
+      axios({
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        secondUrl
+      })
+        .then(response => {
+          console.log(response)
         })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
