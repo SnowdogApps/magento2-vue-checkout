@@ -132,7 +132,10 @@ export default {
   },
   methods: {
     setSelectedShippingMethod (val) {
-      this.$store.commit('setSelectedShippingMethod', this.selectedShippingMethod)
+      this.$store.commit(
+        'setItem',
+        {item: 'selectedShippingMethod', value: this.selectedShippingMethod}
+      )
     },
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
@@ -162,7 +165,7 @@ export default {
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.$store.commit('setLoading', true)
+          this.$store.commit('setItem', {item: 'loader', value: true})
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
           this.$store.dispatch('setShippinInformation')

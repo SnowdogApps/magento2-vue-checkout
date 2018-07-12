@@ -101,14 +101,14 @@ export default {
       if (!this.billingAddress) {
         EventBus.$emit('save-address', 'billingAddress')
       }
-      this.$store.commit('setStep', step)
+      this.$store.commit('setItem', {item: 'step', value: step})
     },
     placeOrder () {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
             EventBus.$emit('save-address', 'billingAddress')
-            this.$store.commit('setLoading', true)
+            this.$store.commit('setItem', {item: 'loader', value: true})
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
@@ -116,7 +116,7 @@ export default {
         this.$store.commit('copyShippingAddress')
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
-            this.$store.commit('setLoading', true)
+            this.$store.commit('setItem', {item: 'loader', value: true})
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
