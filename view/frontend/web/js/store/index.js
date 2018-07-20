@@ -275,6 +275,9 @@ const store = new Vuex.Store({
     },
     isCustomerLoggedIn (state) {
       return state.config.isCustomerLoggedIn
+    },
+    totals (state) {
+      return (state.totals !== null) ? state.totals : state.config.totalsData
     }
   }
 })
