@@ -49,7 +49,6 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    discountCodes: {},
     totals: null,
     loader: false
   },
@@ -141,45 +140,55 @@ const store = new Vuex.Store({
           console.error('Looks like there was a problem: \n', error)
         })
     },
-    applyDiscount ({dispatch, state, getters}, discountCode) {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/${discountCode}`
-      if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons/${discountCode}`
-      }
+    manageDiscount ({state, getters, commit}, discount) {
+      return new Promise((resolve, reject) => {
+        let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/`
+        if (getters.isCustomerLoggedIn) {
+          url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons/`
+        }
 
-      const options = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        url
-      }
+        if (discount.method === 'PUT') {
+          url += discount.code
+        }
 
-      axios(options)
-        .then(response => {
-          if (response.data) {
-            // commit to state discount code and value of discount
-            // show it in totals
-            dispatch('showAllDiscounts')
-          }
-        })
-        .catch(error => {
-          // If error we should show user is this coupon code was not found i.e.
-          // What if coupon code expires/was used already?
-          console.log('Looks like there was a problem: \n', error)
-        })
-    },
-    showAllDiscounts ({ state, getters }) {
-      let secondUrl = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons`
-      if (getters.isCustomerLoggedIn) {
-        secondUrl = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons`
-      }
-      axios({
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        secondUrl
+        const options = {
+          method: discount.method,
+          headers: { 'Content-Type': 'application/json' },
+          url
+        }
+
+        axios(options)
+          .then(response => {
+            if (response.data) {
+              commit('setItem', {item: 'loader', value: false})
+              resolve()
+            }
+          })
+          .catch(error => {
+            // If error we should show user is this coupon code was not found i.e.
+            // What if coupon code expires/was used already?
+            reject(error)
+            console.log('Looks like there was a problem: \n', error)
+          })
       })
-        .then(response => {
-          console.log(response)
-        })
+    },
+    getTotals ({ state, getters }) {
+
+    },
+    updateTotals ({ state, getters }) {
+      // let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons`
+      // if (getters.isCustomerLoggedIn) {
+      //   url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons`
+      // }
+
+      // axios({
+      //   method: 'GET',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   url
+      // })
+      //   .then(response => {
+      //     console.log(response)
+      //   })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
       let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`

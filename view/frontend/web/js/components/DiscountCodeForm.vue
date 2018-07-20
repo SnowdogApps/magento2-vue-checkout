@@ -7,29 +7,31 @@
     <div class="discount-code">
       <form class="discount__form">
         <BaseInput
-          v-model="discountCode"
+          v-model="discount.code"
+          :read-only="readOnly"
           type="text"
           label="Apply Discount Code"
           name="discount_code"
         />
 
         <BaseButton
+          v-if="!readOnly"
           class="button"
           button-type="button"
           text="Apply Discount"
+          with-loader
           @click.native="applyDiscount"
         />
-      </form>
 
-      <div class="discount-code__container">
-        <div
-          v-for="(discount, index) in discountCodes"
-          :key="index"
-          class="discount-code__item"
-        >
-          {{ disconut.text }}
-        </div>
-      </div>
+        <BaseButton
+          v-if="readOnly"
+          class="button"
+          button-type="button"
+          text="Remove Discount"
+          with-loader
+          @click.native="removeDiscount"
+        />
+      </form>
     </div>
   </div>
 </template>
@@ -45,18 +47,32 @@ export default {
   },
   data () {
     return {
-      discountCode: ''
-    }
-  },
-  computed: {
-    discountCodes () {
-      return this.$store.state.discountCodes
+      discount: {
+        method: '',
+        code: ''
+      },
+      readOnly: false
     }
   },
   methods: {
     applyDiscount () {
-      // start loading here
-      this.$store.dispatch('applyDiscount', this.discountCode)
+      this.discount.method = 'PUT'
+      this.$store.commit('setItem', { item: 'loader', value: true })
+      this.$store.dispatch('manageDiscount', this.discount)
+        .then(() => {
+          this.readOnly = true
+          this.$store.dispatch('updateTotals')
+        })
+    },
+    removeDiscount () {
+      this.discount.method = 'DELETE'
+      this.$store.commit('setItem', { item: 'loader', value: true })
+      this.$store.dispatch('manageDiscount', this.discount)
+        .then(() => {
+          this.readOnly = false
+          this.discount.code = ''
+          this.$store.dispatch('updateTotals')
+        })
     }
   }
 }
