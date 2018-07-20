@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductsListItem.test.js has the expected html structure 1`] = `
+exports[`ProductsList.test.js has the expected html structure 1`] = `
 <section
   class="products-list"
 >

@@ -50,7 +50,8 @@ const store = new Vuex.Store({
       shippingMethodCode: ''
     },
     discountCodes: {},
-    totals: null
+    totals: null,
+    loader: false
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -74,7 +75,8 @@ const store = new Vuex.Store({
 
       axios(options)
         .then(({data}) => {
-          commit('setShippingMethods', data)
+          commit('setItem', {item: 'shippingMethods', value: data})
+          commit('setItem', {item: 'loader', value: false})
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
@@ -131,8 +133,9 @@ const store = new Vuex.Store({
 
       axios(options)
         .then(({data}) => {
-          commit('setPaymentMethods', data.payment_methods)
-          commit('setStep', 'payment')
+          commit('setItem', {item: 'paymentMethods', value: data.payment_methods})
+          commit('setItem', {item: 'step', value: 'payment'})
+          commit('setItem', {item: 'loader', value: false})
         })
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
@@ -211,8 +214,9 @@ const store = new Vuex.Store({
 
       axios(options)
         .then(({data}) => {
-          commit('setStep', 'success')
-          commit('setOrderId', data)
+          commit('setItem', {item: 'step', value: 'success'})
+          commit('setItem', {item: 'orderId', value: data})
+          commit('setItem', {item: 'loader', value: false})
         })
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
@@ -220,23 +224,8 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    setStep (state, payload) {
-      state.step = payload
-    },
-    setOrderId (state, payload) {
-      state.orderId = payload
-    },
-    setSelectedShippingMethod (state, payload) {
-      state.selectedShippingMethod = payload
-    },
-    setPaymentMethods (state, payload) {
-      state.paymentMethods = payload
-    },
-    setShippingMethods (state, payload) {
-      state.shippingMethods = payload
-    },
-    updateTotals (state, payload) {
-      state.totals = payload
+    setItem (state, {item, value}) {
+      state[item] = value
     },
     copyShippingAddress (state) {
       state.billingAddress = state.shippingAddress
