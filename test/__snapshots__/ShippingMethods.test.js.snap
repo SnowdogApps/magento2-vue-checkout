@@ -3,12 +3,13 @@
 exports[`ShippingMethods.test.js has the expected html structure 1`] = `
 <div>
   <h2>
-    
+
     Shipping methods
-  
+
   </h2>
-   
+
   <div
+
     data-testid="shipping-methods"
   >
     <div
@@ -23,28 +24,28 @@ exports[`ShippingMethods.test.js has the expected html structure 1`] = `
         type="radio"
         value="[object Object]"
       />
-       
+
       <label
         for="flatrate"
       >
         <span
           class="label__text"
         >
-          
+
           Flat Rate - Fixed
-        
+
         </span>
-         
+
         <span
           class="label__price"
         >
-          
+
           $5.00
-        
+
         </span>
       </label>
     </div>
-     
+
     <!---->
   </div>
 </div>
