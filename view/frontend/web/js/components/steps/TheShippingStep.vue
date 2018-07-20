@@ -28,49 +28,7 @@
       />
       <hr>
       <AddressFields type="shippingAddress" />
-      <h2>
-        Shipping methods
-      </h2>
-      <template v-if="shippingMethods.length > 0">
-        <div
-          v-for="method in shippingMethods"
-          v-if="method.available"
-          :key="method.id"
-          :class="{'input--error': errors.has('shipping-method') }"
-        >
-          <input
-            v-validate="'required'"
-            v-model="selectedShippingMethod"
-            :value="method"
-            :id="method.carrier_code"
-            type="radio"
-            name="shipping-method"
-            data-vv-as="Shipping method"
-            @change="setSelectedShippingMethod"
-          >
-          <label :for="method.carrier_code">
-            <span class="label__text">
-              {{ method.carrier_title }} - {{ method.method_title }}
-            </span>
-
-            <span class="label__price">
-              {{ method.price_incl_tax | currency }}
-            </span>
-          </label>
-        </div>
-        <p
-          v-show="errors.has('shipping-method')"
-          class="input__message"
-        >
-          {{ errors.first('shipping-method') }}
-        </p>
-      </template>
-      <template v-else>
-        <p>
-          In this country we don't handle any shipping methods.
-        </p>
-      </template>
-
+      <ShippingMethods :shipping-methods="shippingMethods"/>
       <BaseButton
         type="submit"
         text="Next Step"
@@ -84,22 +42,23 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
+import ShippingMethods from '../ShippingMethods.vue'
 import EventBus from '../../event-bus'
 import axios from 'axios'
 
 export default {
   components: {
+    AddressFields,
     BaseButton,
     BaseInput,
-    AddressFields
+    ShippingMethods
   },
   data () {
     return {
       customer: {
         email: '',
         emailAvailable: false
-      },
-      selectedShippingMethod: null
+      }
     }
   },
   computed: {
@@ -131,12 +90,6 @@ export default {
     }
   },
   methods: {
-    setSelectedShippingMethod (val) {
-      this.$store.commit(
-        'setItem',
-        {item: 'selectedShippingMethod', value: this.selectedShippingMethod}
-      )
-    },
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
         if (result) {
