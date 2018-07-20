@@ -7,7 +7,7 @@
     "dev": "webpack --watch",
     "build": "webpack",
     "lint": "eslint --ext .vue,.js view",
-    "e2e": "testcafe chrome tests/e2e/*.test.js --app \"npm run dev\" --app-init-delay 10000"
+    "e2e": "testcafe chrome tests/e2e/*.test.js --app \"npm run dev\" --app-init-delay 1000"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -32,6 +32,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-testcafe": "^0.2.1",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "testcafe": "^0.20.3",
