@@ -165,30 +165,33 @@ const store = new Vuex.Store({
             }
           })
           .catch(error => {
-            // If error we should show user is this coupon code was not found i.e.
-            // What if coupon code expires/was used already?
-            reject(error)
+            reject(error.request)
             console.log('Looks like there was a problem: \n', error)
           })
       })
     },
-    getTotals ({ state, getters }) {
+    getTotals ({ state, commit, getters }) {
+      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/totals/`
+      if (getters.isCustomerLoggedIn) {
+        url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/totals/`
+      }
 
-    },
-    updateTotals ({ state, getters }) {
-      // let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons`
-      // if (getters.isCustomerLoggedIn) {
-      //   url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons`
-      // }
+      const options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        url
+      }
 
-      // axios({
-      //   method: 'GET',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   url
-      // })
-      //   .then(response => {
-      //     console.log(response)
-      //   })
+      axios(options)
+        .then(response => {
+          if (response.data) {
+            commit('setItem', { item: 'totals', value: response.data })
+            commit('setItem', {item: 'loader', value: false})
+          }
+        })
+        .catch(error => {
+          console.log('Looks like there was a problem: \n', error)
+        })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
       let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`

@@ -136,6 +136,7 @@ export default {
         'setItem',
         {item: 'selectedShippingMethod', value: this.selectedShippingMethod}
       )
+      this.$store.dispatch('getTotals')
     },
     checkIsEmailAvailable () {
       this.$validator.validate('email').then((result) => {
@@ -169,6 +170,7 @@ export default {
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
           this.$store.dispatch('setShippinInformation')
+          this.$store.dispatch('getTotals')
         }
       })
         .catch(error => {

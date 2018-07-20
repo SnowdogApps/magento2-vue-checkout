@@ -114,6 +114,7 @@ export default {
           if (result) {
             EventBus.$emit('save-address', 'billingAddress')
             this.$store.commit('setItem', {item: 'loader', value: true})
+            this.$store.dispatch('getTotals')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
           }
         })
