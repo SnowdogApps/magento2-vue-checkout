@@ -3,18 +3,23 @@
     <h2>
       Shipping methods
     </h2>
-    <template v-if="shippingMethods.length">
+    <div
+      v-if="shippingMethods.length"
+      data-testid="shipping-methods"
+    >
       <div
         v-for="method in shippingMethods"
         v-if="method.available"
-        :key="method.id"
-        :class="{'input--error': errors.has('shipping-method') }"
+        :key="method.carrier_code"
+        :class="['input', {'input--error': errors.has('shipping-method') }]"
+        data-testid="shipping-method"
       >
         <input
           v-validate="'required'"
           v-model="selectedShippingMethod"
           :value="method"
           :id="method.carrier_code"
+          :data-testid="`method-radiobutton-${method.carrier_code}`"
           type="radio"
           name="shipping-method"
           data-vv-as="Shipping method"
@@ -31,17 +36,17 @@
         </label>
       </div>
       <p
-        v-show="errors.has('shipping-method')"
+        v-if="errors.has('shipping-method')"
         class="input__message"
       >
         {{ errors.first('shipping-method') }}
       </p>
-    </template>
-    <template v-else>
+    </div>
+    <div v-else>
       <p>
         In this country we don't handle any shipping methods.
       </p>
-    </template>
+    </div>
   </div>
 </template>
 
