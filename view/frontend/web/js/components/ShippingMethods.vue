@@ -1,42 +1,52 @@
 <template>
-  <div
-    v-if="options.length > 0"
-    :class="containerClass"
-  >
-    <template v-for="option in options">
+  <div>
+    <h2>
+      Shipping methods
+    </h2>
+    <div
+      v-if="shippingMethods.length"
+      data-testid="shipping-methods"
+    >
       <div
-        v-if="option.available"
-        :key="option.id"
-        :class="fieldClass"
+        v-for="method in shippingMethods"
+        v-if="method.available"
+        :key="method.method_code"
+        :class="['input', {'input--error': errors.has('shipping-method') }]"
+        data-testid="shipping-method"
       >
         <input
-          :id="option.carrier_code"
-          :name="name"
-          :value="option.carrier_code"
-          :class="inputClass"
-          :data-method-code="option.method_code"
+          v-validate="'required'"
+          v-model="selectedShippingMethod"
+          :value="method"
+          :id="method.method_code"
+          :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
+          name="shipping-method"
+          data-vv-as="Shipping method"
+          @change="setSelectedShippingMethod"
         >
-        <label
-          :class="labelClass"
-          :for="option.carrier_code"
-        >
+        <label :for="method.method_code">
           <span class="label__text">
-            {{ option.carrier_title }} - {{ option.method_title }}
+            {{ method.carrier_title }} - {{ method.method_title }}
           </span>
 
           <span class="label__price">
-            {{ option.price_incl_tax | currency }}
+            {{ method.price_incl_tax | currency }}
           </span>
         </label>
       </div>
-    </template>
-
-    <template v-if="options.length === 0">
+      <p
+        v-if="errors.has('shipping-method')"
+        class="input__message"
+      >
+        {{ errors.first('shipping-method') }}
+      </p>
+    </div>
+    <div v-else>
       <p>
         In this country we don't handle any shipping methods.
       </p>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -44,29 +54,25 @@
 export default {
   inject: ['$validator'],
   props: {
-    options: {
+    shippingMethods: {
       type: Array,
       required: true
-    },
-    labelClass: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    containerClass: {
-      type: String,
-      required: true
-    },
-    fieldClass: {
-      type: String,
-      required: true
-    },
-    inputClass: {
-      type: String,
-      required: true
+    }
+  },
+  data () {
+    return {
+      selectedShippingMethod: null
+    }
+  },
+  methods: {
+    setSelectedShippingMethod (val) {
+      this.$store.commit(
+        'setItem',
+        {
+          item: 'selectedShippingMethod',
+          value: this.selectedShippingMethod
+        }
+      )
     }
   }
 }
