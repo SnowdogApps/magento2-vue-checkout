@@ -35,6 +35,7 @@ describe('ShippingMethods.test.js', () => {
     mutations = {
       setItem: jest.fn()
     }
+
     store = new Vuex.Store({
       mutations
     })

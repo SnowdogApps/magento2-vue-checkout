@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TheShippingStep.test.js has the expected html structure 1`] = `
+<section
+  class="shipping-address"
+>
+  <h1>
+    
+    Shipping Step
+  
+  </h1>
+   
+  <hr />
+   
+  <h2>
+    
+    Shipping address
+  
+  </h2>
+   
+  <form
+    class="shipping-address__form"
+  >
+    <baseinput-stub />
+     
+    <span>
+      
+            You already have an account with us.
+            Sign in 
+      <a
+        href="http://localhost/customer/account/login/"
+      >
+        here
+      </a>
+       or continue as guest.
+          
+    </span>
+     
+    <hr />
+     
+    <addressfields-stub />
+     
+    <shippingmethods-stub />
+     
+    <basebutton-stub />
+  </form>
+</section>
+`;
