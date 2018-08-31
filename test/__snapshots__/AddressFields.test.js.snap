@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddressFields.test.js has the expected html structure 1`] = `
+<div>
+  <baseinput-stub />
+   
+  <baseinput-stub />
+   
+  <baseinput-stub />
+   
+  <baseinput-stub />
+   
+  <baseinput-stub />
+   
+  <div
+    class=""
+  >
+    <label
+      for="country"
+    >
+      
+      Select Country
+    
+    </label>
+     
+    <vue-multiselect-stub
+      aria-invalid="false"
+      aria-required="true"
+      data-vv-as="Country"
+      id="country"
+      label="label"
+      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+      placeholder="Select country"
+    />
+     
+    <span
+      class="input__message"
+      style="display: none;"
+    >
+      
+      
+    
+    </span>
+  </div>
+   
+  <baseinput-stub />
+   
+  <baseinput-stub />
+   
+  <!---->
+   
+  <div
+    class=""
+  >
+    <label
+      for="region_id"
+    >
+      
+      Select State/Province
+    
+    </label>
+     
+    <vue-multiselect-stub
+      aria-invalid="false"
+      aria-required="true"
+      data-vv-as="Region"
+      id="region_id"
+      label="label"
+      options="[object Object]"
+      placeholder="Select State/Province"
+    />
+     
+    <span
+      class="input__message"
+      style="display: none;"
+    >
+      
+      
+    
+    </span>
+  </div>
+   
+  <baseinput-stub />
+</div>
+`;
