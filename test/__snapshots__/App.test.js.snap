@@ -4,14 +4,26 @@ exports[`App.test.js has the expected html structure 1`] = `
 <div
   class="checkout"
 >
-  <theshippingstep-stub />
+  <progressbar-stub
+    class="checkout__progress-bar"
+  />
    
-  <thepaymentstep-stub />
+  <main
+    class="checkout__wrapper"
+  >
+    <theshippingstep-stub />
+     
+    <thepaymentstep-stub />
+     
+    <thesuccessstep-stub />
+  </main>
    
-  <thesuccessstep-stub />
-   
-  <productslist-stub />
-   
-  <totalsdata-stub />
+  <aside
+    class="checkout__sidebar"
+  >
+    <productslist-stub />
+     
+    <totalsdata-stub />
+  </aside>
 </div>
 `;

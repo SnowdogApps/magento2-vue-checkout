@@ -1,10 +1,15 @@
 <template>
   <div class="checkout">
-    <TheShippingStep/>
-    <ThePaymentStep/>
-    <TheSuccessStep/>
-    <ProductsList/>
-    <TotalsData/>
+    <ProgressBar class="checkout__progress-bar"/>
+    <main class="checkout__wrapper">
+      <TheShippingStep/>
+      <ThePaymentStep/>
+      <TheSuccessStep/>
+    </main>
+    <aside class="checkout__sidebar">
+      <ProductsList/>
+      <TotalsData/>
+    </aside>
   </div>
 </template>
 
@@ -14,6 +19,7 @@ import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 import TheSuccessStep from './components/steps/TheSuccessStep.vue'
 import TotalsData from './components/TotalsData.vue'
 import ProductsList from './components/ProductsList.vue'
+import ProgressBar from './components/ProgressBar.vue'
 
 export default {
   components: {
@@ -21,9 +27,11 @@ export default {
     ThePaymentStep,
     TheSuccessStep,
     TotalsData,
-    ProductsList
+    ProductsList,
+    ProgressBar
   }
 }
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="../assets/sass/main.scss" lang="scss"></style>

@@ -3,10 +3,6 @@
     v-if="step === 'shipping'"
     class="shipping-address"
   >
-    <h1>
-      Shipping Step
-    </h1>
-    <hr>
     <h2>
       Shipping address
     </h2>

@@ -3,10 +3,6 @@
     v-if="step === 'payment'"
     class="billing-address"
   >
-    <h1>
-      Review & Payments Step
-    </h1>
-    <hr>
     <h2>
       Billing Address
     </h2>
