@@ -49,8 +49,7 @@ const store = new Vuex.Store({
       shippingCarrierCode: '',
       shippingMethodCode: ''
     },
-    totals: null,
-    loader: false
+    totals: null
   },
   actions: {
     updateShippingMethods ({commit, state, getters}, countryId) {
@@ -75,70 +74,71 @@ const store = new Vuex.Store({
       axios(options)
         .then(({data}) => {
           commit('setItem', {item: 'shippingMethods', value: data})
-          commit('setItem', {item: 'loader', value: false})
         })
         .catch(error => {
           console.log('Looks like there was a problem: \n', error)
         })
     },
     setShippinInformation ({commit, state, getters}) {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
-      if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
-      }
-
-      const shippingInformation = {
-        addressInformation: {
-          shipping_method_code: state.selectedShippingMethod.method_code,
-          shipping_carrier_code: state.selectedShippingMethod.carrier_code
+      return new Promise((resolve, reject) => {
+        let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
+        if (getters.isCustomerLoggedIn) {
+          url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
         }
-      }
 
-      const shippingAddress = { ...state.shippingAddress }
-      shippingAddress.country_id = state.shippingAddress.country_id.value
+        const shippingInformation = {
+          addressInformation: {
+            shipping_method_code: state.selectedShippingMethod.method_code,
+            shipping_carrier_code: state.selectedShippingMethod.carrier_code
+          }
+        }
 
-      if (getters.regionsByCountryId(shippingAddress.country_id).length) {
-        shippingAddress.region_id = state.shippingAddress.region_id.value
-        delete shippingAddress.region
-      } else {
-        delete shippingAddress.region_id
-      }
+        const shippingAddress = { ...state.shippingAddress }
+        shippingAddress.country_id = state.shippingAddress.country_id.value
 
-      shippingInformation.addressInformation.shipping_address = shippingAddress
-
-      if (state.billingAddress.city === '') {
-        shippingInformation.addressInformation.billing_address = shippingAddress
-      } else {
-        const billingAddress = { ...state.billing_address }
-
-        billingAddress.country_id = state.billingAddress.country_id.value
-
-        if (getters.regionsByCountryId(billingAddress.country_id).length) {
-          billingAddress.region_id = state.billingAddress.region_id.value
-          delete billingAddress.region
+        if (getters.regionsByCountryId(shippingAddress.country_id).length) {
+          shippingAddress.region_id = state.shippingAddress.region_id.value
+          delete shippingAddress.region
         } else {
-          delete billingAddress.region_id
+          delete shippingAddress.region_id
         }
 
-        shippingInformation.addressInformation.billing_address = billingAddress
-      }
+        shippingInformation.addressInformation.shipping_address = shippingAddress
 
-      const options = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify(shippingInformation),
-        url
-      }
+        if (state.billingAddress.city === '') {
+          shippingInformation.addressInformation.billing_address = shippingAddress
+        } else {
+          const billingAddress = { ...state.billing_address }
 
-      axios(options)
-        .then(({data}) => {
-          commit('setItem', {item: 'paymentMethods', value: data.payment_methods})
-          commit('setItem', {item: 'step', value: 'payment'})
-          commit('setItem', {item: 'loader', value: false})
-        })
-        .catch(error => {
-          console.error('Looks like there was a problem: \n', error)
-        })
+          billingAddress.country_id = state.billingAddress.country_id.value
+
+          if (getters.regionsByCountryId(billingAddress.country_id).length) {
+            billingAddress.region_id = state.billingAddress.region_id.value
+            delete billingAddress.region
+          } else {
+            delete billingAddress.region_id
+          }
+
+          shippingInformation.addressInformation.billing_address = billingAddress
+        }
+
+        const options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          data: JSON.stringify(shippingInformation),
+          url
+        }
+
+        axios(options)
+          .then(({data}) => {
+            commit('setItem', {item: 'paymentMethods', value: data.payment_methods})
+            commit('setItem', {item: 'step', value: 'payment'})
+            resolve(true)
+          })
+          .catch(error => {
+            console.error('Looks like there was a problem: \n', error)
+          })
+      })
     },
     manageDiscount ({state, getters, commit}, discount) {
       return new Promise((resolve, reject) => {
@@ -160,7 +160,6 @@ const store = new Vuex.Store({
         axios(options)
           .then(response => {
             if (response.data) {
-              commit('setItem', {item: 'loader', value: false})
               resolve()
             }
           })
@@ -171,68 +170,71 @@ const store = new Vuex.Store({
       })
     },
     getTotals ({ state, commit, getters }) {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/totals/`
-      if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/totals/`
-      }
+      return new Promise((resolve, reject) => {
+        let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/totals/`
+        if (getters.isCustomerLoggedIn) {
+          url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/totals/`
+        }
 
-      const options = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        url
-      }
+        const options = {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          url
+        }
 
-      axios(options)
-        .then(response => {
-          if (response.data) {
-            commit('setItem', { item: 'totals', value: response.data })
-            commit('setItem', {item: 'loader', value: false})
-          }
-        })
-        .catch(error => {
-          console.log('Looks like there was a problem: \n', error)
-        })
+        axios(options)
+          .then(response => {
+            if (response.data) {
+              commit('setItem', { item: 'totals', value: response.data })
+            }
+          })
+          .catch(error => {
+            console.log('Looks like there was a problem: \n', error)
+          })
+      })
     },
     placeOrder ({commit, state, getters}, paymentMethod) {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
-      if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
-      }
-
-      const billingAddress = { ...state.billingAddress }
-      billingAddress.country_id = state.billingAddress.country_id.value
-
-      if (getters.regionsByCountryId(billingAddress.country_id).length) {
-        billingAddress.region_id = state.billingAddress.region_id.value
-        delete billingAddress.region
-      } else {
-        delete billingAddress.region_id
-      }
-
-      const data = {
-        billingAddress,
-        email: state.customer.email,
-        paymentMethod: {
-          method: paymentMethod.code
+      return new Promise((resolve, reject) => {
+        let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+        if (getters.isCustomerLoggedIn) {
+          url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
         }
-      }
 
-      const options = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: JSON.stringify(data),
-        url
-      }
+        const billingAddress = { ...state.billingAddress }
+        billingAddress.country_id = state.billingAddress.country_id.value
 
-      axios(options)
-        .then(({data}) => {
-          commit('setItem', {item: 'step', value: 'success'})
-          commit('setItem', {item: 'orderId', value: data})
-          commit('setItem', {item: 'loader', value: false})
-        })
-        .catch(error => {
-          console.error('Looks like there was a problem: \n', error)
-        })
+        if (getters.regionsByCountryId(billingAddress.country_id).length) {
+          billingAddress.region_id = state.billingAddress.region_id.value
+          delete billingAddress.region
+        } else {
+          delete billingAddress.region_id
+        }
+
+        const data = {
+          billingAddress,
+          email: state.customer.email,
+          paymentMethod: {
+            method: paymentMethod.code
+          }
+        }
+
+        const options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          data: JSON.stringify(data),
+          url
+        }
+
+        axios(options)
+          .then(({data}) => {
+            commit('setItem', {item: 'step', value: 'success'})
+            commit('setItem', {item: 'orderId', value: data})
+            resolve(true)
+          })
+          .catch(error => {
+            console.error('Looks like there was a problem: \n', error)
+          })
+      })
     }
   },
   mutations: {

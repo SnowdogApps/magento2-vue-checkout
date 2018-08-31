@@ -16,6 +16,7 @@
 
         <BaseButton
           v-if="!readOnly"
+          :loader="loader"
           class="button"
           button-type="button"
           text="Apply Discount"
@@ -25,10 +26,10 @@
 
         <BaseButton
           v-if="readOnly"
+          :loader="loader"
           class="button"
           button-type="button"
           text="Remove Discount"
-          with-loader
           @click.native="removeDiscount"
         />
 
@@ -58,6 +59,7 @@ export default {
         method: '',
         code: ''
       },
+      loader: false,
       readOnly: false,
       error: {
         isVisible: false,
@@ -69,17 +71,18 @@ export default {
     applyDiscount () {
       this.error.isVisible = false
       this.discount.method = 'PUT'
-      this.$store.commit('setItem', { item: 'loader', value: true })
+      this.loader = true
 
       this.$store.dispatch('manageDiscount', this.discount)
         .then(() => {
           this.readOnly = true
           this.$store.dispatch('getTotals')
+          this.loader = false
         })
         .catch((error) => {
           this.error.isVisible = true
           this.readOnly = false
-          this.$store.commit('setItem', { item: 'loader', value: false })
+          this.loader = false
 
           if (error.status === 404) {
             this.error.message = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`
@@ -91,7 +94,7 @@ export default {
     removeDiscount () {
       this.error.isVisible = false
       this.discount.method = 'DELETE'
-      this.$store.commit('setItem', { item: 'loader', value: true })
+      this.loader = true
 
       this.$store.dispatch('manageDiscount', this.discount)
         .then(() => {
@@ -102,7 +105,7 @@ export default {
         .catch((error) => {
           this.error.isVisible = true
           this.readOnly = false
-          this.$store.commit('setItem', { item: 'loader', value: false })
+          this.loader = false
 
           if (error.status === 404) {
             this.error.message = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`

@@ -30,9 +30,9 @@
       <AddressFields type="shippingAddress" />
       <ShippingMethods :shipping-methods="shippingMethods"/>
       <BaseButton
+        :loader="loader"
         type="submit"
         text="Next Step"
-        with-loader
       />
     </form>
   </section>
@@ -45,6 +45,7 @@ import BaseInput from '../BaseInput.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import EventBus from '../../event-bus'
 import axios from 'axios'
+
 export default {
   components: {
     AddressFields,
@@ -57,7 +58,8 @@ export default {
       customer: {
         email: '',
         emailAvailable: false
-      }
+      },
+      loader: false
     }
   },
   computed: {
@@ -116,10 +118,12 @@ export default {
     onFormSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.$store.commit('setItem', {item: 'loader', value: true})
+          this.loader = true
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
-          this.$store.dispatch('setShippinInformation')
+          this.$store.dispatch('setShippinInformation').then(result => {
+            this.loader = false
+          })
           this.$store.dispatch('getTotals')
         }
       })

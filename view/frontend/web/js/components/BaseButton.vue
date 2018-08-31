@@ -1,14 +1,13 @@
 <template>
   <button
     :type="type"
-    :disabled="isBlocked"
     class="button"
   >
     <span class="button__handler">
       <span class="button__text">
         {{ text }}
       </span>
-      <BaseLoader v-if="withLoader"/>
+      <BaseLoader v-show="loader" />
     </span>
   </button>
 </template>
@@ -29,14 +28,9 @@ export default {
       type: String,
       required: true
     },
-    withLoader: {
+    loader: {
       default: false,
       type: Boolean
-    }
-  },
-  computed: {
-    isBlocked () {
-      return this.$store.state.loader
     }
   }
 }
@@ -56,6 +50,25 @@ export default {
 
   &:disabled {
     opacity: 0.5;
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
+
+  svg {
+    width: 36px;
+    height: 8px;
+
+    circle {
+      fill: #47b784;
+      stroke: none;
+    }
   }
 }
 </style>
