@@ -1,6 +1,6 @@
 <template>
   <section
-    v-if="step !== 'success'"
+    v-if="step === 'payment'"
     class="totals"
   >
     <h2>

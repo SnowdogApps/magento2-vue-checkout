@@ -27,6 +27,7 @@
         >
         <label :for="method.method_code">
           <span class="label__text">
+            {{ currentShippingMethod === method.method_code }}
             {{ method.carrier_title }} - {{ method.method_title }}
           </span>
 
@@ -63,6 +64,14 @@ export default {
     return {
       selectedShippingMethod: null
     }
+  },
+  computed: {
+    currentShippingMethod () {
+      return this.$store.state.selectedShippingMethod
+    }
+  },
+  created () {
+    this.selectedShippingMethod = this.currentShippingMethod
   },
   methods: {
     setSelectedShippingMethod (val) {
