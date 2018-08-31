@@ -40,7 +40,9 @@
     >
       Discount:
 
-      {{ totals.discount_amount | currency }}
+      <strong>
+        {{ totals.discount_amount | currency }}
+      </strong>
     </p>
 
     <p

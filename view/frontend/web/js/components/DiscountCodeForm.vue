@@ -8,14 +8,14 @@
       <form class="discount__form">
         <BaseInput
           v-model="discount.code"
-          :read-only="readOnly"
+          :read-only="couponCode !== null"
           type="text"
           label="Apply Discount Code"
           name="discount_code"
         />
 
         <BaseButton
-          v-if="!readOnly"
+          v-if="couponCode === null"
           :loader="loader"
           class="button"
           text="Apply Discount"
@@ -58,8 +58,18 @@ export default {
         code: ''
       },
       loader: false,
-      readOnly: false,
       error: ''
+    }
+  },
+  computed: {
+    couponCode () {
+      return this.$store.getters.couponCode
+    }
+  },
+  created () {
+    if (this.couponCode !== '') {
+      this.discount.code = this.couponCode
+      this.discount.method = 'PUT'
     }
   },
   methods: {
@@ -70,12 +80,10 @@ export default {
 
       this.$store.dispatch('manageDiscount', this.discount)
         .then(() => {
-          this.readOnly = true
           this.$store.dispatch('getTotals')
           this.loader = false
         })
         .catch((error) => {
-          this.readOnly = false
           this.loader = false
 
           if (error.status === 404) {
@@ -92,13 +100,11 @@ export default {
 
       this.$store.dispatch('manageDiscount', this.discount)
         .then(() => {
-          this.readOnly = false
           this.loader = false
           this.discount.code = ''
           this.$store.dispatch('getTotals')
         })
         .catch((error) => {
-          this.readOnly = false
           this.loader = false
 
           if (error.status === 404) {

@@ -144,7 +144,7 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/`
         if (getters.isCustomerLoggedIn) {
-          url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/coupons/`
+          url = `${state.baseUrl}rest/V1/carts/mine/coupons/`
         }
 
         if (discount.method === 'PUT') {
@@ -173,7 +173,7 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/totals/`
         if (getters.isCustomerLoggedIn) {
-          url = `${state.baseUrl}rest/V1/carts/${getters.cartId}/totals/`
+          url = `${state.baseUrl}rest/V1/carts/mine/totals/`
         }
 
         const options = {
@@ -283,6 +283,13 @@ const store = new Vuex.Store({
     },
     totals (state) {
       return (state.totals !== null) ? state.totals : state.config.totalsData
+    },
+    couponCode (state, getters) {
+      if (getters.totals.hasOwnProperty('coupon_code')) {
+        return getters.totals.coupon_code
+      } else {
+        return null
+      }
     }
   }
 })
