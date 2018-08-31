@@ -116,12 +116,12 @@ export default {
         })
     },
     onFormSubmit () {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.loader = true
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
-          this.$store.dispatch('setShippinInformation').then(result => {
+          this.$store.dispatch('setShippinInformation').then(() => {
             this.loader = false
           })
           this.$store.dispatch('getTotals')

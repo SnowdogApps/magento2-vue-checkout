@@ -116,12 +116,10 @@ export default {
             this.loader = true
             EventBus.$emit('save-address', 'billingAddress')
             this.$store.dispatch('getTotals')
-            this.$store.dispatch(
-              'placeOrder',
-              this.selectedPaymentMethod
-            ).then(result => {
-              this.loader = false
-            })
+            this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+              .then(() => {
+                this.loader = false
+              })
           }
         })
       } else {
@@ -129,12 +127,10 @@ export default {
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
             this.loader = true
-            this.$store.dispatch(
-              'placeOrder',
-              this.selectedPaymentMethod
-            ).then(result => {
-              this.loader = false
-            })
+            this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+              .then(() => {
+                this.loader = false
+              })
           }
         })
           .catch(() => {

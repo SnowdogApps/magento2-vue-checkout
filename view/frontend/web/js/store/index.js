@@ -133,7 +133,7 @@ const store = new Vuex.Store({
           .then(({data}) => {
             commit('setItem', {item: 'paymentMethods', value: data.payment_methods})
             commit('setItem', {item: 'step', value: 'payment'})
-            resolve(true)
+            resolve()
           })
           .catch(error => {
             console.error('Looks like there was a problem: \n', error)
@@ -229,7 +229,7 @@ const store = new Vuex.Store({
           .then(({data}) => {
             commit('setItem', {item: 'step', value: 'success'})
             commit('setItem', {item: 'orderId', value: data})
-            resolve(true)
+            resolve()
           })
           .catch(error => {
             console.error('Looks like there was a problem: \n', error)
