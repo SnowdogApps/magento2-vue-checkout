@@ -18,26 +18,24 @@
           v-if="!readOnly"
           :loader="loader"
           class="button"
-          button-type="button"
           text="Apply Discount"
           with-loader
           @click.native="applyDiscount"
         />
 
         <BaseButton
-          v-if="readOnly"
+          v-else
           :loader="loader"
           class="button"
-          button-type="button"
           text="Remove Discount"
           @click.native="removeDiscount"
         />
 
         <p
-          v-if="error.isVisible"
+          v-if="error"
           class="discount__form-error"
         >
-          {{ error.message }}
+          {{ error }}
         </p>
       </form>
     </div>
@@ -61,15 +59,12 @@ export default {
       },
       loader: false,
       readOnly: false,
-      error: {
-        isVisible: false,
-        message: ''
-      }
+      error: ''
     }
   },
   methods: {
     applyDiscount () {
-      this.error.isVisible = false
+      this.error = ''
       this.discount.method = 'PUT'
       this.loader = true
 
@@ -80,37 +75,36 @@ export default {
           this.loader = false
         })
         .catch((error) => {
-          this.error.isVisible = true
           this.readOnly = false
           this.loader = false
 
           if (error.status === 404) {
-            this.error.message = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`
+            this.error = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`
           } else {
-            this.error.message = 'Something goes wrong when trying to send coupon code. Please try again later.'
+            this.error = 'Something goes wrong when trying to send coupon code. Please try again later.'
           }
         })
     },
     removeDiscount () {
-      this.error.isVisible = false
+      this.error = ''
       this.discount.method = 'DELETE'
       this.loader = true
 
       this.$store.dispatch('manageDiscount', this.discount)
         .then(() => {
           this.readOnly = false
+          this.loader = false
           this.discount.code = ''
           this.$store.dispatch('getTotals')
         })
         .catch((error) => {
-          this.error.isVisible = true
           this.readOnly = false
           this.loader = false
 
           if (error.status === 404) {
-            this.error.message = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`
+            this.error = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`
           } else {
-            this.error.message = 'Something goes wrong when trying to delete coupon code. Please try again later.'
+            this.error = 'Something goes wrong when trying to delete coupon code. Please try again later.'
           }
         })
     }
