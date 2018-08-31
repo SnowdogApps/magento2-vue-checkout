@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - discount code support
 - totals section
 - vue-multiselect
+- basic 2 columns layout styles
+- progress bar component
 
 ### Changed
 - currency vue filter
