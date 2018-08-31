@@ -55,9 +55,12 @@
         {{ errors.first('payment-method') }}
       </p>
     </div>
+
+    <DiscountCodeForm/>
+
     <BaseButton
+      :loader="loader"
       text="Place order"
-      with-loader
       @click.native="placeOrder"
     />
     <BaseButton
@@ -71,18 +74,21 @@
 import AddressFields from '../AddressFields.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
+import DiscountCodeForm from '../DiscountCodeForm.vue'
 import EventBus from '../../event-bus'
 
 export default {
   components: {
     BaseButton,
     BaseCheckbox,
+    DiscountCodeForm,
     AddressFields
   },
   data () {
     return {
       billingAddress: true,
-      selectedPaymentMethod: null
+      selectedPaymentMethod: null,
+      loader: false
     }
   },
   computed: {
@@ -107,17 +113,24 @@ export default {
       if (!this.billingAddress) {
         this.$validator.validateAll().then((result) => {
           if (result) {
+            this.loader = true
             EventBus.$emit('save-address', 'billingAddress')
-            this.$store.commit('setItem', {item: 'loader', value: true})
+            this.$store.dispatch('getTotals')
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+              .then(() => {
+                this.loader = false
+              })
           }
         })
       } else {
         this.$store.commit('copyShippingAddress')
         this.$validator.validate('payment-method').then((result) => {
           if (result) {
-            this.$store.commit('setItem', {item: 'loader', value: true})
+            this.loader = true
             this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+              .then(() => {
+                this.loader = false
+              })
           }
         })
           .catch(() => {

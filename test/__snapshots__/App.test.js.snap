@@ -11,5 +11,7 @@ exports[`App.test.js has the expected html structure 1`] = `
   <thesuccessstep-stub />
    
   <productslist-stub />
+   
+  <totalsdata-stub />
 </div>
 `;

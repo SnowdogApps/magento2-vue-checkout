@@ -30,9 +30,9 @@
       <AddressFields type="shippingAddress" />
       <ShippingMethods :shipping-methods="shippingMethods"/>
       <BaseButton
+        :loader="loader"
         type="submit"
         text="Next Step"
-        with-loader
       />
     </form>
   </section>
@@ -58,7 +58,8 @@ export default {
       customer: {
         email: '',
         emailAvailable: false
-      }
+      },
+      loader: false
     }
   },
   computed: {
@@ -101,7 +102,6 @@ export default {
             }),
             url: `${this.baseUrl}rest/V1/customers/isEmailAvailable`
           }
-
           axios(options)
             .then(({data}) => {
               this.customer.emailAvailable = data
@@ -116,12 +116,15 @@ export default {
         })
     },
     onFormSubmit () {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.commit('setItem', {item: 'loader', value: true})
+          this.loader = true
           this.$store.commit('setCustomerEmail', this.customer.email)
           EventBus.$emit('save-address', 'shippingAddress')
-          this.$store.dispatch('setShippinInformation')
+          this.$store.dispatch('setShippinInformation').then(() => {
+            this.loader = false
+          })
+          this.$store.dispatch('getTotals')
         }
       })
         .catch(error => {

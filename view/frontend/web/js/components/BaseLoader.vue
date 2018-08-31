@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="loader"
-    class="loader"
-  >
+  <div class="loader">
     <LoaderIcon/>
   </div>
 </template>
@@ -13,11 +10,6 @@ import LoaderIcon from '../../assets/loader.svg'
 export default {
   components: {
     LoaderIcon
-  },
-  computed: {
-    loader () {
-      return this.$store.state.loader
-    }
   }
 }
 </script>

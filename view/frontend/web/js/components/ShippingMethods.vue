@@ -10,7 +10,7 @@
       <div
         v-for="method in shippingMethods"
         v-if="method.available"
-        :key="method.carrier_code"
+        :key="method.method_code"
         :class="['input', {'input--error': errors.has('shipping-method') }]"
         data-testid="shipping-method"
       >
@@ -18,14 +18,14 @@
           v-validate="'required'"
           v-model="selectedShippingMethod"
           :value="method"
-          :id="method.carrier_code"
-          :data-testid="`method-radiobutton-${method.carrier_code}`"
+          :id="method.method_code"
+          :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
           name="shipping-method"
           data-vv-as="Shipping method"
           @change="setSelectedShippingMethod"
         >
-        <label :for="method.carrier_code">
+        <label :for="method.method_code">
           <span class="label__text">
             {{ method.carrier_title }} - {{ method.method_title }}
           </span>
@@ -63,6 +63,14 @@ export default {
     return {
       selectedShippingMethod: null
     }
+  },
+  computed: {
+    currentShippingMethod () {
+      return this.$store.state.selectedShippingMethod
+    }
+  },
+  created () {
+    this.selectedShippingMethod = this.currentShippingMethod
   },
   methods: {
     setSelectedShippingMethod (val) {

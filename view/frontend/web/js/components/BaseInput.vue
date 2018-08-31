@@ -10,6 +10,7 @@
       :name="name"
       :data-vv-as="label"
       :value="value"
+      :readonly="readOnly"
       @input="$emit('input', $event.target.value)"
     >
     <span
@@ -45,6 +46,10 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     }
   }
 }

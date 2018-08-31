@@ -4,6 +4,7 @@
     <ThePaymentStep/>
     <TheSuccessStep/>
     <ProductsList/>
+    <TotalsData/>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import TheShippingStep from './components/steps/TheShippingStep.vue'
 import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 import TheSuccessStep from './components/steps/TheSuccessStep.vue'
+import TotalsData from './components/TotalsData.vue'
 import ProductsList from './components/ProductsList.vue'
 
 export default {
@@ -18,6 +20,7 @@ export default {
     TheShippingStep,
     ThePaymentStep,
     TheSuccessStep,
+    TotalsData,
     ProductsList
   }
 }
