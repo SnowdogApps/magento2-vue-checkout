@@ -7,7 +7,7 @@
       <span class="button__text">
         {{ text }}
       </span>
-      <BaseLoader v-show="loader" />
+      <BaseLoader v-if="loader" />
     </span>
   </button>
 </template>
