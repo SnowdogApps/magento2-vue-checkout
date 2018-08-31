@@ -27,7 +27,6 @@
         >
         <label :for="method.method_code">
           <span class="label__text">
-            {{ currentShippingMethod === method.method_code }}
             {{ method.carrier_title }} - {{ method.method_title }}
           </span>
 
