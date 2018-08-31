@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - currency vue filter
 - presets in babelrc
-- button component (possibility tu use button with loader)
+- button component (possibility to use button with loader)
 - vuex mutations to reusable
 - succes step page
 
