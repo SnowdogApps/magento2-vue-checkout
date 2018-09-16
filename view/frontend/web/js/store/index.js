@@ -17,30 +17,8 @@ const store = new Vuex.Store({
     orderId: null,
     shippingMethods: [],
     selectedShippingMethod: null,
-    shippingAddress: {
-      city: '',
-      company: '',
-      country_id: '',
-      firstname: '',
-      lastname: '',
-      postcode: '',
-      region: '',
-      region_id: '',
-      street: [],
-      telephone: ''
-    },
-    billingAddress: {
-      city: '',
-      company: '',
-      country_id: '',
-      firstname: '',
-      lastname: '',
-      postcode: '',
-      region: '',
-      region_id: '',
-      street: [],
-      telephone: ''
-    },
+    shippingAddress: null,
+    billingAddress: null,
     paymentMethods: [],
     selectedMethods: {
       paymentMethod: {
@@ -105,7 +83,7 @@ const store = new Vuex.Store({
 
         shippingInformation.addressInformation.shipping_address = shippingAddress
 
-        if (state.billingAddress.city === '') {
+        if (state.billingAddress === null) {
           shippingInformation.addressInformation.billing_address = shippingAddress
         } else {
           const billingAddress = { ...state.billing_address }
@@ -285,10 +263,10 @@ const store = new Vuex.Store({
       return (state.totals !== null) ? state.totals : state.config.totalsData
     },
     couponCode (state, getters) {
-      if (getters.totals.hasOwnProperty('coupon_code')) {
+      if (getters.totals.hasOwnProperty('coupon_code') && getters.totals.coupon_code !== null) {
         return getters.totals.coupon_code
       } else {
-        return null
+        return ''
       }
     }
   }

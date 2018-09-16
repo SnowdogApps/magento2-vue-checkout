@@ -34,12 +34,11 @@
       name="street[1]"
       type="text"
     />
-    <div :class="{'input--error': errors.has('country') }">
+    <div>
       <label for="country">
         Select Country
       </label>
       <multiselect
-        v-validate="'required'"
         id="country"
         v-model="address.country_id"
         :options="countries"
@@ -51,12 +50,6 @@
         placeholder="Select country"
         @input="onCountryChange"
       />
-      <span
-        v-show="errors.has('country')"
-        class="input__message"
-      >
-        {{ errors.first('country') }}
-      </span>
     </div>
     <BaseInput
       v-model="address.city"
@@ -82,13 +75,11 @@
     />
     <div
       v-if="regions.length"
-      :class="{'input--error': errors.has('region_id') }"
     >
       <label for="region_id">
         Select State/Province
       </label>
       <multiselect
-        v-validate="!regions.length ? '' : 'required'"
         id="region_id"
         v-model="address.region_id"
         :options="regions"
@@ -99,13 +90,6 @@
         label="label"
         placeholder="Select State/Province"
       />
-
-      <span
-        v-show="errors.has('region_id')"
-        class="input__message"
-      >
-        {{ errors.first('region_id') }}
-      </span>
     </div>
     <BaseInput
       v-model="address.company"
@@ -123,7 +107,6 @@ import Multiselect from 'vue-multiselect'
 import EventBus from '../event-bus'
 
 export default {
-  inject: ['$validator'],
   components: {
     BaseInput,
     Multiselect
@@ -136,7 +119,6 @@ export default {
   },
   data () {
     return {
-      address: {},
       countries
     }
   },
@@ -153,7 +135,8 @@ export default {
     }
   },
   created () {
-    this.address = this.addressData
+    // this.address = this.addressData
+    console.log(this.address)
     EventBus.$once('save-address', (type) => {
       this.$store.commit('setAddress', { type, address: this.address })
     })

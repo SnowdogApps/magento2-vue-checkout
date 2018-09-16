@@ -1,30 +1,30 @@
 <template>
-  <div :class="{'input--error': errors.has(name) }">
+  <div :class="['input', {'input--error': validation && validation.$error }]">
     <label :for="name">
       {{ label }}
     </label>
     <input
-      v-validate="validateType"
       :type="type"
       :id="name"
       :name="name"
-      :data-vv-as="label"
-      :value="value"
       :readonly="readOnly"
+      :value="value"
       @input="$emit('input', $event.target.value)"
     >
-    <span
-      v-show="errors.has(name)"
-      class="input__message"
-    >
-      {{ errors.first(name) }}
-    </span>
+    <template v-if="validation">
+      <span
+        v-for="(value, key, index) in validation.$params"
+        v-if="validation.$error && !validation[key]"
+        :key="index"
+      >
+        {{ errorNotification[key] }}
+      </span>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
-  inject: ['$validator'],
   props: {
     label: {
       type: String,
@@ -36,20 +36,33 @@ export default {
     },
     type: {
       type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
+      default: 'text'
     },
     validateType: {
       type: String,
       required: false,
       default: ''
     },
+    value: {
+      type: String,
+      required: true
+    },
     readOnly: {
       type: Boolean,
       default: false
+    },
+    validation: {
+      type: Object,
+      required: false,
+      default: () => { }
+    }
+  },
+  data () {
+    return {
+      errorNotification: {
+        required: 'This field is required!',
+        email: 'Please enter a valid email address!'
+      }
     }
   }
 }

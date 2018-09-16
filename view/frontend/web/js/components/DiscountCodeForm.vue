@@ -3,26 +3,22 @@
     <h2>
       Discount
     </h2>
-
     <div class="discount-code">
       <form class="discount__form">
         <BaseInput
           v-model="discount.code"
-          :read-only="couponCode !== null"
-          type="text"
+          :read-only="couponCode !== ''"
           label="Apply Discount Code"
-          name="discount_code"
+          name="discount-code"
         />
-
         <BaseButton
-          v-if="couponCode === null"
+          v-if="couponCode === ''"
           :loader="loader"
           class="button"
           text="Apply Discount"
           with-loader
           @click.native="applyDiscount"
         />
-
         <BaseButton
           v-else
           :loader="loader"
@@ -30,7 +26,6 @@
           text="Remove Discount"
           @click.native="removeDiscount"
         />
-
         <p
           v-if="error"
           class="discount__form-error"

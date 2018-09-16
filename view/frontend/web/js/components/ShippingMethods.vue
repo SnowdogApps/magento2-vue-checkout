@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form>
     <h2>
       Shipping methods
     </h2>
@@ -11,19 +11,17 @@
         v-for="method in shippingMethods"
         v-if="method.available"
         :key="method.method_code"
-        :class="['input', {'input--error': errors.has('shipping-method') }]"
         data-testid="shipping-method"
       >
         <input
-          v-validate="'required'"
-          v-model="selectedShippingMethod"
+          v-model="$v.selectedShippingMethod.$model"
           :value="method"
           :id="method.method_code"
           :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
           name="shipping-method"
           data-vv-as="Shipping method"
-          @change="setSelectedShippingMethod"
+          @change="setSelectedShippingMethod($event.target.value)"
         >
         <label :for="method.method_code">
           <span class="label__text">
@@ -35,24 +33,22 @@
           </span>
         </label>
       </div>
-      <p
-        v-if="errors.has('shipping-method')"
-        class="input__message"
-      >
-        {{ errors.first('shipping-method') }}
-      </p>
+      <span v-if="$v.selectedShippingMethod.$error && !$v.selectedShippingMethod.required">
+        This field is required!
+      </span>
     </div>
     <div v-else>
       <p>
         In this country we don't handle any shipping methods.
       </p>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+
 export default {
-  inject: ['$validator'],
   props: {
     shippingMethods: {
       type: Array,
@@ -64,15 +60,31 @@ export default {
       selectedShippingMethod: null
     }
   },
+  validations: {
+    selectedShippingMethod: {
+      required
+    }
+  },
   computed: {
     currentShippingMethod () {
       return this.$store.state.selectedShippingMethod
+    },
+    ready () {
+      return !this.$v.selectedShippingMethod.$invalid
+    }
+  },
+  watch: {
+    ready (val) {
+      this.$emit('ready', val)
     }
   },
   created () {
     this.selectedShippingMethod = this.currentShippingMethod
   },
   methods: {
+    touch () {
+      this.$v.selectedShippingMethod.$touch()
+    },
     setSelectedShippingMethod (val) {
       this.$store.commit(
         'setItem',
