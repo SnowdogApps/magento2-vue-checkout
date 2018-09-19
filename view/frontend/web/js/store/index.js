@@ -21,13 +21,6 @@ const store = new Vuex.Store({
     shippingAddress: null,
     billingAddress: null,
     paymentMethods: [],
-    selectedMethods: {
-      paymentMethod: {
-        method: ''
-      },
-      shippingCarrierCode: '',
-      shippingMethodCode: ''
-    },
     totals: null
   },
   actions: {
