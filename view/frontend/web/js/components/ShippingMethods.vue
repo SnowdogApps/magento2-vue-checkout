@@ -33,7 +33,12 @@
           </span>
         </label>
       </div>
-      <span v-if="$v.selectedShippingMethod.$error && !$v.selectedShippingMethod.required">
+      <span
+        v-if="
+          $v.selectedShippingMethod.$error
+            && !$v.selectedShippingMethod.required
+        "
+      >
         This field is required!
       </span>
     </div>

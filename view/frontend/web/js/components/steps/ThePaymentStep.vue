@@ -84,6 +84,14 @@
             label="label"
             placeholder="Select country"
           />
+          <span
+            v-if="
+              $v.address.country_id.$error
+                && !$v.address.country_id.required
+            "
+          >
+            This field is required!
+          </span>
         </div>
         <BaseInput
           v-model="$v.address.city.$model"
@@ -120,6 +128,14 @@
             label="label"
             placeholder="Select State/Province"
           />
+          <span
+            v-if="
+              $v.address.region_id.$error
+                && !$v.address.region_id.required
+            "
+          >
+            This field is required!
+          </span>
         </div>
         <BaseInput
           v-model="address.company"
