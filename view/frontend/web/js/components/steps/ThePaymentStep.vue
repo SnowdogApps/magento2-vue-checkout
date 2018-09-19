@@ -8,15 +8,35 @@
     </h2>
     <BaseCheckbox
       id="billing-address-same-as-shipping-address"
-      v-model="billingAddress"
+      v-model="billingAndShippingAddressTheSame"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
       name="billing-address-same-as-shipping-address"
       text="My billing and shipping address are the same"
     />
+    <div v-if="billingAndShippingAddressTheSame">
+      <p>
+        {{ billingAddress.firstname }} {{ billingAddress.lastname }}
+      </p>
+      <p>
+        {{ billingAddress.telephone }}
+      </p>
+      <p>
+        {{ billingAddress.street[0] }} {{ billingAddress.street[1] }}
+      </p>
+      <p>
+        {{ billingAddress.city }}
+      </p>
+      <p>
+        {{ billingAddress.postcode }}
+      </p>
+      <p>
+        {{ billingAddress.company }}
+      </p>
+    </div>
     <form
-      v-show="!billingAddress"
+      v-else
       class="billing-address__form"
     >
       <div>
@@ -106,6 +126,14 @@
           label="Company"
           name="company"
         />
+        <BaseButton
+          text="SaveAddress"
+          @click.native="saveAddress"
+        />
+        <BaseButton
+          text="Cancel"
+          @click.native="billingAndShippingAddressTheSame = !billingAndShippingAddressTheSame"
+        />
       </div>
     </form>
     <h2>
@@ -144,7 +172,6 @@ import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
 import BaseInput from '../BaseInput.vue'
 import DiscountCodeForm from '../DiscountCodeForm.vue'
-import EventBus from '../../event-bus'
 import { required, requiredIf } from 'vuelidate/lib/validators'
 import countries from '../../data/countries.json'
 import Multiselect from 'vue-multiselect'
@@ -173,7 +200,7 @@ export default {
         company: ''
       },
       countries,
-      billingAddress: true,
+      billingAndShippingAddressTheSame: true,
       selectedPaymentMethod: null,
       loader: false
     }
@@ -227,33 +254,35 @@ export default {
         return this.$store.getters.regionsByCountryId(this.address.country_id.value)
       }
     },
+    billingAddress () {
+      return this.$store.state.billingAddress
+    },
     paymentMethods () {
       return this.$store.state.paymentMethods
     }
   },
   methods: {
-    changeStep (step) {
-      if (!this.billingAddress) {
-        EventBus.$emit('save-address', 'billingAddress')
+    saveAddress () {
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        this.loader = true
+        this.$store.commit(
+          'setAddress',
+          { type: 'billingAddress', address: this.address }
+        )
       }
+    },
+    changeStep (step) {
       this.$store.commit('setItem', { item: 'step', value: step })
     },
     placeOrder () {
       if (!this.billingAddress) {
-        this.$v.$touch()
-        if (!this.$v.$invalid) {
-          this.loader = true
-          this.$store.commit(
-            'setAddress',
-            { type: 'billingAddress', address: this.address }
-          )
-
-          this.$store.dispatch('getTotals')
-          this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
-            .then(() => {
-              this.loader = false
-            })
-        }
+        this.loader = true
+        this.$store.dispatch('getTotals')
+        this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
+          .then(() => {
+            this.loader = false
+          })
       } else {
         this.$store.commit('copyShippingAddress')
         // this.$validator.validate('payment-method').then((result) => {

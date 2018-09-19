@@ -84,7 +84,8 @@ const store = new Vuex.Store({
         shippingInformation.addressInformation.shipping_address = shippingAddress
 
         if (state.billingAddress === null) {
-          shippingInformation.addressInformation.billing_address = shippingAddress
+          state.billingAddress = shippingAddress
+          shippingInformation.addressInformation.billing_address = state.billingAddress
         } else {
           const billingAddress = { ...state.billing_address }
 
