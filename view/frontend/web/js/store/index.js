@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     orderId: null,
     shippingMethods: [],
     selectedShippingMethod: null,
+    selectedPaymentMethod: null,
     shippingAddress: null,
     billingAddress: null,
     paymentMethods: [],
@@ -66,11 +67,13 @@ const store = new Vuex.Store({
 
         const shippingInformation = {
           addressInformation: {
+            billing_address: '',
             shipping_method_code: state.selectedShippingMethod.method_code,
             shipping_carrier_code: state.selectedShippingMethod.carrier_code
           }
         }
 
+        state.billingAddress = state.shippingAddress
         const shippingAddress = { ...state.shippingAddress }
         shippingAddress.country_id = state.shippingAddress.country_id.value
 
@@ -82,24 +85,6 @@ const store = new Vuex.Store({
         }
 
         shippingInformation.addressInformation.shipping_address = shippingAddress
-
-        if (state.billingAddress === null) {
-          state.billingAddress = shippingAddress
-          shippingInformation.addressInformation.billing_address = state.billingAddress
-        } else {
-          const billingAddress = { ...state.billing_address }
-
-          billingAddress.country_id = state.billingAddress.country_id.value
-
-          if (getters.regionsByCountryId(billingAddress.country_id).length) {
-            billingAddress.region_id = state.billingAddress.region_id.value
-            delete billingAddress.region
-          } else {
-            delete billingAddress.region_id
-          }
-
-          shippingInformation.addressInformation.billing_address = billingAddress
-        }
 
         const options = {
           method: 'POST',
@@ -172,7 +157,7 @@ const store = new Vuex.Store({
           })
       })
     },
-    placeOrder ({commit, state, getters}, paymentMethod) {
+    placeOrder ({commit, state, getters}) {
       return new Promise((resolve, reject) => {
         let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
         if (getters.isCustomerLoggedIn) {
@@ -193,7 +178,7 @@ const store = new Vuex.Store({
           billingAddress,
           email: state.customer.email,
           paymentMethod: {
-            method: paymentMethod.code
+            method: state.selectedPaymentMethod.code
           }
         }
 

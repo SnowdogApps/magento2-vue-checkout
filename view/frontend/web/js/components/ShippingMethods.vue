@@ -20,7 +20,6 @@
           :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
           name="shipping-method"
-          data-vv-as="Shipping method"
           @change="setSelectedShippingMethod($event.target.value)"
         >
         <label :for="method.method_code">

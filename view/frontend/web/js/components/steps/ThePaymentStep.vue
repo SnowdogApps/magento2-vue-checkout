@@ -133,24 +133,10 @@
         />
       </div>
     </form>
-    <h2>
-      Payment methods
-    </h2>
-    <div
-      v-for="method in paymentMethods"
-      :key="method.id"
-    >
-      <input
-        v-model="selectedPaymentMethod"
-        :value="method"
-        :id="method.code"
-        type="radio"
-        name="payment-method"
-      >
-      <label :for="method.code">
-        {{ method.title }}
-      </label>
-    </div>
+    <PaymentMethods
+      ref="shippingsMethods"
+      @ready="isReady => paymentMethodsReadyToSubmit = isReady"
+    />
     <DiscountCodeForm/>
     <BaseButton
       :loader="loader"
@@ -173,6 +159,7 @@ import DiscountCodeForm from '../DiscountCodeForm.vue'
 import { required, requiredIf } from 'vuelidate/lib/validators'
 import countries from '../../data/countries.json'
 import Multiselect from 'vue-multiselect'
+import PaymentMethods from '../PaymentMethods.vue'
 
 export default {
   components: {
@@ -181,7 +168,8 @@ export default {
     BaseInput,
     BillingAddress,
     DiscountCodeForm,
-    Multiselect
+    Multiselect,
+    PaymentMethods
   },
   data () {
     return {
@@ -201,6 +189,7 @@ export default {
       countries,
       billingAndShippingAddressTheSame: true,
       selectedPaymentMethod: null,
+      paymentMethodsReadyToSubmit: false,
       loader: false
     }
   },
@@ -264,6 +253,7 @@ export default {
     saveAddress () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
+        console.log('sssssss')
         this.$store.commit(
           'setAddress',
           { type: 'billingAddress', address: this.address }
@@ -275,27 +265,16 @@ export default {
       this.$store.commit('setItem', { item: 'step', value: step })
     },
     placeOrder () {
-      if (!this.billingAddress) {
-        this.loader = true
-        this.$store.dispatch('getTotals')
-        this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
-          .then(() => {
-            this.loader = false
-          })
-      } else {
-        // this.$validator.validate('payment-method').then((result) => {
-        //   if (result) {
-        this.loader = true
-        this.$store.dispatch('placeOrder', this.selectedPaymentMethod)
-          .then(() => {
-            this.loader = false
-          })
-        // }
-        // })
-        //   .catch(() => {
-        //     console.error('Error with finalize your order - please try again later')
-        //   })
+      if (!this.paymentMethodsReadyToSubmit) {
+        console.log('invalid')
+        return
       }
+
+      this.loader = true
+      this.$store.dispatch('placeOrder')
+        .then(() => {
+          this.loader = false
+        })
     }
   }
 }
