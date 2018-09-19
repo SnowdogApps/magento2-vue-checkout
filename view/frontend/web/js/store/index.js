@@ -220,9 +220,6 @@ const store = new Vuex.Store({
     setItem (state, {item, value}) {
       state[item] = value
     },
-    copyShippingAddress (state) {
-      state.billingAddress = state.shippingAddress
-    },
     setCustomerEmail (state, payload) {
       state.customer.email = payload
     },

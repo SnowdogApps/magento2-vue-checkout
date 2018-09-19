@@ -303,7 +303,6 @@ export default {
             this.loader = false
           })
       } else {
-        this.$store.commit('copyShippingAddress')
         // this.$validator.validate('payment-method').then((result) => {
         //   if (result) {
         this.loader = true
