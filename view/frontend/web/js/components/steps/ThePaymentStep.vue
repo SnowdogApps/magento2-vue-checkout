@@ -15,28 +15,9 @@
       name="billing-address-same-as-shipping-address"
       text="My billing and shipping address are the same"
     />
-    <div v-if="billingAndShippingAddressTheSame">
-      <p>
-        {{ billingAddress.firstname }} {{ billingAddress.lastname }}
-      </p>
-      <p>
-        {{ billingAddress.telephone }}
-      </p>
-      <p>
-        {{ billingAddress.street[0] }} {{ billingAddress.street[1] }}
-      </p>
-      <p>
-        {{ billingAddress.city }}
-      </p>
-      <p>
-        {{ billingAddress.postcode }}
-      </p>
-      <p>
-        {{ billingAddress.company }}
-      </p>
-    </div>
+    <BillingAddress v-show="billingAndShippingAddressTheSame"/>
     <form
-      v-else
+      v-show="!billingAndShippingAddressTheSame"
       class="billing-address__form"
     >
       <div>
@@ -187,6 +168,7 @@
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
 import BaseInput from '../BaseInput.vue'
+import BillingAddress from '../BillingAddress.vue'
 import DiscountCodeForm from '../DiscountCodeForm.vue'
 import { required, requiredIf } from 'vuelidate/lib/validators'
 import countries from '../../data/countries.json'
@@ -197,6 +179,7 @@ export default {
     BaseButton,
     BaseCheckbox,
     BaseInput,
+    BillingAddress,
     DiscountCodeForm,
     Multiselect
   },
