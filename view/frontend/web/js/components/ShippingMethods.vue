@@ -54,12 +54,6 @@
 import { required } from 'vuelidate/lib/validators'
 
 export default {
-  props: {
-    shippingMethods: {
-      type: Array,
-      required: true
-    }
-  },
   data () {
     return {
       selectedShippingMethod: null
@@ -73,6 +67,9 @@ export default {
   computed: {
     currentShippingMethod () {
       return this.$store.state.selectedShippingMethod
+    },
+    shippingMethods () {
+      return this.$store.state.shippingMethods
     },
     ready () {
       return !this.$v.selectedShippingMethod.$invalid

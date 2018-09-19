@@ -125,7 +125,6 @@
     </form>
     <ShippingMethods
       ref="shippingsMethods"
-      :shipping-methods="shippingMethods"
       @ready="isReady => shippingMethodsReadyToSubmit = isReady"
     />
     <BaseButton
@@ -224,9 +223,6 @@ export default {
     step () {
       return this.$store.state.step
     },
-    shippingMethods () {
-      return this.$store.state.shippingMethods
-    },
     emailAvailabilityMessage () {
       if (this.customer.email !== '' && !this.$v.customer.email.$error) {
         if (this.customer.emailAvailable) {
@@ -311,5 +307,4 @@ export default {
       border: none;
     }
   }
-
 </style>

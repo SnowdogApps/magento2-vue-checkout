@@ -253,9 +253,6 @@ export default {
         return this.$store.getters.regionsByCountryId(this.address.country_id.value)
       }
     },
-    billingAddress () {
-      return this.$store.state.billingAddress
-    },
     paymentMethods () {
       return this.$store.state.paymentMethods
     }
