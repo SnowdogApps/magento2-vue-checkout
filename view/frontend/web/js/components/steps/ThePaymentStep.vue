@@ -132,7 +132,7 @@
         />
         <BaseButton
           text="Cancel"
-          @click.native="billingAndShippingAddressTheSame = !billingAndShippingAddressTheSame"
+          @click.native="toggleBillingAddress"
         />
       </div>
     </form>
@@ -262,14 +262,17 @@ export default {
     }
   },
   methods: {
+    toggleBillingAddress () {
+      this.billingAndShippingAddressTheSame = !this.billingAndShippingAddressTheSame
+    },
     saveAddress () {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.loader = true
         this.$store.commit(
           'setAddress',
           { type: 'billingAddress', address: this.address }
         )
+        this.toggleBillingAddress()
       }
     },
     changeStep (step) {
