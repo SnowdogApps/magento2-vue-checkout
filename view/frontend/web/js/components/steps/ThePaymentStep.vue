@@ -266,7 +266,6 @@ export default {
     },
     placeOrder () {
       if (!this.paymentMethodsReadyToSubmit) {
-        console.log('invalid')
         return
       }
 
