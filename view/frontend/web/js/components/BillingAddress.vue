@@ -23,9 +23,10 @@
 
 <script>
 export default {
-  computed: {
-    billingAddress () {
-      return this.$store.state.billingAddress
+  props: {
+    billingAddress: {
+      type: Object,
+      required: true
     }
   }
 }

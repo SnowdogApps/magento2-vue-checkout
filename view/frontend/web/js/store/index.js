@@ -20,6 +20,7 @@ const store = new Vuex.Store({
     selectedPaymentMethod: null,
     shippingAddress: null,
     billingAddress: null,
+    newBillingAddress: null,
     paymentMethods: [],
     totals: null
   },
@@ -150,18 +151,17 @@ const store = new Vuex.Store({
           })
       })
     },
-    placeOrder ({commit, state, getters}) {
+    placeOrder ({commit, state, getters}, billingAddress) {
       return new Promise((resolve, reject) => {
         let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
         if (getters.isCustomerLoggedIn) {
           url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
         }
 
-        const billingAddress = { ...state.billingAddress }
-        billingAddress.country_id = state.billingAddress.country_id.value
+        billingAddress.country_id = billingAddress.country_id.value
 
         if (getters.regionsByCountryId(billingAddress.country_id).length) {
-          billingAddress.region_id = state.billingAddress.region_id.value
+          billingAddress.region_id = billingAddress.region_id.value
           delete billingAddress.region
         } else {
           delete billingAddress.region_id
