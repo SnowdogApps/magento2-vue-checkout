@@ -1,6 +1,7 @@
 <template>
   <button
     :type="type"
+    :disabled="disabled"
     class="button"
   >
     <span class="button__handler">
@@ -31,6 +32,10 @@ export default {
     loader: {
       default: false,
       type: Boolean
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

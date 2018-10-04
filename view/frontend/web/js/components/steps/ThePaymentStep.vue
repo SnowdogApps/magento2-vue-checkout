@@ -15,7 +15,7 @@
       name="billing-address-same-as-shipping-address"
       text="My billing and shipping address are the same"
     />
-    <BillingAddress
+    <AddressData
       v-if="billingAndShippingAddressTheSame"
       :billing-address="billingAddress"
     />
@@ -138,7 +138,7 @@
         </div>
       </form>
       <div v-else>
-        <BillingAddress :billing-address="newBillingAddress" />
+        <AddressData :billing-address="newBillingAddress" />
         <BaseButton
           text="Edit Address"
           @click.native="editAddress"
@@ -152,6 +152,7 @@
     <DiscountCodeForm/>
     <BaseButton
       :loader="loader"
+      :disabled="disabledPlaceOrder"
       text="Place order"
       @click.native="placeOrder"
     />
@@ -163,10 +164,10 @@
 </template>
 
 <script>
+import AddressData from '../AddressData.vue'
 import BaseButton from '../BaseButton.vue'
 import BaseCheckbox from '../BaseCheckbox.vue'
 import BaseInput from '../BaseInput.vue'
-import BillingAddress from '../BillingAddress.vue'
 import DiscountCodeForm from '../DiscountCodeForm.vue'
 import { required, requiredIf } from 'vuelidate/lib/validators'
 import countries from '../../data/countries.json'
@@ -175,10 +176,10 @@ import PaymentMethods from '../PaymentMethods.vue'
 
 export default {
   components: {
+    AddressData,
     BaseButton,
     BaseCheckbox,
     BaseInput,
-    BillingAddress,
     DiscountCodeForm,
     Multiselect,
     PaymentMethods
@@ -263,6 +264,10 @@ export default {
     },
     paymentMethods () {
       return this.$store.state.paymentMethods
+    },
+    disabledPlaceOrder () {
+      return !this.billingAndShippingAddressTheSame && this.editBillingAddress ||
+        !this.billingAndShippingAddressTheSame && this.newBillingAddress === null
     }
   },
   methods: {
@@ -300,7 +305,7 @@ export default {
       }
 
       this.loader = true
-      this.$store.dispatch('placeOrder', billinAddress)
+      this.$store.dispatch('placeOrder', billingAddress)
         .then(() => {
           this.loader = false
         })
