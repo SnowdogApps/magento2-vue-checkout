@@ -17,7 +17,7 @@
     />
     <AddressData
       v-if="billingAndShippingAddressTheSame"
-      :billing-address="billingAddress"
+      :address="billingAddress"
     />
     <div v-else>
       <form
@@ -138,7 +138,7 @@
         </div>
       </form>
       <div v-else>
-        <AddressData :billing-address="newBillingAddress" />
+        <AddressData :address="newBillingAddress" />
         <BaseButton
           text="Edit Address"
           @click.native="editAddress"

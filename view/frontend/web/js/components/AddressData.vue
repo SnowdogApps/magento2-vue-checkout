@@ -1,30 +1,20 @@
 <template>
-  <div>
-    <p>
-      {{ billingAddress.firstname }} {{ billingAddress.lastname }}
-    </p>
-    <p>
-      {{ billingAddress.telephone }}
-    </p>
-    <p>
-      {{ billingAddress.street[0] }} {{ billingAddress.street[1] }}
-    </p>
-    <p>
-      {{ billingAddress.city }}
-    </p>
-    <p>
-      {{ billingAddress.postcode }}
-    </p>
-    <p>
-      {{ billingAddress.company }}
-    </p>
-  </div>
+  <address>
+    {{ address.firstname }} {{ address.lastname }}<br>
+    {{ address.street[0] }} {{ address.street[1] }}<br>
+    {{ address.city }}<br>
+    {{ address.postcode }}<br>
+    {{ address.region }}<br>
+    {{ address.country_id.label }}<br>
+    {{ address.telephone }}<br>
+    {{ address.company }}
+  </address>
 </template>
 
 <script>
 export default {
   props: {
-    billingAddress: {
+    address: {
       type: Object,
       required: true
     }
