@@ -239,7 +239,9 @@ const store = new Vuex.Store({
       return (state.totals !== null) ? state.totals : state.config.totalsData
     },
     couponCode (state, getters) {
-      if (getters.totals.hasOwnProperty('coupon_code') && getters.totals.coupon_code !== null) {
+      if (getters.totals.hasOwnProperty('coupon_code') &&
+        getters.totals.coupon_code !== null
+      ) {
         return getters.totals.coupon_code
       } else {
         return ''
