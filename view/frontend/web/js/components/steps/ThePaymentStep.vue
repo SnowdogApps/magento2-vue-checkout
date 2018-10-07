@@ -108,7 +108,6 @@
               :options="regions"
               :allow-empty="false"
               :show-labels="false"
-              data-vv-as="Region"
               name="region_id"
               label="label"
               placeholder="Select State/Province"
