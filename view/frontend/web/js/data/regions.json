@@ -1,10 +1,5 @@
 [
   {
-    "title": null,
-    "value": null,
-    "label": "Please select a region, state or province."
-  },
-  {
     "value": "130",
     "title": "A Coruña",
     "country_id": "ES",

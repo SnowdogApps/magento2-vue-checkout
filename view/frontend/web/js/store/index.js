@@ -17,38 +17,11 @@ const store = new Vuex.Store({
     orderId: null,
     shippingMethods: [],
     selectedShippingMethod: null,
-    shippingAddress: {
-      city: '',
-      company: '',
-      country_id: '',
-      firstname: '',
-      lastname: '',
-      postcode: '',
-      region: '',
-      region_id: '',
-      street: [],
-      telephone: ''
-    },
-    billingAddress: {
-      city: '',
-      company: '',
-      country_id: '',
-      firstname: '',
-      lastname: '',
-      postcode: '',
-      region: '',
-      region_id: '',
-      street: [],
-      telephone: ''
-    },
+    selectedPaymentMethod: null,
+    shippingAddress: null,
+    billingAddress: null,
+    newBillingAddress: null,
     paymentMethods: [],
-    selectedMethods: {
-      paymentMethod: {
-        method: ''
-      },
-      shippingCarrierCode: '',
-      shippingMethodCode: ''
-    },
     totals: null
   },
   actions: {
@@ -88,11 +61,13 @@ const store = new Vuex.Store({
 
         const shippingInformation = {
           addressInformation: {
+            billing_address: '',
             shipping_method_code: state.selectedShippingMethod.method_code,
             shipping_carrier_code: state.selectedShippingMethod.carrier_code
           }
         }
 
+        state.billingAddress = state.shippingAddress
         const shippingAddress = { ...state.shippingAddress }
         shippingAddress.country_id = state.shippingAddress.country_id.value
 
@@ -104,23 +79,6 @@ const store = new Vuex.Store({
         }
 
         shippingInformation.addressInformation.shipping_address = shippingAddress
-
-        if (state.billingAddress.city === '') {
-          shippingInformation.addressInformation.billing_address = shippingAddress
-        } else {
-          const billingAddress = { ...state.billing_address }
-
-          billingAddress.country_id = state.billingAddress.country_id.value
-
-          if (getters.regionsByCountryId(billingAddress.country_id).length) {
-            billingAddress.region_id = state.billingAddress.region_id.value
-            delete billingAddress.region
-          } else {
-            delete billingAddress.region_id
-          }
-
-          shippingInformation.addressInformation.billing_address = billingAddress
-        }
 
         const options = {
           method: 'POST',
@@ -193,18 +151,17 @@ const store = new Vuex.Store({
           })
       })
     },
-    placeOrder ({commit, state, getters}, paymentMethod) {
+    placeOrder ({commit, state, getters}, billingAddress) {
       return new Promise((resolve, reject) => {
         let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
         if (getters.isCustomerLoggedIn) {
           url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
         }
 
-        const billingAddress = { ...state.billingAddress }
-        billingAddress.country_id = state.billingAddress.country_id.value
+        billingAddress.country_id = billingAddress.country_id.value
 
         if (getters.regionsByCountryId(billingAddress.country_id).length) {
-          billingAddress.region_id = state.billingAddress.region_id.value
+          billingAddress.region_id = billingAddress.region_id.value
           delete billingAddress.region
         } else {
           delete billingAddress.region_id
@@ -214,7 +171,7 @@ const store = new Vuex.Store({
           billingAddress,
           email: state.customer.email,
           paymentMethod: {
-            method: paymentMethod.code
+            method: state.selectedPaymentMethod.code
           }
         }
 
@@ -240,9 +197,6 @@ const store = new Vuex.Store({
   mutations: {
     setItem (state, {item, value}) {
       state[item] = value
-    },
-    copyShippingAddress (state) {
-      state.billingAddress = state.shippingAddress
     },
     setCustomerEmail (state, payload) {
       state.customer.email = payload
@@ -285,10 +239,12 @@ const store = new Vuex.Store({
       return (state.totals !== null) ? state.totals : state.config.totalsData
     },
     couponCode (state, getters) {
-      if (getters.totals.hasOwnProperty('coupon_code')) {
+      if (getters.totals.hasOwnProperty('coupon_code') &&
+        getters.totals.coupon_code !== null
+      ) {
         return getters.totals.coupon_code
       } else {
-        return null
+        return ''
       }
     }
   }
