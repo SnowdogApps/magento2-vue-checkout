@@ -61,7 +61,6 @@ const store = new Vuex.Store({
 
         const shippingInformation = {
           addressInformation: {
-            billing_address: '',
             shipping_method_code: state.selectedShippingMethod.method_code,
             shipping_carrier_code: state.selectedShippingMethod.carrier_code
           }
@@ -79,6 +78,8 @@ const store = new Vuex.Store({
         }
 
         shippingInformation.addressInformation.shipping_address = shippingAddress
+        // Copy shipping address to billing address (can't send empty object)
+        shippingInformation.addressInformation.billing_address = shippingAddress
 
         const options = {
           method: 'POST',
