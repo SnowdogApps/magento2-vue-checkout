@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - button component (possibility to use button with loader)
 - vuex mutations to reusable
 - succes step page
+- moved billing address form to separate component (#104)
 
 ### Fixed
 - shipping methods checked item
