@@ -92,13 +92,6 @@ export default {
     step () {
       return this.$store.state.step
     },
-    regions () {
-      if (this.address.country_id.value === null) {
-        return []
-      } else {
-        return this.$store.getters.regionsByCountryId(this.address.country_id.value)
-      }
-    },
     paymentMethods () {
       return this.$store.state.paymentMethods
     },
