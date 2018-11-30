@@ -231,7 +231,11 @@ const store = new Vuex.Store({
       return address
     },
     regionsByCountryId: (state) => (countryId) => {
-      return state.regions.filter(region => region.country_id === countryId)
+      if (countryId === null) {
+        return []
+      } else {
+        return state.regions.filter(region => region.country_id === countryId)
+      }
     },
     isCustomerLoggedIn (state) {
       return state.config.isCustomerLoggedIn

@@ -238,11 +238,7 @@ export default {
       }
     },
     regions () {
-      if (this.address.country_id.value === null) {
-        return []
-      } else {
-        return this.$store.getters.regionsByCountryId(this.address.country_id.value)
-      }
+      return this.$store.getters.regionsByCountryId(this.address.country_id.value)
     },
     loginUrl () {
       return this.baseUrl + 'customer/account/login/'
