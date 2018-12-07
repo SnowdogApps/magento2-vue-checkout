@@ -1,0 +1,12 @@
+{
+  "en": {
+    "message": {
+      "hello": "hello in eng"
+    }
+  },
+  "pl": {
+    "message": {
+      "hello": "siema elo"
+    }
+  }
+}
