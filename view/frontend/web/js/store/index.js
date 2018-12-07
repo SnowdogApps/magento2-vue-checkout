@@ -5,10 +5,13 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+const config = window.snowdog.config ? window.snowdog.config : {}
+const baseUrl = window.snowdog.baseUrl ? window.snowdog.baseUrl : {}
+
 const store = new Vuex.Store({
   state: {
-    config: window.config,
-    baseUrl: window.baseUrl,
+    config: config,
+    baseUrl: baseUrl,
     regions,
     customer: {
       email: null
