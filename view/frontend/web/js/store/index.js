@@ -10,8 +10,8 @@ const baseUrl = window.snowdog.baseUrl ? window.snowdog.baseUrl : {}
 
 const store = new Vuex.Store({
   state: {
-    config: config,
-    baseUrl: baseUrl,
+    config,
+    baseUrl,
     regions,
     customer: {
       email: null
