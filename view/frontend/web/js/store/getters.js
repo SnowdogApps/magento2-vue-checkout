@@ -22,7 +22,7 @@ export default {
   totals (state) {
     return (state.totals !== null) ? state.totals : state.config.totalsData
   },
-  couponCode (state, getters) {
+  couponCode (getters) {
     if (getters.totals.hasOwnProperty('coupon_code') &&
       getters.totals.coupon_code !== null
     ) {

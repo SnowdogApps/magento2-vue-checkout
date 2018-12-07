@@ -75,7 +75,7 @@ export default {
         })
     })
   },
-  manageDiscount ({state, getters, commit}, discount) {
+  manageDiscount ({state, getters}, discount) {
     return new Promise((resolve, reject) => {
       let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/`
       if (getters.isCustomerLoggedIn) {
