@@ -1,3 +1,8 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$store = $objectManager->get('Magento\Framework\Locale\Resolver');
+?>
+
 <div id="checkout" class="checkout-container"></div>
 
 <script>
@@ -5,6 +10,7 @@
 
   snowdog.config = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
   snowdog.baseUrl = '<?= $block->getBaseUrl() ?>';
+  snowdog.storeLocale = '<?= $store->getLocale() ?>';
 </script>
 
 <script type="text/x-magento-init">
