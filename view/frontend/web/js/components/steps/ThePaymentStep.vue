@@ -4,16 +4,16 @@
     class="billing-address"
   >
     <h2>
-      Billing Address
+      {{ $t('payment.title') }}
     </h2>
     <BaseCheckbox
       id="billing-address-same-as-shipping-address"
+      :text="$t('payment.billingCheckbox')"
       v-model="billingAndShippingAddressTheSame"
       label-class="label"
       field-class="checkbox shipping-address__field"
       input-class="shipping-address__checkbox"
       name="billing-address-same-as-shipping-address"
-      text="My billing and shipping address are the same"
     />
     <AddressData
       v-if="billingAndShippingAddressTheSame && billingAddress !== null"
@@ -23,7 +23,7 @@
       <template v-if="editBillingAddress">
         <BillingAddressForm @hideAddressForm="editBillingAddress = false"/>
         <BaseButton
-          text="Cancel"
+          :text="$t('general.cancel')"
           @click.native="toggleBillingAddress()"
         />
       </template>
@@ -33,7 +33,7 @@
           :address="newBillingAddress"
         />
         <BaseButton
-          text="Edit Address"
+          :text="$t('payment.editAddress')"
           @click.native="editAddress"
         />
       </div>
@@ -46,11 +46,11 @@
     <BaseButton
       :loader="loader"
       :disabled="disabledPlaceOrder"
-      text="Place order"
+      :text="$t('general.order')"
       @click.native="placeOrder"
     />
     <BaseButton
-      text="Back"
+      :text="$t('general.back')"
       @click.native="changeStep('shipping')"
     />
   </section>

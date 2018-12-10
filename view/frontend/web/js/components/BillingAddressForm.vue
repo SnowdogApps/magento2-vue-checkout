@@ -3,36 +3,36 @@
     <BaseInput
       v-model="$v.address.firstname.$model"
       :validation="$v.address.firstname"
-      label="First name"
+      :label="$t('formElements.firstName')"
       name="firstname"
     />
     <BaseInput
       v-model="$v.address.lastname.$model"
       :validation="$v.address.lastname"
-      label="Last name"
+      :label="$t('formElements.lastName')"
       name="lastname"
     />
     <BaseInput
       v-model="$v.address.telephone.$model"
       :validation="$v.address.telephone"
-      label="Phone Number"
+      :label="$t('formElements.phoneNumber')"
       name="telephone"
       type="tel"
     />
     <BaseInput
       v-model="$v.address.street0.$model"
       :validation="$v.address.street0"
-      label="Street Address"
+      :label="$t('formElements.streetAddress')"
       name="street0"
     />
     <BaseInput
       v-model="address.street1"
-      label="Street Address"
+      :label="$t('formElements.streetAddress')"
       name="street1"
     />
     <div>
       <label for="country">
-        Select Country
+        {{ $t('formElements.country') }}
       </label>
       <multiselect
         id="country"
@@ -40,9 +40,9 @@
         :options="countries"
         :allow-empty="false"
         :show-labels="false"
+        :placeholder="$t('formElements.country')"
         name="country"
         label="label"
-        placeholder="Select country"
       />
       <span
         v-if="
@@ -50,31 +50,31 @@
             && !$v.address.country_id.required
         "
       >
-        This field is required!
+        {{ $t('errorCode.required') }}
       </span>
     </div>
     <BaseInput
       v-model="$v.address.city.$model"
       :validation="$v.address.city"
-      label="City"
+      :label="$t('formElements.city')"
       name="city"
     />
     <BaseInput
       v-model="$v.address.postcode.$model"
       :validation="$v.address.postcode"
-      label="Zip/Postal Code"
+      :label="$t('formElements.zipCode')"
       name="postcode"
     />
     <BaseInput
       v-if="!regions.length"
       v-model="$v.address.region.$model"
       :validation="$v.address.region"
-      label="State/Province"
+      :label="$t('formElements.state')"
       name="region"
     />
     <div v-if="regions.length">
       <label for="region_id">
-        Select State/Province
+        {{ $t('formElements.selectState') }}
       </label>
       <multiselect
         id="region_id"
@@ -83,9 +83,9 @@
         :options="regions"
         :allow-empty="false"
         :show-labels="false"
+        :placeholder="$t('formElements.state')"
         name="region_id"
         label="label"
-        placeholder="Select State/Province"
       />
       <span
         v-if="
@@ -93,16 +93,16 @@
             && !$v.address.region_id.required
         "
       >
-        This field is required!
+        {{ $t('errorCode.required') }}
       </span>
     </div>
     <BaseInput
       v-model="address.company"
-      label="Company"
+      :label="$t('formElements.company')"
       name="company"
     />
     <BaseButton
-      text="Save Address"
+      :text="$t('general.saveAddress')"
       @click.native="saveAddress"
     />
   </form>
