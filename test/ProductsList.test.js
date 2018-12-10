@@ -1,6 +1,15 @@
 import Vue from 'vue'
-import { mount } from '@vue/test-utils'
+import Vuei18n from 'vue-i18n'
+import { mount, createLocalVue } from '@vue/test-utils'
+import messages from '../view/frontend/web/js/data/translations.json'
 import ProductsList from '../view/frontend/web/js/components/ProductsList.vue'
+
+const localVue = createLocalVue()
+localVue.use(Vuei18n)
+const i18n = new Vuei18n({
+  locale: 'en_US',
+  messages
+})
 
 Vue.filter('currency', function (price) {
   const pattern = '$%s'
@@ -9,7 +18,6 @@ Vue.filter('currency', function (price) {
 })
 
 describe('ProductsList.test.js', () => {
-
   let wrapper
 
   beforeEach(() => {
@@ -41,7 +49,9 @@ describe('ProductsList.test.js', () => {
           }
         ],
         step: () => 'shipping'
-      }
+      },
+      localVue,
+      i18n
     })
   })
 
