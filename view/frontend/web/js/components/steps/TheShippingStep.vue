@@ -140,7 +140,7 @@ import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import Multiselect from 'vue-multiselect'
-import axios from 'axios'
+import axios from './../../utils/checkout-axios.js'
 import countries from '../../data/countries.json'
 import { required, email, requiredIf } from 'vuelidate/lib/validators'
 
@@ -248,7 +248,6 @@ export default {
     checkIsEmailAvailable () {
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify({
           'customerEmail': this.customer.email
         }),
