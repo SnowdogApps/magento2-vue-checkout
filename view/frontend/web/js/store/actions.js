@@ -15,7 +15,10 @@ export default {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
       data: JSON.stringify(data),
       url
     }
@@ -59,7 +62,10 @@ export default {
 
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         data: JSON.stringify(shippingInformation),
         url
       }
@@ -88,7 +94,10 @@ export default {
 
       const options = {
         method: discount.method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         url
       }
 
@@ -113,7 +122,10 @@ export default {
 
       const options = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         url
       }
 
@@ -154,7 +166,10 @@ export default {
 
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         data: JSON.stringify(data),
         url
       }
