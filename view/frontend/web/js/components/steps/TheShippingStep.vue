@@ -244,6 +244,9 @@ export default {
       return this.baseUrl + 'customer/account/login/'
     }
   },
+  created () {
+    this.$store.dispatch('getCustomerAddresses')
+  },
   methods: {
     checkIsEmailAvailable () {
       const options = {
