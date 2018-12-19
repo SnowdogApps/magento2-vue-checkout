@@ -220,8 +220,12 @@ export default {
       this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
     },
     goToNextStep () {
-      // show erorrs for customer email field, shipping address form and shipping methods radio buttons
-      this.$refs.customerEmail.touch()
+      // show erorrs for customer email field
+      if (!this.isCustomerLoggedIn) {
+        this.$refs.customerEmail.touch()
+      }
+
+      // show errors for shipping address form and shipping methods radio buttons
       this.$refs.shippingsMethods.touch()
       this.$v.$touch()
 
@@ -229,7 +233,7 @@ export default {
       if (
         this.$v.$invalid ||
         !this.shippingMethodsReadyToSubmit ||
-        !this.customerEmailReadyToSubmit
+        (!this.isCustomerLoggedIn && !this.customerEmailReadyToSubmit)
       ) {
         return
       }
