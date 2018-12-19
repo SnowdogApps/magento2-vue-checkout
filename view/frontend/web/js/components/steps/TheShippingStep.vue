@@ -5,19 +5,11 @@
   >
     <h2>Shipping address</h2>
     <form class="shipping-address__form">
-      <BaseInput
-        v-model.trim="$v.customer.email.$model"
-        :validation="$v.customer.email"
-        label="Email"
-        name="email"
-        type="email"
-        @input="checkIsEmailAvailable"
+      <CustomerEmailField
+        v-if="!isCustomerLoggedIn"
+        ref="customerEmail"
+        @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
-      <span
-        v-if="emailAvailabilityMessage"
-        v-html="emailAvailabilityMessage"
-      />
-      <hr>
       <div>
         <BaseInput
           v-model="$v.address.firstname.$model"
@@ -138,16 +130,17 @@
 <script>
 import BaseButton from '../BaseButton.vue'
 import BaseInput from '../BaseInput.vue'
+import CustomerEmailField from '../CustomerEmailField.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import Multiselect from 'vue-multiselect'
-import axios from './../../utils/checkout-axios.js'
 import countries from '../../data/countries.json'
-import { required, email, requiredIf } from 'vuelidate/lib/validators'
+import { required, requiredIf } from 'vuelidate/lib/validators'
 
 export default {
   components: {
     BaseButton,
     BaseInput,
+    CustomerEmailField,
     Multiselect,
     ShippingMethods
   },
@@ -166,22 +159,13 @@ export default {
         region_id: '',
         company: ''
       },
-      customer: {
-        email: '',
-        emailAvailable: false
-      },
       countries,
+      customerEmailReadyToSubmit: false,
       shippingMethodsReadyToSubmit: false,
       loader: false
     }
   },
   validations: {
-    customer: {
-      email: {
-        required,
-        email
-      }
-    },
     address: {
       firstname: {
         required
@@ -217,72 +201,64 @@ export default {
     }
   },
   computed: {
-    baseUrl () {
-      return this.$store.state.baseUrl
-    },
     step () {
       return this.$store.state.step
     },
-    emailAvailabilityMessage () {
-      if (this.customer.email !== '' && !this.$v.customer.email.$error) {
-        if (this.customer.emailAvailable) {
-          return `You can create an account after checkout.`
-        } else {
-          return `
-            You already have an account with us.
-            Sign in <a href="${this.loginUrl}">here</a> or continue as guest.
-          `
-        }
-      } else {
-        return false
-      }
+    isCustomerLoggedIn () {
+      return this.$store.getters.isCustomerLoggedIn
     },
     regions () {
       return this.$store.getters.regionsByCountryId(this.address.country_id.value)
-    },
-    loginUrl () {
-      return this.baseUrl + 'customer/account/login/'
     }
   },
-  created () {
-    this.$store.dispatch('getCustomerAddresses')
-  },
+  // tmp commented, request for getting customer data
+  // created () {
+  //   this.$store.dispatch('getCustomerAddresses')
+  // },
   methods: {
-    checkIsEmailAvailable () {
-      const options = {
-        method: 'POST',
-        data: JSON.stringify({
-          'customerEmail': this.customer.email
-        }),
-        url: 'customers/isEmailAvailable'
-      }
-      axios(options)
-        .then(({data}) => {
-          this.customer.emailAvailable = data
-        })
-        .catch(error => {
-          console.error('Looks like there was a problem: \n', error)
-        })
-    },
     onCountryChange () {
       this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
     },
     goToNextStep () {
+      // show erorrs for customer email field, shipping address form and shipping methods radio buttons
+      this.$refs.customerEmail.touch()
       this.$refs.shippingsMethods.touch()
       this.$v.$touch()
-      if (this.$v.$invalid || !this.shippingMethodsReadyToSubmit) {
+
+      // check if sth from above is wrong
+      if (
+        this.$v.$invalid ||
+        !this.shippingMethodsReadyToSubmit ||
+        !this.customerEmailReadyToSubmit
+      ) {
         return
       }
 
+      // enable loader
       this.loader = true
-      this.$store.commit('setCustomerEmail', this.customer.email)
+
+      // save email addres if non logged in
+      if (!this.isCustomerLoggedIn) {
+        this.$store.commit('setItem', {
+          item: 'customer',
+          value: {
+            email: this.customer.email
+          }
+        })
+      }
+
+      // save shipping address
       this.$store.commit(
         'setAddress',
         { type: 'shippingAddress', address: this.address }
       )
+
+      // request for shipping informations and disable loader
       this.$store.dispatch('setShippinInformation').then(() => {
         this.loader = false
       })
+
+      // get current totals
       this.$store.dispatch('getTotals')
     }
   }
