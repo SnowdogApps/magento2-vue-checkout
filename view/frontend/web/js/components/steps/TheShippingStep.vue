@@ -251,7 +251,7 @@ export default {
         data: JSON.stringify({
           'customerEmail': this.customer.email
         }),
-        url: `${this.baseUrl}rest/V1/customers/isEmailAvailable`
+        url: 'customers/isEmailAvailable'
       }
       axios(options)
         .then(({data}) => {
