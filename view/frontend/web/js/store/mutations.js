@@ -2,9 +2,6 @@ export default {
   setItem (state, {item, value}) {
     state[item] = value
   },
-  setCustomerEmail (state, payload) {
-    state.customer.email = payload
-  },
   setAddress (state, payload) {
     const address = payload.address
     const type = payload.type
