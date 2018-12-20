@@ -211,10 +211,6 @@ export default {
       return this.$store.getters.regionsByCountryId(this.address.country_id.value)
     }
   },
-  // tmp commented, request for getting customer data
-  // created () {
-  //   this.$store.dispatch('getCustomerAddresses')
-  // },
   methods: {
     onCountryChange () {
       this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
