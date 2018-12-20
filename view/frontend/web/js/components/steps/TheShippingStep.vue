@@ -241,16 +241,6 @@ export default {
       // enable loader
       this.loader = true
 
-      // save email addres if non logged in
-      if (!this.isCustomerLoggedIn) {
-        this.$store.commit('setItem', {
-          item: 'customer',
-          value: {
-            email: this.customer.email
-          }
-        })
-      }
-
       // save shipping address
       this.$store.commit(
         'setAddress',

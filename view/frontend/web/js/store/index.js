@@ -12,8 +12,8 @@ const store = new Vuex.Store({
   state: {
     config: window.config,
     baseUrl: window.baseUrl,
+    customer: window.config.customerData,
     regions,
-    customer: null,
     step: 'shipping',
     orderId: null,
     shippingMethods: [],

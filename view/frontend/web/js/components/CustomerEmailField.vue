@@ -86,6 +86,13 @@ export default {
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
         })
+
+      this.$store.commit('setItem', {
+        item: 'customer',
+        value: {
+          email: this.customer.email
+        }
+      })
     }
   }
 }
