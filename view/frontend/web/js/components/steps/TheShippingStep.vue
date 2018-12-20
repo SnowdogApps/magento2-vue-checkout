@@ -220,16 +220,13 @@ export default {
       this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
     },
     goToNextStep () {
-      // show erorrs for customer email field
       if (!this.isCustomerLoggedIn) {
         this.$refs.customerEmail.touch()
       }
 
-      // show errors for shipping address form and shipping methods radio buttons
       this.$refs.shippingsMethods.touch()
       this.$v.$touch()
 
-      // check if sth from above is wrong
       if (
         this.$v.$invalid ||
         !this.shippingMethodsReadyToSubmit ||
@@ -238,21 +235,17 @@ export default {
         return
       }
 
-      // enable loader
       this.loader = true
 
-      // save shipping address
       this.$store.commit(
         'setAddress',
         { type: 'shippingAddress', address: this.address }
       )
 
-      // request for shipping informations and disable loader
       this.$store.dispatch('setShippinInformation').then(() => {
         this.loader = false
       })
 
-      // get current totals
       this.$store.dispatch('getTotals')
     }
   }

@@ -19,7 +19,7 @@
 <script>
 import BaseInput from './BaseInput.vue'
 import axios from './../utils/checkout-axios.js'
-import { requiredIf, email } from 'vuelidate/lib/validators'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -36,9 +36,7 @@ export default {
   validations: {
     customer: {
       email: {
-        required: requiredIf(function () {
-          return !this.isCustomerLoggedIn
-        }),
+        required,
         email
       }
     }
