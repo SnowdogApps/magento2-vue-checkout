@@ -1,8 +1,8 @@
 <template>
   <div>
     <BaseInput
-      v-model.trim="$v.customer.email.$model"
-      :validation="$v.customer.email"
+      v-model.trim="$v.email.$model"
+      :validation="$v.email"
       label="Email"
       name="email"
       type="email"
@@ -27,27 +27,26 @@ export default {
   },
   data () {
     return {
-      customer: {
-        email: '',
-        emailAvailable: false
-      }
+      email: '',
+      emailAvailable: false
     }
   },
   validations: {
-    customer: {
-      email: {
-        required,
-        email
-      }
+    email: {
+      required,
+      email
     }
   },
   computed: {
+    customerData () {
+      return this.$store.state.customer
+    },
     ready () {
-      return !this.$v.customer.email.$invalid
+      return !this.$v.email.$invalid
     },
     emailAvailabilityMessage () {
-      if (this.customer.email !== '' && !this.$v.customer.email.$error) {
-        if (this.customer.emailAvailable) {
+      if (this.email !== '' && !this.$v.email.$error) {
+        if (this.emailAvailable) {
           return `You can create an account after checkout.`
         } else {
           return `
@@ -65,21 +64,29 @@ export default {
       this.$emit('ready', val)
     }
   },
+  created () {
+    if (
+      this.customerData !== null &&
+      this.customerData.hasOwnProperty('email')
+    ) {
+      this.email = this.customerData.email
+    }
+  },
   methods: {
     touch () {
-      this.$v.customer.email.$touch()
+      this.$v.email.$touch()
     },
     checkIsEmailAvailable () {
       const options = {
         method: 'POST',
         data: JSON.stringify({
-          'customerEmail': this.customer.email
+          'customerEmail': this.email
         }),
         url: 'customers/isEmailAvailable'
       }
       axios(options)
         .then(({data}) => {
-          this.customer.emailAvailable = data
+          this.emailAvailable = data
         })
         .catch(error => {
           console.error('Looks like there was a problem: \n', error)
@@ -88,7 +95,7 @@ export default {
       this.$store.commit('setItem', {
         item: 'customer',
         value: {
-          email: this.customer.email
+          email: this.email
         }
       })
     }

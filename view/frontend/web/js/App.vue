@@ -29,6 +29,11 @@ export default {
     TotalsData,
     ProductsList,
     ProgressBar
+  },
+  created () {
+    if (window.config.isCustomerLoggedIn) {
+      this.$store.dispatch('getCustomerData')
+    }
   }
 }
 </script>

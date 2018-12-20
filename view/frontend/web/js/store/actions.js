@@ -124,7 +124,7 @@ export default {
         })
     })
   },
-  getCustomerAddresses ({ commit }) {
+  getCustomerData ({ commit }) {
     axios.get('customers/me')
       .then(response => {
         if (response.data) {
