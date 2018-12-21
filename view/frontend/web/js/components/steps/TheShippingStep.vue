@@ -5,6 +5,7 @@
   >
     <h2>Shipping address</h2>
     <form>
+      <CustomerAddresses />
       <CustomerEmailField
         v-if="!isCustomerLoggedIn"
         ref="customerEmail"
@@ -29,6 +30,7 @@
 
 <script>
 import BaseButton from '../BaseButton.vue'
+import CustomerAddresses from '../CustomerAddresses.vue'
 import CustomerEmailField from '../CustomerEmailField.vue'
 import ShippingAddressForm from '../ShippingAddressForm.vue'
 import ShippingMethods from '../ShippingMethods.vue'
@@ -36,6 +38,7 @@ import ShippingMethods from '../ShippingMethods.vue'
 export default {
   components: {
     BaseButton,
+    CustomerAddresses,
     CustomerEmailField,
     ShippingAddressForm,
     ShippingMethods

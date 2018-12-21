@@ -37,7 +37,10 @@ export default {
   },
   mounted () {
     if (this.isCustomerLoggedIn) {
-      this.$store.dispatch('getCustomerData')
+      this.$store.commit('setItem', {
+        item: 'customer',
+        value: window.config.customerData
+      })
     }
   }
 }
