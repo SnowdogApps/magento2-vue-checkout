@@ -212,7 +212,10 @@ export default {
       this.$v.address.$touch()
     },
     onCountryChange () {
-      this.$store.dispatch('updateShippingMethods', this.address.country_id.value)
+      this.$store.dispatch(
+        'updateShippingMethods',
+        this.address.country_id.value
+      )
     }
   }
 }
