@@ -30,8 +30,13 @@ export default {
     ProductsList,
     ProgressBar
   },
-  created () {
-    if (window.config.isCustomerLoggedIn) {
+  computed: {
+    isCustomerLoggedIn () {
+      return this.$store.getters.isCustomerLoggedIn
+    }
+  },
+  mounted () {
+    if (this.isCustomerLoggedIn) {
       this.$store.dispatch('getCustomerData')
     }
   }
