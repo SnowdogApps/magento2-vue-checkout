@@ -10,8 +10,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    config: window.config,
-    baseUrl: window.baseUrl,
+    config: (window.snowdog.config) ? window.snowdog.config : {},
+    baseUrl: (window.snowdog.baseUrl) ? window.snowdog.baseUrl : {},
     customer: null,
     regions,
     step: 'shipping',
