@@ -11,7 +11,12 @@
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
       <CustomerAddresses v-if="isCustomerLoggedIn"/>
+      <BaseButton
+        text="Add new address"
+        @click.native="addNewAddress()"
+      />
       <ShippingAddressForm
+        v-if="!isCustomerLoggedIn || newAddress"
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
       />
@@ -48,7 +53,8 @@ export default {
       customerEmailReadyToSubmit: false,
       shippingMethodsReadyToSubmit: false,
       shippingAddressReadyToSubmit: false,
-      loader: false
+      loader: false,
+      newAddress: false
     }
   },
   computed: {
@@ -83,6 +89,9 @@ export default {
       })
 
       this.$store.dispatch('getTotals')
+    },
+    addNewAddress () {
+      this.newAddress = !this.newAddress
     }
   }
 }
