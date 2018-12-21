@@ -1,21 +1,20 @@
-import axios from 'axios'
+import axios from './../utils/checkout-axios.js'
 
 export default {
-  updateShippingMethods ({commit, state, getters}, countryId) {
+  updateShippingMethods ({commit, getters}, countryId) {
     const data = {
       'address': {
         'country_id': countryId
       }
     }
 
-    let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/estimate-shipping-methods`
+    let url = `guest-carts/${getters.cartId}/estimate-shipping-methods`
     if (getters.isCustomerLoggedIn) {
-      url = `${state.baseUrl}rest/V1/carts/mine/estimate-shipping-methods`
+      url = 'carts/mine/estimate-shipping-methods'
     }
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(data),
       url
     }
@@ -30,9 +29,9 @@ export default {
   },
   setShippinInformation ({commit, state, getters}) {
     return new Promise((resolve, reject) => {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/shipping-information`
+      let url = `guest-carts/${getters.cartId}/shipping-information`
       if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/shipping-information`
+        url = 'carts/mine/shipping-information'
       }
 
       const shippingInformation = {
@@ -59,7 +58,6 @@ export default {
 
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(shippingInformation),
         url
       }
@@ -75,11 +73,11 @@ export default {
         })
     })
   },
-  manageDiscount ({state, getters}, discount) {
+  manageDiscount ({getters}, discount) {
     return new Promise((resolve, reject) => {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/coupons/`
+      let url = `guest-carts/${getters.cartId}/coupons/`
       if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/coupons/`
+        url = 'carts/mine/coupons/'
       }
 
       if (discount.method === 'PUT') {
@@ -88,7 +86,6 @@ export default {
 
       const options = {
         method: discount.method,
-        headers: { 'Content-Type': 'application/json' },
         url
       }
 
@@ -104,16 +101,15 @@ export default {
         })
     })
   },
-  getTotals ({ state, commit, getters }) {
+  getTotals ({ commit, getters }) {
     return new Promise((resolve, reject) => {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/totals/`
+      let url = `guest-carts/${getters.cartId}/totals/`
       if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/totals/`
+        url = 'carts/mine/totals/'
       }
 
       const options = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
         url
       }
 
@@ -128,11 +124,22 @@ export default {
         })
     })
   },
+  getCustomerData ({ commit }) {
+    axios.get('customers/me')
+      .then(response => {
+        if (response.data) {
+          commit('setItem', {item: 'customer', value: response.data})
+        }
+      })
+      .catch(error => {
+        console.log('Looks like there was a problem: \n', error)
+      })
+  },
   placeOrder ({commit, state, getters}, billingAddress) {
     return new Promise((resolve, reject) => {
-      let url = `${state.baseUrl}rest/V1/guest-carts/${getters.cartId}/payment-information`
+      let url = `guest-carts/${getters.cartId}/payment-information`
       if (getters.isCustomerLoggedIn) {
-        url = `${state.baseUrl}rest/V1/carts/mine/payment-information`
+        url = 'carts/mine/payment-information'
       }
 
       billingAddress.country_id = billingAddress.country_id.value
@@ -154,7 +161,6 @@ export default {
 
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         data: JSON.stringify(data),
         url
       }

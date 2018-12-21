@@ -22,9 +22,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - vuex mutations to reusable
 - succes step page
 - moved billing address form to separate component (#104)
+- moved axios headers to separate file
+- moved customer email field to separate component
 
 ### Fixed
 - shipping methods checked item
+- requests if user is logged in
 
 ## [0.2.0] - 2018-05-21
 ### Added

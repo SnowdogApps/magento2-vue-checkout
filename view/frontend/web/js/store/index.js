@@ -8,17 +8,12 @@ import getters from './getters'
 
 Vue.use(Vuex)
 
-const config = window.snowdog.config ? window.snowdog.config : {}
-const baseUrl = window.snowdog.baseUrl ? window.snowdog.baseUrl : {}
-
 const store = new Vuex.Store({
   state: {
-    config,
-    baseUrl,
+    config: window.config,
+    baseUrl: window.baseUrl,
+    customer: null,
     regions,
-    customer: {
-      email: null
-    },
     step: 'shipping',
     orderId: null,
     shippingMethods: [],
