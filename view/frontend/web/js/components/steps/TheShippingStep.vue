@@ -5,12 +5,12 @@
   >
     <h2>Shipping address</h2>
     <form>
-      <CustomerAddresses />
       <CustomerEmailField
         v-if="!isCustomerLoggedIn"
         ref="customerEmail"
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
+      <CustomerAddresses v-if="isCustomerLoggedIn"/>
       <ShippingAddressForm
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
