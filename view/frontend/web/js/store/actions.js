@@ -124,6 +124,17 @@ export default {
         })
     })
   },
+  getCustomerData ({ commit }) {
+    axios.get('customers/me')
+      .then(response => {
+        if (response.data) {
+          commit('setItem', {item: 'customer', value: response.data})
+        }
+      })
+      .catch(error => {
+        console.log('Looks like there was a problem: \n', error)
+      })
+  },
   placeOrder ({commit, state, getters}, billingAddress) {
     return new Promise((resolve, reject) => {
       let url = `guest-carts/${getters.cartId}/payment-information`

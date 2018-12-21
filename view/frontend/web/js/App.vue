@@ -29,6 +29,16 @@ export default {
     TotalsData,
     ProductsList,
     ProgressBar
+  },
+  computed: {
+    isCustomerLoggedIn () {
+      return this.$store.getters.isCustomerLoggedIn
+    }
+  },
+  mounted () {
+    if (this.isCustomerLoggedIn) {
+      this.$store.dispatch('getCustomerData')
+    }
   }
 }
 </script>
