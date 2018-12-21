@@ -177,18 +177,34 @@ export default {
     },
     ready () {
       return !this.$v.address.$invalid
+    },
+    addressData () {
+      if (this.$store.state.shippingAddress !== null) {
+        return this.$store.getters.addressByType('shippingAddress')
+      } else {
+        return null
+      }
     }
   },
   watch: {
     ready (val) {
-      if (val) {
-        this.$store.commit(
-          'setAddress',
-          { type: 'shippingAddress', address: this.address }
-        )
-      }
-
       this.$emit('ready', val)
+    },
+    address: {
+      handler () {
+        if (this.ready) {
+          this.$store.commit(
+            'setAddress',
+            { type: 'shippingAddress', address: this.address }
+          )
+        }
+      },
+      deep: true
+    }
+  },
+  created () {
+    if (this.addressData !== null) {
+      this.address = this.addressData
     }
   },
   methods: {
@@ -219,4 +235,3 @@ export default {
     }
   }
 </style>
-

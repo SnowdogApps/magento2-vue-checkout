@@ -11,6 +11,7 @@
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
       <ShippingAddressForm
+        v-if="!isCustomerLoggedIn"
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
       />
@@ -67,7 +68,7 @@ export default {
 
       if (
         !this.shippingAddressReadyToSubmit ||
-        !this.shippingMethodsReadyToSubmit ||
+        (!this.isCustomerLoggedIn && !this.shippingMethodsReadyToSubmit) ||
         (!this.isCustomerLoggedIn && !this.customerEmailReadyToSubmit)
       ) {
         return
