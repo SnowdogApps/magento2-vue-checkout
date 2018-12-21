@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   entry: './view/frontend/web/js/script.js',
@@ -6,6 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, './view/frontend/web/js/dist'),
     filename: 'index.js'
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, './view/frontend/web/js/dist'),
+    hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
   module: {
     rules: [
       {

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuei18n from 'vue-i18n'
 import { mount, createLocalVue } from '@vue/test-utils'
-import messages from '../view/frontend/web/js/data/translations.json'
+import messages from '../view/frontend/web/js/data/translations-en_US.json'
 import ProductsList from '../view/frontend/web/js/components/ProductsList.vue'
 
 const localVue = createLocalVue()
