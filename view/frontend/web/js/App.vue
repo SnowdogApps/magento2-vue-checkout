@@ -33,13 +33,16 @@ export default {
   computed: {
     isCustomerLoggedIn () {
       return this.$store.getters.isCustomerLoggedIn
+    },
+    customerData () {
+      return window.config.customerData
     }
   },
   mounted () {
     if (this.isCustomerLoggedIn) {
       this.$store.commit('setItem', {
         item: 'customer',
-        value: window.config.customerData
+        value: this.customerData
       })
     }
   }
