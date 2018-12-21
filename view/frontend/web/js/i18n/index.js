@@ -5,10 +5,8 @@ import Vuei18n from 'vue-i18n'
 
 Vue.use(Vuei18n)
 
-const storeLocale = window.snowdog.storeLocale
-
 const i18n = new Vuei18n({
-  locale: storeLocale,
+  locale: (window.snowdog.storeLocale) ? window.snowdog.storeLocale : 'en_US',
   fallbackLocale: 'en_US', // Set as deafult lang to avoid missing translations
   messages
 })
