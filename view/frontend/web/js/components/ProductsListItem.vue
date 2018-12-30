@@ -1,7 +1,7 @@
 <template>
   <li class="product">
     <p class="products__title">
-      {{ $t('Product Name') }}
+      {{ $t('Product name') }}
       <strong>
         {{ product.name }}
       </strong>
