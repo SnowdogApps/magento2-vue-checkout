@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import store from './store'
-import i18n from './i18n'
+import { i18n } from './i18n'
 import App from './App.vue'
 import * as filters from './filters'
 

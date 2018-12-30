@@ -1,35 +1,29 @@
 import Vue from 'vue'
 import Vuei18n from 'vue-i18n'
 
-// Load en-US as default lang
 import defaultMessages from '../data/translations-en_US.json'
+import plMessages from '../data/translations-pl_PL.json'
 
-const storeLocale = (window.snowdog.storeLocale) ? window.snowdog.storeLocale : 'en_US'
+const storeLocale = window.snowdog.storeLocale
 
 Vue.use(Vuei18n)
 
-const i18n = new Vuei18n({
+export const i18n = new Vuei18n({
   locale: 'en_US',
   fallbackLocale: 'en_US', // Set as deafult lang to avoid missing translations
-  messages: defaultMessages
+  messages: {
+    en_US: defaultMessages.en_US,
+    pl_PL: plMessages.pl_PL
+  }
 })
 
-function loadLanguageJson (storeLocale) {
-  if (module.hot && storeLocale !== 'en_US') {
-    return import(/* webpackMode: "eager" */ `../data/translations-${storeLocale}.json`)
-      .then(messages => {
-        const languages = { 'en_US': defaultMessages }
-        languages[storeLocale] = messages
-
-        return languages
-      })
-      .catch(() => {
-        console.debug('Unable to load translations for this lang - default en_US loaded')
-        return { 'en_US': defaultMessages }
-      })
-  } else {
-    return { 'en_US': defaultMessages }
+function settingLocalCode (localCode) {
+  if (localCode === 'en_US') {
+    return false
   }
+
+  i18n.locale = localCode
+  return localCode
 }
 
-export default i18n
+settingLocalCode(storeLocale)

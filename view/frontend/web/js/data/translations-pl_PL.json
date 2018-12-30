@@ -1,79 +1,81 @@
 {
-  "general": {
-    "nextStep": "Przejdź dalej",
-    "back": "Wróć",
-    "order": "Złóż zamówienie",
-    "cancel": "Anuluj",
-    "saveAddress": "Zapisz adres"
-  },
-  "steps": {
-    "shipping": "Sposób wysyłki",
-    "payment": "Podsumowanie i płatność"
-  },
-  "shipping": {
-    "title": "Adres dostawy",
-    "createAccount": "Możesz stworzyć konto po zakupie",
-    "logIn": "Posiadasz konto w naszym sklpie. Zalgouj się <a href='%{link}'>tutaj</a> lub kontynuuj jako gość"
-  },
-  "formElements": {
-    "firstName": "Imię",
-    "lastName": "Nazwisko",
-    "phoneNumber": "Numer telefonu",
-    "streetAddress": "Adres",
-    "country": "Wybierz kraj",
-    "city": "Miasto",
-    "zipCode": "Kod pocztowy",
-    "state": "Województwo",
-    "selectState": "Wpisz województwo",
-    "company": "Firma"
-  },
-  "payment": {
-    "title": "Adres rozliczeniowy",
-    "billingCheckbox": "Mój adres dostawy jest taki sam jak adres płatności",
-    "editAddress": "Edytuj adres"
-  },
-  "success": {
-    "finished": "Dziękujemy za złożenie zamówienia!",
-    "orderNumber": "Numer Twojego zamówienia to: %{orderId}.",
-    "emailDetails": "Szczegóły dotyczące zamówienia zostaną przesłane na email.",
-    "continueShopping": "Kontynuuj zakupy"
-  },
-  "discount": {
-    "title": "Zniżka",
-    "apply": "Dodaj kod zniżkowy",
-    "addDiscount": "Przyznaj rabat",
-    "removeDiscount": "Usuń rabat"
-  },
-  "totals": {
-    "summary": "Podsumowanie",
-    "subtotal": "Podsumowanie koszyka:",
-    "shipping": "Wysyłka:",
-    "tax": "Podatek:",
-    "discount": "Zniżka:",
-    "orderTotals": "Suma zamówienia:"
-  },
-  "paymentMethods": {
-    "title": "Metody płatności"
-  },
-  "shippingMethods": {
-    "title": "Metody wysyłki"
-  },
-  "productList": {
-    "title": "Lista produktów",
-    "name": "Nazwa produktu:",
-    "price": "Cena:",
-    "details": "Szczegóły produktu:",
-    "qty": "Ilość:",
-    "discount": "Zniżka:"
-  },
-  "errorCode": {
-    "required": "To pole jest obowiązkowe!",
-    "generalError": "Wygląda na to, że napotkano błąd:",
-    "unsupportedPaymentsForCountry": "Nie wspieramy żadnych metod płatności dla tego kraju.",
-    "unsupportedShippingForCountry": "Nie wspieramy żadnych metod dostawy dla tego kraju.",
-    "discountNotFound": "Kod rabatowy nie został znaleziony! Błąd poczas próby aktywacji kodu: '%{code}'. Skorzystaj z innego.",
-    "discountAddGeneralError": "Coś poszło nie tak podczas wysyłania kuponu rabatowego. Sróbuj ponownie później.",
-    "discountDeleteError": "Błąd poczas próby usunięcia kodu rabatowego: '%{code}'. Nie znaleziono takiego kuponu!",
-    "discountDeleteGeneralError": "Coś poszło nie tak podczas usuwania kuponu rabatowego. Sróbuj ponownie później."
+  "pl_PL": {
+    "general": {
+      "nextStep": "Przejdź dalej",
+      "back": "Wróć",
+      "order": "Złóż zamówienie",
+      "cancel": "Anuluj",
+      "saveAddress": "Zapisz adres"
+    },
+    "steps": {
+      "shipping": "Sposób wysyłki",
+      "payment": "Podsumowanie i płatność"
+    },
+    "shipping": {
+      "title": "Adres dostawy",
+      "createAccount": "Możesz stworzyć konto po zakupie",
+      "logIn": "Posiadasz konto w naszym sklpie. Zalgouj się <a href='%{link}'>tutaj</a> lub kontynuuj jako gość"
+    },
+    "formElements": {
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "phoneNumber": "Numer telefonu",
+      "streetAddress": "Adres",
+      "country": "Wybierz kraj",
+      "city": "Miasto",
+      "zipCode": "Kod pocztowy",
+      "state": "Województwo",
+      "selectState": "Wpisz województwo",
+      "company": "Firma"
+    },
+    "payment": {
+      "title": "Adres rozliczeniowy",
+      "billingCheckbox": "Mój adres dostawy jest taki sam jak adres płatności",
+      "editAddress": "Edytuj adres"
+    },
+    "success": {
+      "finished": "Dziękujemy za złożenie zamówienia!",
+      "orderNumber": "Numer Twojego zamówienia to: %{orderId}.",
+      "emailDetails": "Szczegóły dotyczące zamówienia zostaną przesłane na email.",
+      "continueShopping": "Kontynuuj zakupy"
+    },
+    "discount": {
+      "title": "Zniżka",
+      "apply": "Dodaj kod zniżkowy",
+      "addDiscount": "Przyznaj rabat",
+      "removeDiscount": "Usuń rabat"
+    },
+    "totals": {
+      "summary": "Podsumowanie",
+      "subtotal": "Podsumowanie koszyka:",
+      "shipping": "Wysyłka:",
+      "tax": "Podatek:",
+      "discount": "Zniżka:",
+      "orderTotals": "Suma zamówienia:"
+    },
+    "paymentMethods": {
+      "title": "Metody płatności"
+    },
+    "shippingMethods": {
+      "title": "Metody wysyłki"
+    },
+    "productList": {
+      "title": "Lista produktów",
+      "name": "Nazwa produktu:",
+      "price": "Cena:",
+      "details": "Szczegóły produktu:",
+      "qty": "Ilość:",
+      "discount": "Zniżka:"
+    },
+    "errorCode": {
+      "required": "To pole jest obowiązkowe!",
+      "generalError": "Wygląda na to, że napotkano błąd:",
+      "unsupportedPaymentsForCountry": "Nie wspieramy żadnych metod płatności dla tego kraju.",
+      "unsupportedShippingForCountry": "Nie wspieramy żadnych metod dostawy dla tego kraju.",
+      "discountNotFound": "Kod rabatowy nie został znaleziony! Błąd poczas próby aktywacji kodu: '%{code}'. Skorzystaj z innego.",
+      "discountAddGeneralError": "Coś poszło nie tak podczas wysyłania kuponu rabatowego. Sróbuj ponownie później.",
+      "discountDeleteError": "Błąd poczas próby usunięcia kodu rabatowego: '%{code}'. Nie znaleziono takiego kuponu!",
+      "discountDeleteGeneralError": "Coś poszło nie tak podczas usuwania kuponu rabatowego. Sróbuj ponownie później."
+    }
   }
 }
