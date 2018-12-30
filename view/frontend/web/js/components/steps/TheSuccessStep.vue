@@ -1,12 +1,12 @@
 <template>
   <section v-if="step === 'success'">
-    <h1> {{ $t('success.finished') }}</h1>
+    <h1> {{ $t('Thank you for your purchase!') }}</h1>
     <template v-if="orderId !== null">
-      {{ $t('success.orderNumber', { orderId: orderId }) }}
+      {{ $t('Your order number is', { orderId: orderId }) }}
     </template>
-    <p>{{ $t('success.emailDetails') }}</p>
+    <p>{{ $t('We\'ll email you an order confirmation with details and tracking info.') }}</p>
     <a href="/">
-      {{ $t('success.continueShopping') }}
+      {{ $t('Continue shopping') }}
     </a>
   </section>
 </template>

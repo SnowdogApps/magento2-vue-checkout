@@ -1,7 +1,7 @@
 <template>
   <form>
     <h2>
-      {{ $t('shippingMethods.title') }}
+      {{ $t('Shipping Methods') }}
     </h2>
     <div
       v-if="shippingMethods.length"
@@ -38,12 +38,12 @@
             && !$v.selectedShippingMethod.required
         "
       >
-        {{ $t('errorCode.required') }}
+        {{ $t('This field is required!') }}
       </span>
     </div>
     <div v-else>
       <p>
-        {{ $t('errorCode.unsupportedShippingForCountry') }}
+        {{ $t('In this country we don\'t handle any shipping methods') }}
       </p>
     </div>
   </form>

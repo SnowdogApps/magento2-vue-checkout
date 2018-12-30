@@ -1,7 +1,7 @@
 <template>
   <form>
     <h2>
-      {{ $t('paymentMethods.title') }}
+      {{ $t('Payment methods') }}
     </h2>
     <div v-if="paymentMethods.length">
       <div
@@ -26,12 +26,12 @@
             && !$v.selectedPaymentMethod.required
         "
       >
-        {{ $t('errorCode.required') }}
+        {{ $t('This field is required!') }}
       </span>
     </div>
     <div v-else>
       <p>
-        {{ $t('errorCode.unsupportedPaymentsForCountry') }}
+        {{ $t('In this country we don\'t handle any payment methods') }}
       </p>
     </div>
   </form>

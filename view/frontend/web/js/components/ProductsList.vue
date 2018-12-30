@@ -4,7 +4,7 @@
     class="products-list"
   >
     <h2>
-      {{ $t('productList.title') }}
+      {{ $t('Product List') }}
     </h2>
     <ul class="products">
       <ProductsListItem

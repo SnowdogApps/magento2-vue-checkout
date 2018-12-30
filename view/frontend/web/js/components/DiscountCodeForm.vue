@@ -1,20 +1,20 @@
 <template>
   <div>
     <h2>
-      {{ $t('discount.title') }}
+      {{ $t('Discount') }}
     </h2>
     <div class="discount-code">
       <form class="discount__form">
         <BaseInput
           v-model="discount.code"
           :read-only="couponCode !== ''"
-          :label="$t('discount.apply')"
+          :label="$t('Apply Discount Code')"
           name="discount-code"
         />
         <BaseButton
           v-if="couponCode === ''"
           :loader="loader"
-          :text="$t('discount.addDiscount')"
+          :text="$t('Apply Discount')"
           class="button"
           with-loader
           @click.native="applyDiscount"
@@ -22,7 +22,7 @@
         <BaseButton
           v-else
           :loader="loader"
-          :text="$t('discount.removeDiscount')"
+          :text="$t('Remove Discount')"
           class="button"
           @click.native="removeDiscount"
         />
@@ -82,9 +82,9 @@ export default {
           this.loader = false
 
           if (error.status === 404) {
-            this.error = this.$t('errorCode.discountNotFound', { code: this.discount.code })
+            this.error = this.$t('Coupon code not found!', { code: this.discount.code })
           } else {
-            this.error = this.$t('errorCode.discountAddGeneralError')
+            this.error = this.$t('Something goes wrong when trying to send coupon code. Please try again later.')
           }
         })
     },
@@ -103,9 +103,9 @@ export default {
           this.loader = false
 
           if (error.status === 404) {
-            this.error = this.$t('errorCode.discountDeleteError', { code: this.discount.code })
+            this.error = this.$t('Failed when trying to delete coupon code', { code: this.discount.code })
           } else {
-            this.error = this.$t('errorCode.discountDeleteGeneralError')
+            this.error = this.$t('Something goes wrong when trying to delete coupon code')
           }
         })
     }

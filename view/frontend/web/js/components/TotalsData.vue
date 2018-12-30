@@ -4,11 +4,11 @@
     class="totals"
   >
     <h2>
-      {{ $t('totals.summary') }}
+      {{ $t('Order Summary') }}
     </h2>
 
     <p class="totals__item">
-      {{ $t('totals.subtotal') }}
+      {{ $t('Cart Subtotal') }}
 
       <strong>
         {{ totals.subtotal | currency }}
@@ -16,7 +16,7 @@
     </p>
 
     <p class="totals__item">
-      {{ $t('totals.shipping') }}
+      {{ $t('Shipping') }}
 
       <strong>
         {{ totals.shipping_amount | currency }}
@@ -27,7 +27,7 @@
       v-if="parseInt(totals.tax_amount) !== 0"
       class="totals__item"
     >
-      {{ $t('totals.tax') }}
+      {{ $t('Tax') }}
 
       <strong>
         {{ totals.tax_amount | currency }}
@@ -38,7 +38,7 @@
       v-if="parseInt(totals.discount_amount) !== 0"
       class="totals__item-dicsount"
     >
-      {{ $t('totals.discount') }}
+      {{ $t('Discount') }}
 
       <strong>
         {{ totals.discount_amount | currency }}
@@ -49,7 +49,7 @@
       v-if="totals.subtotal !== totals.base_grand_total"
       class="totals__item-total"
     >
-      {{ $t('totals.orderTotals') }}
+      {{ $t('Order Totals') }}
 
       <strong>
         {{ totals.base_grand_total | currency }}

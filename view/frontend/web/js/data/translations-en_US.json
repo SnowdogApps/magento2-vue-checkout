@@ -1,81 +1,55 @@
 {
   "en_US": {
-    "general": {
-      "nextStep": "Next Step",
-      "back": "Back",
-      "order": "Place order",
-      "cancel": "Cancel",
-      "saveAddress": "Save Address"
-    },
-    "steps": {
-      "shipping": "Shipping Step",
-      "payment": "Review & Payments Step"
-    },
-    "shipping": {
-      "title": "Shipping address",
-      "createAccount": "You can create an account after checkout",
-      "logIn": "You already have an account with us. Sign in <a href='%{link}'>here</a> or continue as guest."
-    },
-    "formElements": {
-      "firstName": "First name",
-      "lastName": "Last name",
-      "phoneNumber": "Phone Number",
-      "streetAddress": "Street Address",
-      "country": "Select Country",
-      "city": "City",
-      "zipCode": "Zip/Postal Code",
-      "state": "State/Province",
-      "selectState": "Select State/Province",
-      "company": "Company"
-    },
-    "payment": {
-      "title": "Billing Address",
-      "billingCheckbox": "My billing and shipping address are the same",
-      "editAddress": "Edit Address"
-    },
-    "success": {
-      "finished": "Thank you for your purchase!",
-      "orderNumber": "Your order number is: %{orderId}.",
-      "emailDetails": "We'll email you an order confirmation with details and tracking info.",
-      "continueShopping": "Continue shopping"
-    },
-    "discount": {
-      "title": "Discount",
-      "apply": "Apply Discount Code",
-      "addDiscount": "Apply Discount",
-      "removeDiscount": "Remove Discount"
-    },
-    "totals": {
-      "summary": "Order summary",
-      "subtotal": "Cart subtotal:",
-      "shipping": "Shipping:",
-      "tax": "Tax:",
-      "discount": "Discount:",
-      "orderTotals": "Order Total:"
-    },
-    "paymentMethods": {
-      "title": "Payment methods"
-    },
-    "shippingMethods": {
-      "title": "Shipping Methods"
-    },
-    "productList": {
-      "title": "Product List",
-      "name": "Product name:",
-      "price": "Price:",
-      "details": "Product details:",
-      "qty": "Qty:",
-      "discount": "Discount:"
-    },
-    "errorCode": {
-      "required": "This field is required!",
-      "generalError": "Looks like there was a problem:",
-      "unsupportedPaymentsForCountry": "In this country we don't handle any payment methods.",
-      "unsupportedShippingForCountry": "In this country we don't handle any shipping methods.",
-      "discountNotFound": "Coupon code not found! Failed when trying to activate: '%{code}' coupon code. Please use another one.",
-      "discountAddGeneralError": "Something goes wrong when trying to send coupon code. Please try again later.",
-      "discountDeleteError": "Failed when trying to delete: '%{code}' coupon code. Coupon code not found!",
-      "discountDeleteGeneralError": "Something goes wrong when trying to delete coupon code. Please try again later."
-    }
+    "Next Step": "Next Step",
+    "Back": "Back",
+    "Place order": "Place order",
+    "Cancel": "Cancel",
+    "Save Address": "Save Address",
+    "Shipping Step": "Shipping Step",
+    "Review & Payment Step": "Review & Payments Step",
+    "Shipping Address": "Shipping address",
+    "You can create an account after checkout": "You can create an account after checkout",
+    "You already have an account with us": "You already have an account with us. Sign in <a href='%{link}'>here</a> or continue as guest.",
+    "First Name": "First name",
+    "Last Name": "Last name",
+    "Phone Number": "Phone Number",
+    "Street Address": "Street Address",
+    "Select Country": "Select Country",
+    "City": "City",
+    "Zip Code": "Zip/Postal Code",
+    "State": "State/Province",
+    "Select State": "Select State/Province",
+    "Company": "Company",
+    "Billing Address": "Billing Address",
+    "My billing and shipping address are the same": "My billing and shipping address are the same",
+    "Edit Address": "Edit Address",
+    "Thank you for your purchase!": "Thank you for your purchase!",
+    "Your order number is": "Your order number is: %{orderId}.",
+    "We'll email you an order confirmation with details and tracking info.": "We'll email you an order confirmation with details and tracking info.",
+    "Continue shopping": "Continue shopping",
+    "Discount": "Discount",
+    "Apply Discount Code": "Apply Discount Code",
+    "Apply Discount": "Apply Discount",
+    "Remove Discount": "Remove Discount",
+    "Order Summary": "Order summary",
+    "Cart Subtotal": "Cart subtotal:",
+    "Shipping": "Shipping:",
+    "Tax": "Tax:",
+    "Order Totals": "Order Total:",
+    "Payment methods": "Payment methods",
+    "Shipping Methods": "Shipping Methods",
+    "Product List": "Product List",
+    "Product name": "Product name:",
+    "Price": "Price:",
+    "Price details": "Product details:",
+    "Qty": "Qty:",
+    "This field is required!": "This field is required!",
+    "Looks like there was a problem": "Looks like there was a problem:",
+    "In this country we don't handle any payment methods": "In this country we don't handle any payment methods.",
+    "In this country we don't handle any shipping methods": "In this country we don't handle any shipping methods.",
+    "Coupon code not found!": "Coupon code not found! Failed when trying to activate: '%{code}' coupon code. Please use another one.",
+    "Something goes wrong when trying to send coupon code. Please try again later.": "Something goes wrong when trying to send coupon code. Please try again later.",
+    "Failed when trying to delete coupon code": "Failed when trying to delete: '%{code}' coupon code. Coupon code not found!",
+    "Something goes wrong when trying to delete coupon code": "Something goes wrong when trying to delete coupon code. Please try again later."
   }
 }

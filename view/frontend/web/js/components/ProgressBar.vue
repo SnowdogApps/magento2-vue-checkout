@@ -10,7 +10,7 @@
           { 'progress-bar__item--active': step === 'shipping' }
         ]"
       >
-        {{ $t('steps.shipping') }}
+        {{ $t('Shipping Step') }}
       </span>/
       <span
         :class="[
@@ -18,7 +18,7 @@
           { 'progress-bar__item--active': step === 'payment' }
         ]"
       >
-        {{ $t('steps.payment') }}
+        {{ $t('Review & Payment Step') }}
       </span>
     </h1>
   </div>

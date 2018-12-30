@@ -47,12 +47,9 @@ export default {
     emailAvailabilityMessage () {
       if (this.email !== '' && !this.$v.email.$error) {
         if (this.emailAvailable) {
-          return `You can create an account after checkout.`
+          return this.$t('You can create an account after checkout')
         } else {
-          return `
-            You already have an account with us.
-            Sign in <a href="/customer/account/login/">here</a> or continue as guest.
-          `
+          return this.$t('You already have an account with us', { link: '/customer/account/login/' })
         }
       } else {
         return false
