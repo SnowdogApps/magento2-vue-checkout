@@ -1,14 +1,14 @@
 <template>
   <li class="product">
     <p class="products__title">
-      {{ $t('Product name') }}
+      {{ $t('Product name') }}:
       <strong>
         {{ product.name }}
       </strong>
     </p>
 
     <span class="product__price">
-      {{ $t('Price') }}
+      {{ $t('Price') }}:
 
       <strong>
         {{ product.price | currency }}
@@ -17,7 +17,7 @@
 
     <div class="products__handler">
       <p class="products__information">
-        {{ $t('Price details') }}
+        {{ $t('Product details') }}:
       </p>
 
       <template v-for="detail in JSON.parse(product.options)">
@@ -33,7 +33,7 @@
       </template>
 
       <span class="products__detail">
-        {{ $t('Qty') }}
+        {{ $t('Qty') }}:
         <strong>
           {{ product.qty }}
         </strong>

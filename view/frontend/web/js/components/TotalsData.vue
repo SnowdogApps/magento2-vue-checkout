@@ -8,7 +8,7 @@
     </h2>
 
     <p class="totals__item">
-      {{ $t('Cart Subtotal') }}
+      {{ $t('Cart Subtotal') }}:
 
       <strong>
         {{ totals.subtotal | currency }}
@@ -16,7 +16,7 @@
     </p>
 
     <p class="totals__item">
-      {{ $t('Shipping') }}
+      {{ $t('Shipping') }}:
 
       <strong>
         {{ totals.shipping_amount | currency }}
@@ -27,7 +27,7 @@
       v-if="parseInt(totals.tax_amount) !== 0"
       class="totals__item"
     >
-      {{ $t('Tax') }}
+      {{ $t('Tax') }}:
 
       <strong>
         {{ totals.tax_amount | currency }}
@@ -49,7 +49,7 @@
       v-if="totals.subtotal !== totals.base_grand_total"
       class="totals__item-total"
     >
-      {{ $t('Order Totals') }}
+      {{ $t('Order Totals') }}:
 
       <strong>
         {{ totals.base_grand_total | currency }}

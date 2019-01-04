@@ -86,7 +86,7 @@ export default {
           this.emailAvailable = data
         })
         .catch(error => {
-          console.error('Looks like there was a problem: \n', error)
+          console.error(`${this.$t('Looks like there was a problem')}: \n`, error)
         })
 
       this.$store.commit('setItem', {
