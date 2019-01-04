@@ -12,12 +12,12 @@ export const i18n = new Vuei18n({
   locale: 'en_US',
   fallbackLocale: 'en_US', // Set as deafult lang to avoid missing translations
   messages: {
-    en_US: defaultMessages.en_US,
-    pl_PL: plMessages.pl_PL
+    en_US: defaultMessages,
+    pl_PL: plMessages
   }
 })
 
-function settingLocalCode (localCode) {
+function setLocalCode (localCode) {
   if (localCode === 'en_US') {
     return false
   }
@@ -26,4 +26,4 @@ function settingLocalCode (localCode) {
   return localCode
 }
 
-settingLocalCode(storeLocale)
+setLocalCode(storeLocale)
