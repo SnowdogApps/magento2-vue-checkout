@@ -75,7 +75,7 @@
     />
     <div v-if="regions.length">
       <label for="region_id">
-         {{ $t("Select State") }}
+        {{ $t("Select State") }}
       </label>
       <multiselect
         id="region_id"
