@@ -34,6 +34,7 @@ exports[`ProductsList.test.js has the expected html structure 1`] = `
       >
         
     Price:
+
     
         <strong>
           

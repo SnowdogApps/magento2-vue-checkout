@@ -1,29 +1,29 @@
 <template>
   <div>
     <h2>
-      Discount
+      {{ $t('Discount') }}
     </h2>
     <div class="discount-code">
       <form class="discount__form">
         <BaseInput
           v-model="discount.code"
           :read-only="couponCode !== ''"
-          label="Apply Discount Code"
+          :label="$t('Apply Discount Code')"
           name="discount-code"
         />
         <BaseButton
           v-if="couponCode === ''"
           :loader="loader"
+          :text="$t('Apply Discount')"
           class="button"
-          text="Apply Discount"
           with-loader
           @click.native="applyDiscount"
         />
         <BaseButton
           v-else
           :loader="loader"
+          :text="$t('Remove Discount')"
           class="button"
-          text="Remove Discount"
           @click.native="removeDiscount"
         />
         <p
@@ -82,9 +82,9 @@ export default {
           this.loader = false
 
           if (error.status === 404) {
-            this.error = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`
+            this.error = this.$t('Coupon code not found!', { code: this.discount.code })
           } else {
-            this.error = 'Something goes wrong when trying to send coupon code. Please try again later.'
+            this.error = this.$t('Something goes wrong when trying to send coupon code. Please try again later.')
           }
         })
     },
@@ -103,9 +103,9 @@ export default {
           this.loader = false
 
           if (error.status === 404) {
-            this.error = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`
+            this.error = this.$t('Failed when trying to delete coupon code', { code: this.discount.code })
           } else {
-            this.error = 'Something goes wrong when trying to delete coupon code. Please try again later.'
+            this.error = this.$t('Something goes wrong when trying to delete coupon code')
           }
         })
     }

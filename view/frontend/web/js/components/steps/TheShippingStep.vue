@@ -3,13 +3,14 @@
     v-if="step === 'shipping'"
     class="shipping-address"
   >
-    <h2>Shipping address</h2>
+    <h2>{{ $t('Shipping Address') }}</h2>
     <form>
       <CustomerEmailField
         v-if="!isCustomerLoggedIn"
         ref="customerEmail"
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
+
       <ShippingAddressForm
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
@@ -21,7 +22,7 @@
     />
     <BaseButton
       :loader="loader"
-      text="Next Step"
+      :text="$t('Next Step')"
       @click.native="goToNextStep()"
     />
   </section>
