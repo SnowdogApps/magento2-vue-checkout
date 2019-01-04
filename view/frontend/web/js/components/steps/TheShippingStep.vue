@@ -4,7 +4,6 @@
     class="shipping-address"
   >
     <h2>{{ $t('Shipping Address') }}</h2>
-    <h2>Shipping address</h2>
     <form>
       <CustomerEmailField
         v-if="!isCustomerLoggedIn"
