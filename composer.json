@@ -13,6 +13,9 @@
       "email": "igloczek@gmail.com"
     }
   ],
+  "require": {
+    "magento/module-checkout": "100.4.*"
+  },
   "autoload": {
     "files": [
       "registration.php"
