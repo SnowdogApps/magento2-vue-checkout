@@ -7,20 +7,21 @@ localVue.use(Vuex)
 
 describe('App.test.js', () => {
   let store
-  let actions
+  let mutations
   let wrapper
 
   beforeEach(() => {
-    actions = {
-      getCustomerData: jest.fn()
+    mutations = {
+      setItem: jest.fn()
     }
     store = new Vuex.Store({
-      actions
+      mutations
     })
 
     wrapper = shallowMount(App, {
       computed: {
-        isCustomerLoggedIn: () => true
+        isCustomerLoggedIn: () => true,
+        customerData: () => null
       },
       store,
       localVue

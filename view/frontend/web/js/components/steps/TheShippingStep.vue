@@ -10,7 +10,13 @@
         ref="customerEmail"
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
+      <CustomerAddresses v-if="isCustomerLoggedIn"/>
+      <BaseButton
+        text="Add new address"
+        @click.native="addNewAddress()"
+      />
       <ShippingAddressForm
+        v-if="!isCustomerLoggedIn || newAddress"
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
       />
@@ -29,6 +35,7 @@
 
 <script>
 import BaseButton from '../BaseButton.vue'
+import CustomerAddresses from '../CustomerAddresses.vue'
 import CustomerEmailField from '../CustomerEmailField.vue'
 import ShippingAddressForm from '../ShippingAddressForm.vue'
 import ShippingMethods from '../ShippingMethods.vue'
@@ -36,6 +43,7 @@ import ShippingMethods from '../ShippingMethods.vue'
 export default {
   components: {
     BaseButton,
+    CustomerAddresses,
     CustomerEmailField,
     ShippingAddressForm,
     ShippingMethods
@@ -45,7 +53,8 @@ export default {
       customerEmailReadyToSubmit: false,
       shippingMethodsReadyToSubmit: false,
       shippingAddressReadyToSubmit: false,
-      loader: false
+      loader: false,
+      newAddress: false
     }
   },
   computed: {
@@ -80,6 +89,9 @@ export default {
       })
 
       this.$store.dispatch('getTotals')
+    },
+    addNewAddress () {
+      this.newAddress = !this.newAddress
     }
   }
 }
