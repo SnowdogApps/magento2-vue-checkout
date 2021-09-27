@@ -4,10 +4,9 @@
   "description": "Magento 2 Checkout module based on Vue.js",
   "main": "webpack.config.js",
   "scripts": {
-    "dev": "webpack --watch",
-    "build": "webpack",
-    "lint": "eslint --ext .vue,.js view",
-    "test": "jest"
+    "dev": "APP_ENV=development vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "jest": {
     "moduleNameMapper": {
@@ -24,35 +23,12 @@
     }
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "vue": "^2.4.4",
-    "vue-multiselect": "^2.1.0",
-    "vuelidate": "^0.7.4",
-    "vuex": "^3.0.0"
+    "vite-plugin-live-reload": "^2.1.0",
+    "vue": "^3.2.13"
   },
   "devDependencies": {
-    "@vue/test-utils": "^1.0.0-beta.20",
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.0.1",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "eslint-plugin-vue": "^4.5.0",
-    "jest": "^23.1.0",
-    "jest-vue-preprocessor": "^1.4.0",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "vue-loader": "^13.3.0",
-    "vue-svg-loader": "^0.5.0",
-    "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.7.1"
+    "@vitejs/plugin-vue": "^1.9.0",
+    "vite": "^2.5.10",
+    "vite-plugin-restart": "^0.0.2"
   }
 }

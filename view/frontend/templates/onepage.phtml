@@ -1,14 +1,19 @@
-<div id="checkout" class="checkout-container"></div>
+<div id="checkout" class="vue-app">
+  <app/>
+</div>
 
 <script>
   var config = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
   var baseUrl = '<?= $block->getBaseUrl() ?>';
 </script>
-
-<script type="text/x-magento-init">
+<!-- <script type="module" crossorigin src="https://app.nobleplace.test/static/frontend/Snowdog/nobleplace/en_US/Snowdog_VueCheckout/js/dist/test.js"></script> -->
+<!-- <script type="text/x-magento-init">
   {
     "#checkout": {
-      "Snowdog_VueCheckout/js/dist/index": {}
+      "Snowdog_VueCheckout/js/index": {}
     }
   }
-</script>
+</script> -->
+
+<!-- dev -->
+<script type="module" crossorigin src="http://localhost:3000/index.js"></script>

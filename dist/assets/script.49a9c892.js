@@ -1,0 +1,1 @@
+import{c as e,o,a as n}from"./vendor.3a0f24c6.js";const t={class:"checkout"};var s=((e,o)=>{for(const[n,t]of o)e[n]=t;return e})({},[["render",function(n,s,r,a,c,m){return o(),e("div",t," Test APP ")}]]);for(const r of document.getElementsByClassName("vue-app"))n({template:r.innerHTML,components:{App:s}}).mount(r);
