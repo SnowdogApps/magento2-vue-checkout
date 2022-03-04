@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import regions from '../data/regions.json'
+import Vue from "vue";
+import Vuex from "vuex";
+import regions from "../data/regions.json";
 
-import actions from './actions'
-import mutations from './mutations'
-import getters from './getters'
+import actions from "./actions";
+import mutations from "./mutations";
+import getters from "./getters";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     baseUrl: window.baseUrl,
     customer: null,
     regions,
-    step: 'shipping',
+    step: "shipping",
     orderId: null,
     shippingMethods: [],
     selectedShippingMethod: null,
@@ -23,11 +23,11 @@ const store = new Vuex.Store({
     billingAddress: null,
     newBillingAddress: null,
     paymentMethods: [],
-    totals: null
+    totals: null,
   },
   actions,
   mutations,
-  getters
-})
+  getters,
+});
 
-export default store
+export default store;

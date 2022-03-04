@@ -5,24 +5,22 @@
       Your order number is: {{ orderId }}.
     </template>
     <p>We'll email you an order confirmation with details and tracking info.</p>
-    <a href="/">
-      Continue shopping
-    </a>
+    <a href="/"> Continue shopping </a>
   </section>
 </template>
 
 <script>
 export default {
   computed: {
-    cartId () {
-      return this.$store.getters.cartId
+    cartId() {
+      return this.$store.getters.cartId;
     },
-    step () {
-      return this.$store.state.step
+    step() {
+      return this.$store.state.step;
     },
-    orderId () {
-      return this.$store.state.orderId
-    }
-  }
-}
+    orderId() {
+      return this.$store.state.orderId;
+    },
+  },
+};
 </script>

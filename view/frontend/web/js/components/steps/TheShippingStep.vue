@@ -1,14 +1,11 @@
 <template>
-  <section
-    v-if="step === 'shipping'"
-    class="shipping-address"
-  >
+  <section v-if="step === 'shipping'" class="shipping-address">
     <h2>Shipping address</h2>
     <form>
       <CustomerEmailField
         v-if="!isCustomerLoggedIn"
         ref="customerEmail"
-        @ready="isReady => customerEmailReadyToSubmit = isReady"
+        @ready="(isReady) => (customerEmailReadyToSubmit = isReady)"
       />
       <!-- <ShippingAddressForm
         ref="shippingsAddressForm"
@@ -29,60 +26,60 @@
 
 <script>
 // import BaseButton from '../BaseButton.vue'
-import CustomerEmailField from '../CustomerEmailField.vue'
+import CustomerEmailField from "../CustomerEmailField.vue";
 // import ShippingAddressForm from '../ShippingAddressForm.vue'
 // import ShippingMethods from '../ShippingMethods.vue'
 
 export default {
   components: {
     // BaseButton,
-    CustomerEmailField
+    CustomerEmailField,
     // ShippingAddressForm,
     // ShippingMethods
   },
-  data () {
+  data() {
     return {
       customerEmailReadyToSubmit: false,
       shippingMethodsReadyToSubmit: false,
       shippingAddressReadyToSubmit: false,
-      loader: false
-    }
+      loader: false,
+    };
   },
   computed: {
-    step () {
-      return 'shipping'
+    step() {
+      return "shipping";
       // return this.$store.state.step
     },
-    isCustomerLoggedIn () {
-      return false
+    isCustomerLoggedIn() {
+      return false;
       // return this.$store.getters.isCustomerLoggedIn
-    }
+    },
   },
   methods: {
-    goToNextStep () {
+    goToNextStep() {
       if (!this.isCustomerLoggedIn) {
-        this.$refs.customerEmail.touch()
+        this.$refs.customerEmail.touch();
       }
 
-      this.$refs.shippingsAddressForm.touch()
-      this.$refs.shippingsMethods.touch()
+      this.$refs.shippingsAddressForm.touch();
+      this.$refs.shippingsMethods.touch();
 
       if (
         !this.shippingAddressReadyToSubmit ||
         !this.shippingMethodsReadyToSubmit ||
         (!this.isCustomerLoggedIn && !this.customerEmailReadyToSubmit)
       ) {
-        return
+        return;
       }
 
-      this.loader = true
+      this.loader = true;
 
-      this.$store.dispatch('setShippinInformation').then(() => {
-        this.loader = false
-      })
+      this.$store.dispatch("setShippinInformation").then(() => {
+        this.loader = false;
+      });
 
-      this.$store.dispatch('getTotals')
-    }
-  }
-}
+      this.$store.dispatch("getTotals");
+    },
+  },
+};
 </script>

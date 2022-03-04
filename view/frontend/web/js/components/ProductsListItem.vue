@@ -15,15 +15,10 @@
     </span>
 
     <div class="products__handler">
-      <p class="products__information">
-        Product details:
-      </p>
+      <p class="products__information">Product details:</p>
 
       <template v-for="detail in JSON.parse(product.options)">
-        <span
-          :key="detail.id"
-          class="products__detail"
-        >
+        <span :key="detail.id" class="products__detail">
           {{ detail.label }}:
           <strong>
             {{ detail.value }}
@@ -52,18 +47,18 @@ export default {
   props: {
     product: {
       type: Object,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .product {
-    padding: 10px;
-    border-bottom: 1px solid #c2c2c2;
-    &:last-child {
-      border-bottom: none;
-    }
+.product {
+  padding: 10px;
+  border-bottom: 1px solid #c2c2c2;
+  &:last-child {
+    border-bottom: none;
   }
+}
 </style>

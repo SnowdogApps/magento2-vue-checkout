@@ -1,11 +1,6 @@
 <template>
-  <section
-    v-if="step === 'payment'"
-    class="totals"
-  >
-    <h2>
-      Order Summary
-    </h2>
+  <section v-if="step === 'payment'" class="totals">
+    <h2>Order Summary</h2>
 
     <p class="totals__item">
       Cart subtotal:
@@ -23,10 +18,7 @@
       </strong>
     </p>
 
-    <p
-      v-if="parseInt(totals.tax_amount) !== 0"
-      class="totals__item"
-    >
+    <p v-if="parseInt(totals.tax_amount) !== 0" class="totals__item">
       Tax:
 
       <strong>
@@ -61,20 +53,20 @@
 <script>
 export default {
   computed: {
-    totals () {
-      return this.$store.getters.totals
+    totals() {
+      return this.$store.getters.totals;
     },
-    step () {
-      return this.$store.state.step
-    }
-  }
-}
+    step() {
+      return this.$store.state.step;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .totals {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #c2c2c2;
-  }
+.totals {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #c2c2c2;
+}
 </style>

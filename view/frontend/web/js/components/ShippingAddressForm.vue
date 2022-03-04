@@ -31,9 +31,7 @@
       name="street1"
     />
     <div>
-      <label for="country">
-        Select Country
-      </label>
+      <label for="country"> Select Country </label>
       <multiselect
         id="country"
         v-model="$v.address.country_id.$model"
@@ -46,10 +44,7 @@
         @input="onCountryChange"
       />
       <span
-        v-if="
-          $v.address.country_id.$error
-            && !$v.address.country_id.required
-        "
+        v-if="$v.address.country_id.$error && !$v.address.country_id.required"
       >
         This field is required!
       </span>
@@ -74,9 +69,7 @@
       name="region"
     />
     <div v-if="regions.length">
-      <label for="region_id">
-        Select State/Province
-      </label>
+      <label for="region_id"> Select State/Province </label>
       <multiselect
         id="region_id"
         v-model="$v.address.region_id.$model"
@@ -89,152 +82,147 @@
         placeholder="Select State/Province"
       />
       <span
-        v-if="
-          $v.address.region_id.$error
-            && !$v.address.region_id.required
-        "
+        v-if="$v.address.region_id.$error && !$v.address.region_id.required"
       >
         This field is required!
       </span>
     </div>
-    <BaseInput
-      v-model="address.company"
-      label="Company"
-      name="company"
-    />
+    <BaseInput v-model="address.company" label="Company" name="company" />
   </div>
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue'
-import BaseInput from './BaseInput.vue'
-import Multiselect from 'vue-multiselect'
-import { required, requiredIf } from 'vuelidate/lib/validators'
-import countries from './../data/countries.json'
+import BaseButton from "./BaseButton.vue";
+import BaseInput from "./BaseInput.vue";
+import Multiselect from "vue-multiselect";
+import { required, requiredIf } from "vuelidate/lib/validators";
+import countries from "./../data/countries.json";
 
 export default {
   components: {
     BaseButton,
     BaseInput,
-    Multiselect
+    Multiselect,
   },
-  data () {
+  data() {
     return {
       address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region: '',
-        region_id: '',
-        company: ''
+        firstname: "",
+        lastname: "",
+        telephone: "",
+        street0: "",
+        street1: "",
+        country_id: "",
+        city: "",
+        postcode: "",
+        region: "",
+        region_id: "",
+        company: "",
       },
-      countries
-    }
+      countries,
+    };
   },
   validations: {
     address: {
       firstname: {
-        required
+        required,
       },
       lastname: {
-        required
+        required,
       },
       telephone: {
-        required
+        required,
       },
       street0: {
-        required
+        required,
       },
       country_id: {
-        required
+        required,
       },
       city: {
-        required
+        required,
       },
       postcode: {
-        required
+        required,
       },
       region: {
         required: requiredIf(function () {
-          return this.regions.length === 0
-        })
+          return this.regions.length === 0;
+        }),
       },
       region_id: {
         required: requiredIf(function () {
-          return this.regions.length > 0
-        })
-      }
-    }
+          return this.regions.length > 0;
+        }),
+      },
+    },
   },
   computed: {
-    regions () {
-      return this.$store.getters.regionsByCountryId(this.address.country_id.value)
+    regions() {
+      return this.$store.getters.regionsByCountryId(
+        this.address.country_id.value
+      );
     },
-    ready () {
-      return !this.$v.address.$invalid
+    ready() {
+      return !this.$v.address.$invalid;
     },
-    addressData () {
+    addressData() {
       if (this.$store.state.shippingAddress !== null) {
-        return this.$store.getters.addressByType('shippingAddress')
+        return this.$store.getters.addressByType("shippingAddress");
       } else {
-        return null
+        return null;
       }
-    }
+    },
   },
   watch: {
-    ready (val) {
-      this.$emit('ready', val)
+    ready(val) {
+      this.$emit("ready", val);
     },
     address: {
-      handler () {
+      handler() {
         if (this.ready) {
-          this.$store.commit(
-            'setAddress',
-            { type: 'shippingAddress', address: this.address }
-          )
+          this.$store.commit("setAddress", {
+            type: "shippingAddress",
+            address: this.address,
+          });
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  created () {
+  created() {
     if (this.addressData !== null) {
-      this.address = this.addressData
+      this.address = this.addressData;
     }
   },
   methods: {
-    touch () {
-      this.$v.address.$touch()
+    touch() {
+      this.$v.address.$touch();
     },
-    onCountryChange () {
+    onCountryChange() {
       this.$store.dispatch(
-        'updateShippingMethods',
+        "updateShippingMethods",
         this.address.country_id.value
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-  .input {
-    &--error {
-      & .input__message {
-        display: block;
-        color: red;
-      }
+.input {
+  &--error {
+    & .input__message {
+      display: block;
+      color: red;
     }
   }
+}
 
-  input[type="text"] {
-    &.multiselect__input {
-      height: auto;
-      border: none;
-    }
+input[type="text"] {
+  &.multiselect__input {
+    height: auto;
+    border: none;
   }
+}
 </style>

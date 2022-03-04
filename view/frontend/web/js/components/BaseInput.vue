@@ -1,5 +1,5 @@
 <template>
-  <div :class="['input', {'input--error': validation && validation.$error }]">
+  <div :class="['input', { 'input--error': validation && validation.$error }]">
     <label :for="name">
       {{ label }}
     </label>
@@ -10,7 +10,7 @@
       :readonly="readOnly"
       :value="value"
       @input="$emit('input', $event.target.value)"
-    >
+    />
     <template v-if="validation">
       <span
         v-for="(value, key, index) in validation.$params"
@@ -28,44 +28,44 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: 'text'
+      default: "text",
     },
     validateType: {
       type: String,
       required: false,
-      default: ''
+      default: "",
     },
     value: {
       type: String,
-      required: true
+      required: true,
     },
     readOnly: {
       type: Boolean,
-      default: false
+      default: false,
     },
     validation: {
       type: Object,
       required: false,
-      default: () => { }
-    }
+      default: () => {},
+    },
   },
-  data () {
+  data() {
     return {
       errorNotification: {
-        required: 'This field is required!',
-        email: 'Please enter a valid email address!'
-      }
-    }
-  }
-}
+        required: "This field is required!",
+        email: "Please enter a valid email address!",
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

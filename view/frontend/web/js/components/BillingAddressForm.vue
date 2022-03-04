@@ -31,9 +31,7 @@
       name="street1"
     />
     <div>
-      <label for="country">
-        Select Country
-      </label>
+      <label for="country"> Select Country </label>
       <multiselect
         id="country"
         v-model="$v.address.country_id.$model"
@@ -45,10 +43,7 @@
         placeholder="Select country"
       />
       <span
-        v-if="
-          $v.address.country_id.$error
-            && !$v.address.country_id.required
-        "
+        v-if="$v.address.country_id.$error && !$v.address.country_id.required"
       >
         This field is required!
       </span>
@@ -73,9 +68,7 @@
       name="region"
     />
     <div v-if="regions.length">
-      <label for="region_id">
-        Select State/Province
-      </label>
+      <label for="region_id"> Select State/Province </label>
       <multiselect
         id="region_id"
         v-model="$v.address.region_id.$model"
@@ -88,125 +81,117 @@
         placeholder="Select State/Province"
       />
       <span
-        v-if="
-          $v.address.region_id.$error
-            && !$v.address.region_id.required
-        "
+        v-if="$v.address.region_id.$error && !$v.address.region_id.required"
       >
         This field is required!
       </span>
     </div>
-    <BaseInput
-      v-model="address.company"
-      label="Company"
-      name="company"
-    />
-    <BaseButton
-      text="Save Address"
-      @click.native="saveAddress"
-    />
+    <BaseInput v-model="address.company" label="Company" name="company" />
+    <BaseButton text="Save Address" @click.native="saveAddress" />
   </form>
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue'
-import BaseInput from './BaseInput.vue'
-import { required, requiredIf } from 'vuelidate/lib/validators'
-import countries from '../data/countries.json'
-import Multiselect from 'vue-multiselect'
+import BaseButton from "./BaseButton.vue";
+import BaseInput from "./BaseInput.vue";
+import { required, requiredIf } from "vuelidate/lib/validators";
+import countries from "../data/countries.json";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
     BaseButton,
     BaseInput,
-    Multiselect
+    Multiselect,
   },
-  data () {
+  data() {
     return {
       address: {
-        firstname: '',
-        lastname: '',
-        telephone: '',
-        street0: '',
-        street1: '',
-        country_id: '',
-        city: '',
-        postcode: '',
-        region: '',
-        region_id: '',
-        company: ''
+        firstname: "",
+        lastname: "",
+        telephone: "",
+        street0: "",
+        street1: "",
+        country_id: "",
+        city: "",
+        postcode: "",
+        region: "",
+        region_id: "",
+        company: "",
       },
       countries,
       billingAndShippingAddressTheSame: true,
       editBillingAddress: true,
       selectedPaymentMethod: null,
       paymentMethodsReadyToSubmit: false,
-      loader: false
-    }
+      loader: false,
+    };
   },
   validations: {
     address: {
       firstname: {
-        required
+        required,
       },
       lastname: {
-        required
+        required,
       },
       telephone: {
-        required
+        required,
       },
       street0: {
-        required
+        required,
       },
       country_id: {
-        required
+        required,
       },
       city: {
-        required
+        required,
       },
       postcode: {
-        required
+        required,
       },
       region: {
         required: requiredIf(function () {
-          return this.regions.length === 0
-        })
+          return this.regions.length === 0;
+        }),
       },
       region_id: {
         required: requiredIf(function () {
-          return this.regions.length > 0
-        })
-      }
-    }
+          return this.regions.length > 0;
+        }),
+      },
+    },
   },
   computed: {
-    newBillingAddress () {
+    newBillingAddress() {
       if (this.$store.state.newBillingAddress !== null) {
-        return this.$store.getters.addressByType('newBillingAddress')
+        return this.$store.getters.addressByType("newBillingAddress");
       } else {
-        return null
+        return null;
       }
     },
-    regions () {
-      return this.$store.getters.regionsByCountryId(this.address.country_id.value)
-    }
+    regions() {
+      return this.$store.getters.regionsByCountryId(
+        this.address.country_id.value
+      );
+    },
   },
-  created () {
+  created() {
     if (this.newBillingAddress !== null) {
-      this.address = this.newBillingAddress
+      this.address = this.newBillingAddress;
     }
   },
   methods: {
-    saveAddress () {
-      this.$v.$touch()
+    saveAddress() {
+      this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.$emit('hideAddressForm')
-        this.$store.commit(
-          'setAddress',
-          { type: 'newBillingAddress', address: this.address }
-        )
+        this.$emit("hideAddressForm");
+        this.$store.commit("setAddress", {
+          type: "newBillingAddress",
+          address: this.address,
+        });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

@@ -1,36 +1,36 @@
 <template>
   <div class="loader">
-    <LoaderIcon/>
+    <LoaderIcon />
   </div>
 </template>
 
 <script>
-import LoaderIcon from '../../assets/loader.svg'
+import LoaderIcon from "../../assets/loader.svg";
 
 export default {
   components: {
-    LoaderIcon
-  }
-}
+    LoaderIcon,
+  },
+};
 </script>
 
 <style lang="scss">
-  .loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin-left: 10px;
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
 
-    svg {
-      width: 36px;
-      height: 8px;
+  svg {
+    width: 36px;
+    height: 8px;
 
-      circle {
-        fill: #47b784;
-        stroke: none;
-      }
+    circle {
+      fill: #47b784;
+      stroke: none;
     }
   }
+}
 </style>

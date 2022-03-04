@@ -7,11 +7,8 @@
       :checked="value"
       type="checkbox"
       @change="$emit('input', $event.target.checked)"
-    >
-    <label
-      :class="labelClass"
-      :for="id"
-    >
+    />
+    <label :class="labelClass" :for="id">
       {{ text }}
     </label>
   </div>
@@ -22,32 +19,32 @@ export default {
   props: {
     labelClass: {
       type: String,
-      required: true
+      required: true,
     },
     id: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     fieldClass: {
       type: String,
-      required: true
+      required: true,
     },
     inputClass: {
       type: String,
-      required: true
+      required: true,
     },
     text: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: Boolean,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
