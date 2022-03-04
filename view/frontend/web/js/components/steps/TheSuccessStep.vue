@@ -13,14 +13,14 @@
 export default {
   computed: {
     cartId() {
-      return this.$store.getters.cartId;
+      return this.$store.getters.cartId
     },
     step() {
-      return this.$store.state.step;
+      return this.$store.state.step
     },
     orderId() {
-      return this.$store.state.orderId;
-    },
-  },
-};
+      return this.$store.state.orderId
+    }
+  }
+}
 </script>

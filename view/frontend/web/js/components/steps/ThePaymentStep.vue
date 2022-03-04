@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import AddressData from '../AddressData.vue';
-import BaseButton from '../BaseButton.vue';
-import BaseCheckbox from '../BaseCheckbox.vue';
-import BillingAddressForm from '../BillingAddressForm.vue';
-import DiscountCodeForm from '../DiscountCodeForm.vue';
-import PaymentMethods from '../PaymentMethods.vue';
+import AddressData from '../AddressData.vue'
+import BaseButton from '../BaseButton.vue'
+import BaseCheckbox from '../BaseCheckbox.vue'
+import BillingAddressForm from '../BillingAddressForm.vue'
+import DiscountCodeForm from '../DiscountCodeForm.vue'
+import PaymentMethods from '../PaymentMethods.vue'
 
 export default {
   components: {
@@ -57,7 +57,7 @@ export default {
     BaseCheckbox,
     BillingAddressForm,
     DiscountCodeForm,
-    PaymentMethods,
+    PaymentMethods
   },
   data() {
     return {
@@ -65,60 +65,60 @@ export default {
       editBillingAddress: true,
       selectedPaymentMethod: null,
       paymentMethodsReadyToSubmit: false,
-      loader: false,
-    };
+      loader: false
+    }
   },
   computed: {
     billingAddress() {
-      return this.$store.state.billingAddress;
+      return this.$store.state.billingAddress
     },
     newBillingAddress() {
-      return this.$store.state.newBillingAddress;
+      return this.$store.state.newBillingAddress
     },
     step() {
-      return this.$store.state.step;
+      return this.$store.state.step
     },
     paymentMethods() {
-      return this.$store.state.paymentMethods;
+      return this.$store.state.paymentMethods
     },
     disabledPlaceOrder() {
       return (
         (!this.billingAndShippingAddressTheSame && this.editBillingAddress) ||
         (!this.billingAndShippingAddressTheSame &&
           this.newBillingAddress === null)
-      );
-    },
+      )
+    }
   },
   methods: {
     toggleBillingAddress() {
       this.billingAndShippingAddressTheSame =
-        !this.billingAndShippingAddressTheSame;
+        !this.billingAndShippingAddressTheSame
     },
     editAddress() {
-      this.editBillingAddress = true;
+      this.editBillingAddress = true
     },
     changeStep(step) {
-      this.$store.commit('setItem', { item: 'step', value: step });
+      this.$store.commit('setItem', { item: 'step', value: step })
     },
     placeOrder() {
-      this.$refs.paymentMethods.touch();
+      this.$refs.paymentMethods.touch()
       if (!this.paymentMethodsReadyToSubmit) {
-        return;
+        return
       }
 
-      let billingAddress = null;
+      let billingAddress = null
 
       if (this.billingAndShippingAddressTheSame) {
-        billingAddress = this.billingAddress;
+        billingAddress = this.billingAddress
       } else {
-        billingAddress = this.newBillingAddress;
+        billingAddress = this.newBillingAddress
       }
 
-      this.loader = true;
+      this.loader = true
       this.$store.dispatch('placeOrder', billingAddress).then(() => {
-        this.loader = false;
-      });
-    },
-  },
-};
+        this.loader = false
+      })
+    }
+  }
+}
 </script>

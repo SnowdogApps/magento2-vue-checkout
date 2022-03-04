@@ -19,8 +19,8 @@ export default {
   data() {
     return {
       email: '',
-      emailAvailable: false,
-    };
+      emailAvailable: false
+    }
   },
   // validations: {
   //   email: {
@@ -30,7 +30,7 @@ export default {
   // },
   computed: {
     customerData() {
-      return null;
+      return null
       // return this.$store.state.customer
     },
     // ready () {
@@ -39,17 +39,17 @@ export default {
     emailAvailabilityMessage() {
       if (this.email !== '') {
         if (this.emailAvailable) {
-          return 'You can create an account after checkout.';
+          return 'You can create an account after checkout.'
         } else {
           return `
             You already have an account with us.
             Sign in <a href="/customer/account/login/">here</a> or continue as guest.
-          `;
+          `
         }
       } else {
-        return false;
+        return false
       }
-    },
+    }
   },
   // watch: {
   //   ready (val) {
@@ -58,7 +58,7 @@ export default {
   // },
   created() {
     if (this.customerData !== null && this.customerData.email) {
-      this.email = this.customerData.email;
+      this.email = this.customerData.email
     }
   },
   methods: {
@@ -70,19 +70,19 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
+          'X-Requested-With': 'XMLHttpRequest'
         },
         data: JSON.stringify({
-          customerEmail: this.email,
+          customerEmail: this.email
         }),
-        url: '/rest/V1/customers/isEmailAvailable',
-      };
+        url: '/rest/V1/customers/isEmailAvailable'
+      }
 
       try {
-        const { data } = await this.axios(options);
-        this.emailAvailable = data;
+        const { data } = await this.axios(options)
+        this.emailAvailable = data
       } catch (error) {
-        console.error('Looks like there was a problem: \n', error);
+        console.error('Looks like there was a problem: \n', error)
       }
 
       // this.$store.commit('setItem', {
@@ -91,7 +91,7 @@ export default {
       //     email: this.email
       //   }
       // })
-    },
-  },
-};
+    }
+  }
+}
 </script>

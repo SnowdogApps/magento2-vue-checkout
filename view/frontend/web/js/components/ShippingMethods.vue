@@ -43,29 +43,29 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   data() {
     return {
-      selectedShippingMethod: null,
-    };
+      selectedShippingMethod: null
+    }
   },
   validations: {
     selectedShippingMethod: {
-      required,
-    },
+      required
+    }
   },
   computed: {
     currentShippingMethod() {
-      return this.$store.state.selectedShippingMethod;
+      return this.$store.state.selectedShippingMethod
     },
     shippingMethods() {
-      return this.$store.state.shippingMethods;
+      return this.$store.state.shippingMethods
     },
     ready() {
-      return !this.$v.selectedShippingMethod.$invalid;
-    },
+      return !this.$v.selectedShippingMethod.$invalid
+    }
   },
   // watch: {
   //   ready(val) {
@@ -73,18 +73,18 @@ export default {
   //   },
   // },
   created() {
-    this.selectedShippingMethod = this.currentShippingMethod;
+    this.selectedShippingMethod = this.currentShippingMethod
   },
   methods: {
     touch() {
-      this.$v.selectedShippingMethod.$touch();
+      this.$v.selectedShippingMethod.$touch()
     },
     setSelectedShippingMethod() {
       this.$store.commit('setItem', {
         item: 'selectedShippingMethod',
-        value: this.selectedShippingMethod,
-      });
-    },
-  },
-};
+        value: this.selectedShippingMethod
+      })
+    }
+  }
+}
 </script>

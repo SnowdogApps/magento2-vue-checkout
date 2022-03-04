@@ -28,6 +28,7 @@
     "@formkit/themes": "^1.0.0-beta.4",
     "@formkit/vue": "^1.0.0-beta.4",
     "axios": "^0.26.0",
+    "pinia": "^2.0.11",
     "vue": "^3.2.31",
     "vue-axios": "^3.4.1"
   },

@@ -10,31 +10,31 @@
 </template>
 
 <script>
-import BaseLoader from './BaseLoader.vue';
+import BaseLoader from './BaseLoader.vue'
 
 export default {
   components: {
-    BaseLoader,
+    BaseLoader
   },
   props: {
     type: {
       type: String,
-      default: 'button',
+      default: 'button'
     },
     text: {
       type: String,
-      required: true,
+      required: true
     },
     loader: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     disabled: {
       type: Boolean,
-      default: false,
-    },
-  },
-};
+      default: false
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

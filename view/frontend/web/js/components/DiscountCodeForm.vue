@@ -33,81 +33,81 @@
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue';
-import BaseInput from './BaseInput.vue';
+import BaseButton from './BaseButton.vue'
+import BaseInput from './BaseInput.vue'
 
 export default {
   components: {
     BaseButton,
-    BaseInput,
+    BaseInput
   },
   data() {
     return {
       discount: {
         method: '',
-        code: '',
+        code: ''
       },
       loader: false,
-      error: '',
-    };
+      error: ''
+    }
   },
   computed: {
     couponCode() {
-      return this.$store.getters.couponCode;
-    },
+      return this.$store.getters.couponCode
+    }
   },
   created() {
     if (this.couponCode !== '') {
-      this.discount.code = this.couponCode;
-      this.discount.method = 'PUT';
+      this.discount.code = this.couponCode
+      this.discount.method = 'PUT'
     }
   },
   methods: {
     applyDiscount() {
-      this.error = '';
-      this.discount.method = 'PUT';
-      this.loader = true;
+      this.error = ''
+      this.discount.method = 'PUT'
+      this.loader = true
 
       this.$store
         .dispatch('manageDiscount', this.discount)
         .then(() => {
-          this.$store.dispatch('getTotals');
-          this.loader = false;
+          this.$store.dispatch('getTotals')
+          this.loader = false
         })
         .catch((error) => {
-          this.loader = false;
+          this.loader = false
 
           if (error.status === 404) {
-            this.error = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`;
+            this.error = `Coupon code not found! Failed when trying to activate: '${this.discount.code}' coupon code. Please use another one.`
           } else {
             this.error =
-              'Something goes wrong when trying to send coupon code. Please try again later.';
+              'Something goes wrong when trying to send coupon code. Please try again later.'
           }
-        });
+        })
     },
     removeDiscount() {
-      this.error = '';
-      this.discount.method = 'DELETE';
-      this.loader = true;
+      this.error = ''
+      this.discount.method = 'DELETE'
+      this.loader = true
 
       this.$store
         .dispatch('manageDiscount', this.discount)
         .then(() => {
-          this.loader = false;
-          this.discount.code = '';
-          this.$store.dispatch('getTotals');
+          this.loader = false
+          this.discount.code = ''
+          this.$store.dispatch('getTotals')
         })
         .catch((error) => {
-          this.loader = false;
+          this.loader = false
 
           if (error.status === 404) {
-            this.error = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`;
+            this.error = `Failed when trying to delete: '${this.discount.code}' coupon code. Coupon code not found!`
           } else {
             this.error =
-              'Something goes wrong when trying to delete coupon code. Please try again later.';
+              'Something goes wrong when trying to delete coupon code. Please try again later.'
           }
-        });
-    },
-  },
-};
+        })
+    }
+  }
+}
 </script>

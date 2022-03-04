@@ -19,33 +19,33 @@ export default {
   props: {
     labelClass: {
       type: String,
-      required: true,
+      required: true
     },
     id: {
       type: String,
-      required: true,
+      required: true
     },
     name: {
       type: String,
-      required: true,
+      required: true
     },
     fieldClass: {
       type: String,
-      required: true,
+      required: true
     },
     inputClass: {
       type: String,
-      required: true,
+      required: true
     },
     text: {
       type: String,
-      required: true,
+      required: true
     },
     value: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
-  emits: ['input'],
-};
+  emits: ['input']
+}
 </script>

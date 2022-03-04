@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export default axios.create({
   baseURL: window.baseUrl + 'rest/V1/',
   headers: {
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-  },
-});
+    'X-Requested-With': 'XMLHttpRequest'
+  }
+})

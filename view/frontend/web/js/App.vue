@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import TheShippingStep from './components/steps/TheShippingStep.vue';
+import TheShippingStep from './components/steps/TheShippingStep.vue'
 // import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 // import TheSuccessStep from './components/steps/TheSuccessStep.vue'
 // import TotalsData from './components/TotalsData.vue'
 // import ProductsList from './components/ProductsList.vue'
-import ProgressBar from './components/ProgressBar.vue';
+import ProgressBar from './components/ProgressBar.vue'
 
 export default {
   components: {
@@ -22,20 +22,20 @@ export default {
     // TheSuccessStep,
     // TotalsData,
     // ProductsList,
-    ProgressBar,
+    ProgressBar
   },
   computed: {
     isCustomerLoggedIn() {
-      return false;
+      return false
       // return this.$store.getters.isCustomerLoggedIn
-    },
-  },
+    }
+  }
   // mounted () {
   //   if (this.isCustomerLoggedIn) {
   //     this.$store.dispatch('getCustomerData')
   //   }
   // }
-};
+}
 </script>
 
 <style>

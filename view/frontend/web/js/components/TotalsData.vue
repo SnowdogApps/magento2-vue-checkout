@@ -55,13 +55,13 @@
 export default {
   computed: {
     totals() {
-      return this.$store.getters.totals;
+      return this.$store.getters.totals
     },
     step() {
-      return this.$store.state.step;
-    },
-  },
-};
+      return this.$store.state.step
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

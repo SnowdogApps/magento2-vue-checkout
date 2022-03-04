@@ -16,8 +16,8 @@ export default {
   props: {
     address: {
       type: Object,
-      required: true,
-    },
-  },
-};
+      required: true
+    }
+  }
+}
 </script>

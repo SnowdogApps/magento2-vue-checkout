@@ -18,20 +18,25 @@
 // })
 
 // import { createApp } from 'vue'
-import * as Vue from 'vue'; // in Vue 3
-import App from './App.vue';
-import { plugin, defaultConfig } from '@formkit/vue';
-import 'formkit/themes/genesis/theme.css';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+import * as Vue from 'vue' // in Vue 3
+import App from './App.vue'
+import { plugin, defaultConfig } from '@formkit/vue'
+import 'formkit/themes/genesis/theme.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import { createPinia } from 'pinia'
 
 for (const el of document.getElementsByClassName('vue-app')) {
   const app = Vue.createApp({
     template: el.innerHTML,
     components: {
-      App,
-    },
-  });
+      App
+    }
+  })
 
-  app.use(plugin, defaultConfig).use(VueAxios, axios).mount(el);
+  app
+    .use(plugin, defaultConfig)
+    .use(VueAxios, axios)
+    .use(createPinia())
+    .mount(el)
 }

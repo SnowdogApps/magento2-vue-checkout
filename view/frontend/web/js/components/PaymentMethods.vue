@@ -30,26 +30,26 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   data() {
     return {
-      selectedPaymentMethod: null,
-    };
+      selectedPaymentMethod: null
+    }
   },
   validations: {
     selectedPaymentMethod: {
-      required,
-    },
+      required
+    }
   },
   computed: {
     paymentMethods() {
-      return this.$store.state.paymentMethods;
+      return this.$store.state.paymentMethods
     },
     ready() {
-      return !this.$v.selectedPaymentMethod.$invalid;
-    },
+      return !this.$v.selectedPaymentMethod.$invalid
+    }
   },
   // watch: {
   //   ready(val) {
@@ -58,14 +58,14 @@ export default {
   // },
   methods: {
     touch() {
-      this.$v.selectedPaymentMethod.$touch();
+      this.$v.selectedPaymentMethod.$touch()
     },
     setSelectedPaymentMethod() {
       this.$store.commit('setItem', {
         item: 'selectedPaymentMethod',
-        value: this.selectedPaymentMethod,
-      });
-    },
-  },
-};
+        value: this.selectedPaymentMethod
+      })
+    }
+  }
+}
 </script>

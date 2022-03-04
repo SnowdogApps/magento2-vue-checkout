@@ -1,8 +1,8 @@
-import vue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite';
-import eslintPlugin from 'vite-plugin-eslint';
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import eslintPlugin from 'vite-plugin-eslint'
 
-import path from 'path';
+import path from 'path'
 
 export default defineConfig({
   root: 'view/frontend/web/js',
@@ -19,9 +19,9 @@ export default defineConfig({
     rollupOptions: {
       input: path.resolve(__dirname, 'view/frontend/web/js/index.js'),
       output: {
-        entryFileNames: 'index.js',
-      },
-    },
+        entryFileNames: 'index.js'
+      }
+    }
   },
   server: {
     // required to load scripts from custom host
@@ -29,15 +29,16 @@ export default defineConfig({
     hmr: {
       host: 'localhost',
       protocol: 'ws',
-      port: 3000,
+      port: 3000
     },
     strictPort: true,
-    port: 3000,
+    port: 3000
   },
   resolve: {
     alias: {
       vue: 'vue/dist/vue.esm-bundler.js',
       formkit: path.resolve(__dirname, 'node_modules/@formkit'),
-    },
-  },
-});
+      '@': path.resolve(__dirname, './view/frontend/web/js')
+    }
+  }
+})

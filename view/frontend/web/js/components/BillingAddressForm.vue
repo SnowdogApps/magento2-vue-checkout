@@ -92,17 +92,17 @@
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue';
-import BaseInput from './BaseInput.vue';
-import { required, requiredIf } from 'vuelidate/lib/validators';
-import countries from '../data/countries.json';
-import Multiselect from 'vue-multiselect';
+import BaseButton from './BaseButton.vue'
+import BaseInput from './BaseInput.vue'
+import { required, requiredIf } from 'vuelidate/lib/validators'
+import countries from '../data/countries.json'
+import Multiselect from 'vue-multiselect'
 
 export default {
   components: {
     BaseButton,
     BaseInput,
-    Multiselect,
+    Multiselect
   },
   emits: ['hideAddressForm'],
   data() {
@@ -118,81 +118,81 @@ export default {
         postcode: '',
         region: '',
         region_id: '',
-        company: '',
+        company: ''
       },
       countries,
       billingAndShippingAddressTheSame: true,
       editBillingAddress: true,
       selectedPaymentMethod: null,
       paymentMethodsReadyToSubmit: false,
-      loader: false,
-    };
+      loader: false
+    }
   },
   validations: {
     address: {
       firstname: {
-        required,
+        required
       },
       lastname: {
-        required,
+        required
       },
       telephone: {
-        required,
+        required
       },
       street0: {
-        required,
+        required
       },
       country_id: {
-        required,
+        required
       },
       city: {
-        required,
+        required
       },
       postcode: {
-        required,
+        required
       },
       region: {
         required: requiredIf(function () {
-          return this.regions.length === 0;
-        }),
+          return this.regions.length === 0
+        })
       },
       region_id: {
         required: requiredIf(function () {
-          return this.regions.length > 0;
-        }),
-      },
-    },
+          return this.regions.length > 0
+        })
+      }
+    }
   },
   computed: {
     newBillingAddress() {
       if (this.$store.state.newBillingAddress !== null) {
-        return this.$store.getters.addressByType('newBillingAddress');
+        return this.$store.getters.addressByType('newBillingAddress')
       } else {
-        return null;
+        return null
       }
     },
     regions() {
       return this.$store.getters.regionsByCountryId(
         this.address.country_id.value
-      );
-    },
+      )
+    }
   },
   created() {
     if (this.newBillingAddress !== null) {
-      this.address = this.newBillingAddress;
+      this.address = this.newBillingAddress
     }
   },
   methods: {
     saveAddress() {
-      this.$v.$touch();
+      this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.$emit('hideAddressForm');
+        this.$emit('hideAddressForm')
         this.$store.commit('setAddress', {
           type: 'newBillingAddress',
-          address: this.address,
-        });
+          address: this.address
+        })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

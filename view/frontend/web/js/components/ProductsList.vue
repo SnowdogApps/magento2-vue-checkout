@@ -12,21 +12,21 @@
 </template>
 
 <script>
-import ProductsListItem from './ProductsListItem.vue';
+import ProductsListItem from './ProductsListItem.vue'
 
 export default {
   components: {
-    ProductsListItem,
+    ProductsListItem
   },
   computed: {
     products() {
-      return this.$store.state.config.totalsData.items;
+      return this.$store.state.config.totalsData.items
     },
     step() {
-      return this.$store.state.step;
-    },
-  },
-};
+      return this.$store.state.step
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -93,16 +93,16 @@
 
 <script>
 // import BaseButton from "./BaseButton.vue";
-import BaseInput from './BaseInput.vue';
-import Multiselect from 'vue-multiselect';
-import { required, requiredIf } from 'vuelidate/lib/validators';
-import countries from './../data/countries.json';
+import BaseInput from './BaseInput.vue'
+import Multiselect from 'vue-multiselect'
+import { required, requiredIf } from 'vuelidate/lib/validators'
+import countries from './../data/countries.json'
 
 export default {
   components: {
     // BaseButton,
     BaseInput,
-    Multiselect,
+    Multiselect
   },
   data() {
     return {
@@ -117,62 +117,62 @@ export default {
         postcode: '',
         region: '',
         region_id: '',
-        company: '',
+        company: ''
       },
-      countries,
-    };
+      countries
+    }
   },
   validations: {
     address: {
       firstname: {
-        required,
+        required
       },
       lastname: {
-        required,
+        required
       },
       telephone: {
-        required,
+        required
       },
       street0: {
-        required,
+        required
       },
       country_id: {
-        required,
+        required
       },
       city: {
-        required,
+        required
       },
       postcode: {
-        required,
+        required
       },
       region: {
         required: requiredIf(function () {
-          return this.regions.length === 0;
-        }),
+          return this.regions.length === 0
+        })
       },
       region_id: {
         required: requiredIf(function () {
-          return this.regions.length > 0;
-        }),
-      },
-    },
+          return this.regions.length > 0
+        })
+      }
+    }
   },
   computed: {
     regions() {
       return this.$store.getters.regionsByCountryId(
         this.address.country_id.value
-      );
+      )
     },
     ready() {
-      return !this.$v.address.$invalid;
+      return !this.$v.address.$invalid
     },
     addressData() {
       if (this.$store.state.shippingAddress !== null) {
-        return this.$store.getters.addressByType('shippingAddress');
+        return this.$store.getters.addressByType('shippingAddress')
       } else {
-        return null;
+        return null
       }
-    },
+    }
   },
   watch: {
     // ready(val) {
@@ -183,30 +183,30 @@ export default {
         if (this.ready) {
           this.$store.commit('setAddress', {
             type: 'shippingAddress',
-            address: this.address,
-          });
+            address: this.address
+          })
         }
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   created() {
     if (this.addressData !== null) {
-      this.address = this.addressData;
+      this.address = this.addressData
     }
   },
   methods: {
     touch() {
-      this.$v.address.$touch();
+      this.$v.address.$touch()
     },
     onCountryChange() {
       this.$store.dispatch(
         'updateShippingMethods',
         this.address.country_id.value
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -219,7 +219,7 @@ export default {
   }
 }
 
-input[type="text"] {
+input[type='text'] {
   &.multiselect__input {
     height: auto;
     border: none;

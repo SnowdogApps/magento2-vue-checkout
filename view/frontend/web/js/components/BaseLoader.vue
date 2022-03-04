@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import LoaderIcon from '../../assets/loader.svg';
+import LoaderIcon from '../../assets/loader.svg'
 
 export default {
   components: {
-    LoaderIcon,
-  },
-};
+    LoaderIcon
+  }
+}
 </script>
 
 <style lang="scss">

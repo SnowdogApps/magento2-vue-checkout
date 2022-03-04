@@ -4,7 +4,7 @@
       <span
         :class="[
           'vprogress-bar__item',
-          { 'v-progress-bar__item--active': step === 'shipping' },
+          { 'v-progress-bar__item--active': step === 'shipping' }
         ]"
       >
         Shipping Step </span
@@ -12,7 +12,7 @@
       <span
         :class="[
           'v-progress-bar__item',
-          { 'v-progress-bar__item--active': step === 'payment' },
+          { 'v-progress-bar__item--active': step === 'payment' }
         ]"
       >
         Review & Payments Step
@@ -22,14 +22,14 @@
 </template>
 
 <script>
+import { mapState } from 'pinia'
+import store from '@/store/index.js'
+
 export default {
   computed: {
-    step() {
-      // return this.$store.state.step
-      return 'shipping';
-    },
-  },
-};
+    ...mapState(store, ['step'])
+  }
+}
 </script>
 
 <style>
