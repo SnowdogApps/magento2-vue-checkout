@@ -1,15 +1,11 @@
 module.exports = {
-  root: true,
-  parserOptions: {
-    sourceType: 'module'
-  },
   env: {
-    browser: true,
+    node: true,
   },
-  extends: ['plugin:vue/recommended', 'standard'],
+  extends: ["eslint:recommended", "plugin:vue/vue3-recommended", "prettier"],
   rules: {
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-mixed-operators': 0,
-    'no-new': 0
-  }
-}
+    // override/add rules settings here, such as:
+    // 'vue/no-unused-vars': 'error'
+    "vue/no-v-html": 0,
+  },
+};

@@ -1,33 +1,33 @@
-import Vuex from 'vuex'
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import App from '../view/frontend/web/js/App.vue'
+import Vuex from "vuex";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import App from "../view/frontend/web/js/App.vue";
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
-describe('App.test.js', () => {
-  let store
-  let actions
-  let wrapper
+describe("App.test.js", () => {
+  let store;
+  let actions;
+  let wrapper;
 
   beforeEach(() => {
     actions = {
-      getCustomerData: jest.fn()
-    }
+      getCustomerData: jest.fn(),
+    };
     store = new Vuex.Store({
-      actions
-    })
+      actions,
+    });
 
     wrapper = shallowMount(App, {
       computed: {
-        isCustomerLoggedIn: () => true
+        isCustomerLoggedIn: () => true,
       },
       store,
-      localVue
-    })
-  })
+      localVue,
+    });
+  });
 
-  it('has the expected html structure', () => {
-    expect(wrapper.element).toMatchSnapshot()
-  })
-})
+  it("has the expected html structure", () => {
+    expect(wrapper.element).toMatchSnapshot();
+  });
+});

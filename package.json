@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "APP_ENV=development vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix web/*",
+    "format": "prettier .  --write"
   },
   "jest": {
     "moduleNameMapper": {
@@ -32,7 +34,12 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.2",
     "@vue/compiler-sfc": "^3.2.31",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "prettier": "2.5.1",
     "vite": "^2.8.4",
+    "vite-plugin-eslint": "^1.3.0",
     "vite-plugin-live-reload": "^2.1.0",
     "vite-plugin-restart": "^0.0.2"
   }
