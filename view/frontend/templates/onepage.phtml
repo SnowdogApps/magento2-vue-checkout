@@ -6,7 +6,6 @@
   var config = <?= \Zend_Json::encode($block->getCheckoutConfig()) ?>;
   var baseUrl = '<?= $block->getBaseUrl() ?>';
 </script>
-<!-- <script type="module" crossorigin src="https://app.nobleplace.test/static/frontend/Snowdog/nobleplace/en_US/Snowdog_VueCheckout/js/dist/test.js"></script> -->
 <!-- <script type="text/x-magento-init">
   {
     "#checkout": {
@@ -16,4 +15,6 @@
 </script> -->
 
 <!-- dev -->
-<script type="module" crossorigin src="http://localhost:3000/index.js"></script>
+<!-- <script type="module" crossorigin src="http://localhost:3000/index.js"></script> -->
+<!-- prod -->
+<script type="module" crossorigin src="<?= $block->getBaseUrl() ?>/static/frontend/Snowdog/alpaca/en_US/Snowdog_VueCheckout/js/dist/index.js"></script>

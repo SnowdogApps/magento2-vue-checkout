@@ -1,6 +1,6 @@
 <template>
   <div class="checkout">
-    Test APP 333 11
+    Test APP
   </div>
 </template>
 
