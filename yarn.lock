@@ -7,6 +7,86 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.3.tgz#b07702b982990bf6fdc1da5049a23fece4c5c3d0"
   integrity sha512-7yJPvPV+ESz2IUTPbOL+YkIGyCqOyNIzdguKQuJGnH7bg1WTIifuM21YqokFt/THWh1AkCRn9IgoykTRCBVpzA==
 
+"@formkit/core@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/core/-/core-1.0.0-beta.4.tgz#52e506e212744de777282d33f75301c41d425384"
+  integrity sha512-JCo/Cs3jxMIjwbxmFrpVMl18rXa02b6N6D8KftYRenm9LbhwE8p5cAXnvHtz21wqlb/JSKfJr27k+I0yTHrL6A==
+  dependencies:
+    "@formkit/utils" "1.0.0-beta.4"
+
+"@formkit/dev@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/dev/-/dev-1.0.0-beta.4.tgz#0f797ee3b1d83e4f6b44328bec9c5330b58c2a6d"
+  integrity sha512-NMqg25veuxaPzj/sF+vJpEIzGef0NNJVapGft/hpaDW5KTar/IW2Su3rGJBetKVrQqO8S/DRnsd+h1nXJApVAg==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/utils" "1.0.0-beta.4"
+
+"@formkit/i18n@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/i18n/-/i18n-1.0.0-beta.4.tgz#d9b85bc79b845553252d1f2c8d515903bd68d1e4"
+  integrity sha512-vHXnZdKnZF0jwodtDL9VENk9xLQMljPvQUoolzCgs7tAyaMXg7ohOpYNmaWHcWVkurzcoxE0VvZKrtidYDqqiw==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/utils" "1.0.0-beta.4"
+    "@formkit/validation" "1.0.0-beta.4"
+
+"@formkit/inputs@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/inputs/-/inputs-1.0.0-beta.4.tgz#d36549ff80fcc151ff5e87fa8c888ee03e431e7c"
+  integrity sha512-UJHHh8NLxRBUrmc2Hvu5ZW844F+Xt61t0WqXI+R/Kh28yvi8aINM6FtPfpKM5gVERWbrRDkN2txN4RRy6+DIbg==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+
+"@formkit/observer@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/observer/-/observer-1.0.0-beta.4.tgz#a8ede99a951c6b3e53df87a7d1349d6c754c49d9"
+  integrity sha512-KFyX42C5lDDbI5QNOcI/sYd9J8jMV9+5gY8EtplyesoAPEXSCUfwG+CYGTFiti2u2zzJ0UBTxe+71QGNzADsbg==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/utils" "1.0.0-beta.4"
+
+"@formkit/rules@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/rules/-/rules-1.0.0-beta.4.tgz#1887dd5874641c4dbd664dfc9a3ce4cc7e371619"
+  integrity sha512-QZG+8ZGDTm3x+Jc7pbdNFi6ey4IgSK4mCvhN42XhlewEeNsLwfYK6KXn1Wow71kYehKkQkAF2CG74NWZkPwLtQ==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/utils" "1.0.0-beta.4"
+    "@formkit/validation" "1.0.0-beta.4"
+
+"@formkit/themes@^1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/themes/-/themes-1.0.0-beta.4.tgz#c52c391b6befe7403b7de2422d8c60f99a27d76c"
+  integrity sha512-u/UCTaxVIJuNTHSo3cOtlDpCyfLEpywTKsUddZ0gQZNOYg5qg6LyfvGfnlSaX7CNH69Rki1+esHMxH+CUzT/Tw==
+
+"@formkit/utils@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/utils/-/utils-1.0.0-beta.4.tgz#21f8437623b4887b328fb0de5e358813114ae820"
+  integrity sha512-FjzmjQd5AS/W5xMOtk0v8ldWMLM/mF4lRdn66rnWxqO/eOcaNnHGuOeflwB/dJd4RdajJE3KxqHMmjnM53H9AQ==
+
+"@formkit/validation@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/validation/-/validation-1.0.0-beta.4.tgz#2d0d1f0c0ada13f9a90cd03c09140991a8c1d23e"
+  integrity sha512-ealXvAhy2oBq8vQX9jKwjur9JmlXWCPg8D+3AD/J7Gs4v+GlBmBE79k3BrEaMRGH8pJm6Wv/1D/l1smDLD6EIw==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/observer" "1.0.0-beta.4"
+
+"@formkit/vue@^1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@formkit/vue/-/vue-1.0.0-beta.4.tgz#e86685404f84050d8891957026b04083238686cc"
+  integrity sha512-DWTf+PaL1e0dmBh+D9krKSehaIzBAMTqFzZUjkCdSotmvhTVs41Th7sRN5/sNuqWaUeX/tuAdcWf8wJB6aCbew==
+  dependencies:
+    "@formkit/core" "1.0.0-beta.4"
+    "@formkit/dev" "1.0.0-beta.4"
+    "@formkit/i18n" "1.0.0-beta.4"
+    "@formkit/inputs" "1.0.0-beta.4"
+    "@formkit/observer" "1.0.0-beta.4"
+    "@formkit/rules" "1.0.0-beta.4"
+    "@formkit/utils" "1.0.0-beta.4"
+    "@formkit/validation" "1.0.0-beta.4"
+
 "@vitejs/plugin-vue@^2.2.2":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.2.2.tgz#df5d4464ad8cb97c9fb7407a1e5a3a34f716febb"
@@ -116,6 +196,13 @@ anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+axios@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.0.tgz#9a318f1c69ec108f8cd5f3c3d390366635e13928"
+  integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
+  dependencies:
+    follow-redirects "^1.14.8"
 
 binary-extensions@^2.0.0:
   version "2.2.0"
@@ -300,6 +387,11 @@ fill-range@^7.0.1:
   integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
   dependencies:
     to-regex-range "^5.0.1"
+
+follow-redirects@^1.14.8:
+  version "1.14.9"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
+  integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
 
 fsevents@~2.3.2:
   version "2.3.2"
@@ -518,6 +610,11 @@ vite@^2.8.4:
     rollup "^2.59.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-axios@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/vue-axios/-/vue-axios-3.4.1.tgz#e092ec4060b42e941ea5059df9b8f09058c3eea9"
+  integrity sha512-8YZYUOQrBEJktxoQtrM4rr2LfVcDaWfJqv8MqtLlgLlkuBvCYKFSZSo6AXQ4YcCzdgccDqstmuaEh68lcH9xWA==
 
 vue@^3.2.31:
   version "3.2.31"

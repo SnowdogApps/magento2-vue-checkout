@@ -10,7 +10,6 @@ export default defineConfig({
   base: process.env.APP_ENV === 'development'
   ? '/'
   : '/dist/',
-
   build: {
     // output dir for production build
     outDir: path.resolve(__dirname, 'view/frontend/web/js/dist'),
@@ -39,7 +38,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      vue: 'vue/dist/vue.esm-bundler.js'
+      vue: 'vue/dist/vue.esm-bundler.js',
+      formkit: path.resolve(__dirname, 'node_modules/@formkit')
     }
   }
 });

@@ -10,35 +10,35 @@
         ref="customerEmail"
         @ready="isReady => customerEmailReadyToSubmit = isReady"
       />
-      <ShippingAddressForm
+      <!-- <ShippingAddressForm
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
-      />
+      /> -->
     </form>
-    <ShippingMethods
+    <!-- <ShippingMethods
       ref="shippingsMethods"
       @ready="isReady => shippingMethodsReadyToSubmit = isReady"
-    />
-    <BaseButton
+    /> -->
+    <!-- <BaseButton
       :loader="loader"
       text="Next Step"
       @click.native="goToNextStep()"
-    />
+    /> -->
   </section>
 </template>
 
 <script>
-import BaseButton from '../BaseButton.vue'
+// import BaseButton from '../BaseButton.vue'
 import CustomerEmailField from '../CustomerEmailField.vue'
-import ShippingAddressForm from '../ShippingAddressForm.vue'
-import ShippingMethods from '../ShippingMethods.vue'
+// import ShippingAddressForm from '../ShippingAddressForm.vue'
+// import ShippingMethods from '../ShippingMethods.vue'
 
 export default {
   components: {
-    BaseButton,
-    CustomerEmailField,
-    ShippingAddressForm,
-    ShippingMethods
+    // BaseButton,
+    CustomerEmailField
+    // ShippingAddressForm,
+    // ShippingMethods
   },
   data () {
     return {
@@ -50,10 +50,12 @@ export default {
   },
   computed: {
     step () {
-      return this.$store.state.step
+      return 'shipping'
+      // return this.$store.state.step
     },
     isCustomerLoggedIn () {
-      return this.$store.getters.isCustomerLoggedIn
+      return false
+      // return this.$store.getters.isCustomerLoggedIn
     }
   },
   methods: {

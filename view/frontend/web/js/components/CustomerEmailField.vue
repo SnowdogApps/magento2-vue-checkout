@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseInput
+    <!-- <BaseInput
       v-model.trim="$v.email.$model"
       :validation="$v.email"
       label="Email"
@@ -11,39 +11,44 @@
     <span
       v-if="emailAvailabilityMessage"
       v-html="emailAvailabilityMessage"
+    /> -->
+    <FormKit
+      type="email"
+      label="Email address"
+      validation="required|email"
+      placeholder="Email"
+      v-model="email"
+      @input="checkIsEmailAvailable"
     />
     <hr>
   </div>
 </template>
 
 <script>
-import BaseInput from './BaseInput.vue'
-import axios from './../utils/checkout-axios.js'
-import { required, email } from 'vuelidate/lib/validators'
+// import axios from './../utils/checkout-axios.js'
+// import { required, email } from 'vuelidate/lib/validators'
 
 export default {
-  components: {
-    BaseInput
-  },
   data () {
     return {
       email: '',
       emailAvailable: false
     }
   },
-  validations: {
-    email: {
-      required,
-      email
-    }
-  },
+  // validations: {
+  //   email: {
+  //     required,
+  //     email
+  //   }
+  // },
   computed: {
     customerData () {
-      return this.$store.state.customer
+      return null
+      // return this.$store.state.customer
     },
-    ready () {
-      return !this.$v.email.$invalid
-    },
+    // ready () {
+    //   return !this.$v.email.$invalid
+    // },
     emailAvailabilityMessage () {
       if (this.email !== '' && !this.$v.email.$error) {
         if (this.emailAvailable) {
@@ -59,11 +64,11 @@ export default {
       }
     }
   },
-  watch: {
-    ready (val) {
-      this.$emit('ready', val)
-    }
-  },
+  // watch: {
+  //   ready (val) {
+  //     this.$emit('ready', val)
+  //   }
+  // },
   created () {
     if (
       this.customerData !== null &&
@@ -73,31 +78,35 @@ export default {
     }
   },
   methods: {
-    touch () {
-      this.$v.email.$touch()
-    },
-    checkIsEmailAvailable () {
+    // touch () {
+    //   this.$v.email.$touch()
+    // },
+    async checkIsEmailAvailable () {
       const options = {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         data: JSON.stringify({
           'customerEmail': this.email
         }),
-        url: 'customers/isEmailAvailable'
+        url: '/rest/V1/customers/isEmailAvailable'
       }
-      axios(options)
-        .then(({data}) => {
-          this.emailAvailable = data
-        })
-        .catch(error => {
-          console.error('Looks like there was a problem: \n', error)
-        })
 
-      this.$store.commit('setItem', {
-        item: 'customer',
-        value: {
-          email: this.email
-        }
-      })
+      try {
+        const { data } = await  this.axios(options)
+        this.emailAvailable = data
+      } catch {
+        console.error('Looks like there was a problem: \n', error)
+      }
+
+      // this.$store.commit('setItem', {
+      //   item: 'customer',
+      //   value: {
+      //     email: this.email
+      //   }
+      // })
     }
   }
 }

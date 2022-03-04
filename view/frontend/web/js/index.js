@@ -17,32 +17,24 @@
 //   render: h => h(App)
 // })
 
-import { createApp } from 'vue'
-import App from './App.vue'
-
-// createApp(App).mount('#checkout')
-
-// console.log('sssss')
-
-
 // import { createApp } from 'vue'
-// import './styles.css'
-
-// If you are build a SPA with a single <div id="app"></div> entry you would:
-// import App from './App.vue'
-// createApp(App).mount('#app')
-
-
-// The example here is to have multiple Vue apps sprinkled throughout your page
-// So we would instantiate any known components by their own
-// import HelloWorld from './components/HelloWorld.vue'
+import * as Vue from 'vue' // in Vue 3
+import App from './App.vue'
+import { plugin, defaultConfig } from '@formkit/vue'
+import 'formkit/themes/genesis/theme.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 for (const el of document.getElementsByClassName('vue-app')) {
-  createApp({
+  const app = Vue.createApp({
     template: el.innerHTML,
     components: {
       App
     }
-  }).mount(el)
+  })
 
+  app
+    .use(plugin, defaultConfig)
+    .use(VueAxios, axios)
+    .mount(el)
 }

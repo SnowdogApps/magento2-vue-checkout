@@ -1,21 +1,21 @@
 <template>
   <div
     v-if="step !== 'success'"
-    class="progress-bar"
+    class="v-progress-bar"
   >
     <h1>
       <span
         :class="[
-          'progress-bar__item',
-          { 'progress-bar__item--active': step === 'shipping' }
+          'vprogress-bar__item',
+          { 'v-progress-bar__item--active': step === 'shipping' }
         ]"
       >
         Shipping Step
       </span>/
       <span
         :class="[
-          'progress-bar__item',
-          { 'progress-bar__item--active': step === 'payment' }
+          'v-progress-bar__item',
+          { 'v-progress-bar__item--active': step === 'payment' }
         ]"
       >
         Review & Payments Step
@@ -28,20 +28,19 @@
 export default {
   computed: {
     step () {
-      return this.$store.state.step
+      // return this.$store.state.step
+      return 'shipping'
     }
   }
 }
 </script>
 
-<style lang="scss">
-.progress-bar {
-  &__item {
-    color: #ccc;
+<style>
+.v-progress-bar__item {
+  color: #ccc;
+}
 
-    &--active {
-      color: #000;
-    }
-  }
+.v-progress-bar__item--active {
+  color: #000;
 }
 </style>
