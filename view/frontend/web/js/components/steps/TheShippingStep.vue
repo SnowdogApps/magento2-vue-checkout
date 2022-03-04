@@ -2,11 +2,7 @@
   <section v-if="step === 'shipping'" class="shipping-address">
     <h2>Shipping address</h2>
     <form>
-      <CustomerEmailField
-        v-if="!isCustomerLoggedIn"
-        ref="customerEmail"
-        @ready="(isReady) => (customerEmailReadyToSubmit = isReady)"
-      />
+      <CustomerEmailField v-if="!isCustomerLoggedIn" ref="customerEmail" />
       <!-- <ShippingAddressForm
         ref="shippingsAddressForm"
         @ready="isReady => shippingAddressReadyToSubmit = isReady"
@@ -26,7 +22,7 @@
 
 <script>
 // import BaseButton from '../BaseButton.vue'
-import CustomerEmailField from "../CustomerEmailField.vue";
+import CustomerEmailField from '../CustomerEmailField.vue';
 // import ShippingAddressForm from '../ShippingAddressForm.vue'
 // import ShippingMethods from '../ShippingMethods.vue'
 
@@ -47,7 +43,7 @@ export default {
   },
   computed: {
     step() {
-      return "shipping";
+      return 'shipping';
       // return this.$store.state.step
     },
     isCustomerLoggedIn() {
@@ -74,11 +70,11 @@ export default {
 
       this.loader = true;
 
-      this.$store.dispatch("setShippinInformation").then(() => {
+      this.$store.dispatch('setShippinInformation').then(() => {
         this.loader = false;
       });
 
-      this.$store.dispatch("getTotals");
+      this.$store.dispatch('getTotals');
     },
   },
 };

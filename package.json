@@ -7,7 +7,7 @@
     "dev": "APP_ENV=development vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix web/*",
+    "lint": "eslint --ext .js,.vue --fix .",
     "format": "prettier .  --write"
   },
   "jest": {

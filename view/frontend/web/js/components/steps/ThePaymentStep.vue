@@ -16,15 +16,15 @@
     />
     <div v-else>
       <template v-if="editBillingAddress">
-        <BillingAddressForm @hideAddressForm="editBillingAddress = false" />
-        <BaseButton text="Cancel" @click.native="toggleBillingAddress()" />
+        <BillingAddressForm @hide-address-form="editBillingAddress = false" />
+        <BaseButton text="Cancel" @click="toggleBillingAddress()" />
       </template>
       <div v-else>
         <AddressData
           v-if="newBillingAddress !== null"
           :address="newBillingAddress"
         />
-        <BaseButton text="Edit Address" @click.native="editAddress" />
+        <BaseButton text="Edit Address" @click="editAddress" />
       </div>
     </div>
     <PaymentMethods
@@ -36,19 +36,19 @@
       :loader="loader"
       :disabled="disabledPlaceOrder"
       text="Place order"
-      @click.native="placeOrder"
+      @click="placeOrder"
     />
-    <BaseButton text="Back" @click.native="changeStep('shipping')" />
+    <BaseButton text="Back" @click="changeStep('shipping')" />
   </section>
 </template>
 
 <script>
-import AddressData from "../AddressData.vue";
-import BaseButton from "../BaseButton.vue";
-import BaseCheckbox from "../BaseCheckbox.vue";
-import BillingAddressForm from "../BillingAddressForm.vue";
-import DiscountCodeForm from "../DiscountCodeForm.vue";
-import PaymentMethods from "../PaymentMethods.vue";
+import AddressData from '../AddressData.vue';
+import BaseButton from '../BaseButton.vue';
+import BaseCheckbox from '../BaseCheckbox.vue';
+import BillingAddressForm from '../BillingAddressForm.vue';
+import DiscountCodeForm from '../DiscountCodeForm.vue';
+import PaymentMethods from '../PaymentMethods.vue';
 
 export default {
   components: {
@@ -98,7 +98,7 @@ export default {
       this.editBillingAddress = true;
     },
     changeStep(step) {
-      this.$store.commit("setItem", { item: "step", value: step });
+      this.$store.commit('setItem', { item: 'step', value: step });
     },
     placeOrder() {
       this.$refs.paymentMethods.touch();
@@ -115,7 +115,7 @@ export default {
       }
 
       this.loader = true;
-      this.$store.dispatch("placeOrder", billingAddress).then(() => {
+      this.$store.dispatch('placeOrder', billingAddress).then(() => {
         this.loader = false;
       });
     },

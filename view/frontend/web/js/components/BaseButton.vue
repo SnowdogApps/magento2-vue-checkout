@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BaseLoader from "./BaseLoader.vue";
+import BaseLoader from './BaseLoader.vue';
 
 export default {
   components: {
@@ -19,7 +19,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: "button",
+      default: 'button',
     },
     text: {
       type: String,

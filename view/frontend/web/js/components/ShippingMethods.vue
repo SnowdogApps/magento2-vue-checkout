@@ -2,16 +2,16 @@
   <form>
     <h2>Shipping methods</h2>
     <div v-if="shippingMethods.length" data-testid="shipping-methods">
+      <!-- v-if="method.available" -->
       <div
         v-for="method in shippingMethods"
-        v-if="method.available"
         :key="method.method_code"
         data-testid="shipping-method"
       >
         <input
+          :id="method.method_code"
           v-model="$v.selectedShippingMethod.$model"
           :value="method"
-          :id="method.method_code"
           :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
           name="shipping-method"
@@ -22,9 +22,9 @@
             {{ method.carrier_title }} - {{ method.method_title }}
           </span>
 
-          <span class="label__price">
+          <!-- <span class="label__price">
             {{ method.price_incl_tax | currency }}
-          </span>
+          </span> -->
         </label>
       </div>
       <span
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -67,11 +67,11 @@ export default {
       return !this.$v.selectedShippingMethod.$invalid;
     },
   },
-  watch: {
-    ready(val) {
-      this.$emit("ready", val);
-    },
-  },
+  // watch: {
+  //   ready(val) {
+  //     this.$emit("ready", val);
+  //   },
+  // },
   created() {
     this.selectedShippingMethod = this.currentShippingMethod;
   },
@@ -79,9 +79,9 @@ export default {
     touch() {
       this.$v.selectedShippingMethod.$touch();
     },
-    setSelectedShippingMethod(val) {
-      this.$store.commit("setItem", {
-        item: "selectedShippingMethod",
+    setSelectedShippingMethod() {
+      this.$store.commit('setItem', {
+        item: 'selectedShippingMethod',
         value: this.selectedShippingMethod,
       });
     },

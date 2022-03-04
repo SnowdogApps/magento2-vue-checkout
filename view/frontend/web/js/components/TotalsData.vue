@@ -5,7 +5,7 @@
     <p class="totals__item">
       Cart subtotal:
 
-      <strong>
+      <!-- <strong>
         {{ totals.subtotal | currency }}
       </strong>
     </p>
@@ -46,6 +46,7 @@
       <strong>
         {{ totals.base_grand_total | currency }}
       </strong>
+    </p> -->
     </p>
   </section>
 </template>

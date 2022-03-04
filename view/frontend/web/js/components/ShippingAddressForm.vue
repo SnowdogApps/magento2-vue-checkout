@@ -92,32 +92,32 @@
 </template>
 
 <script>
-import BaseButton from "./BaseButton.vue";
-import BaseInput from "./BaseInput.vue";
-import Multiselect from "vue-multiselect";
-import { required, requiredIf } from "vuelidate/lib/validators";
-import countries from "./../data/countries.json";
+// import BaseButton from "./BaseButton.vue";
+import BaseInput from './BaseInput.vue';
+import Multiselect from 'vue-multiselect';
+import { required, requiredIf } from 'vuelidate/lib/validators';
+import countries from './../data/countries.json';
 
 export default {
   components: {
-    BaseButton,
+    // BaseButton,
     BaseInput,
     Multiselect,
   },
   data() {
     return {
       address: {
-        firstname: "",
-        lastname: "",
-        telephone: "",
-        street0: "",
-        street1: "",
-        country_id: "",
-        city: "",
-        postcode: "",
-        region: "",
-        region_id: "",
-        company: "",
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region: '',
+        region_id: '',
+        company: '',
       },
       countries,
     };
@@ -168,21 +168,21 @@ export default {
     },
     addressData() {
       if (this.$store.state.shippingAddress !== null) {
-        return this.$store.getters.addressByType("shippingAddress");
+        return this.$store.getters.addressByType('shippingAddress');
       } else {
         return null;
       }
     },
   },
   watch: {
-    ready(val) {
-      this.$emit("ready", val);
-    },
+    // ready(val) {
+    //   this.$emit("ready", val);
+    // },
     address: {
       handler() {
         if (this.ready) {
-          this.$store.commit("setAddress", {
-            type: "shippingAddress",
+          this.$store.commit('setAddress', {
+            type: 'shippingAddress',
             address: this.address,
           });
         }
@@ -201,7 +201,7 @@ export default {
     },
     onCountryChange() {
       this.$store.dispatch(
-        "updateShippingMethods",
+        'updateShippingMethods',
         this.address.country_id.value
       );
     },

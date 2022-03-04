@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import ProductsListItem from "./ProductsListItem.vue";
+import ProductsListItem from './ProductsListItem.vue';
 
 export default {
   components: {

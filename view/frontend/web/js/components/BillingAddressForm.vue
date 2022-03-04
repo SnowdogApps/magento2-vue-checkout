@@ -87,16 +87,16 @@
       </span>
     </div>
     <BaseInput v-model="address.company" label="Company" name="company" />
-    <BaseButton text="Save Address" @click.native="saveAddress" />
+    <BaseButton text="Save Address" @click="saveAddress" />
   </form>
 </template>
 
 <script>
-import BaseButton from "./BaseButton.vue";
-import BaseInput from "./BaseInput.vue";
-import { required, requiredIf } from "vuelidate/lib/validators";
-import countries from "../data/countries.json";
-import Multiselect from "vue-multiselect";
+import BaseButton from './BaseButton.vue';
+import BaseInput from './BaseInput.vue';
+import { required, requiredIf } from 'vuelidate/lib/validators';
+import countries from '../data/countries.json';
+import Multiselect from 'vue-multiselect';
 
 export default {
   components: {
@@ -104,20 +104,21 @@ export default {
     BaseInput,
     Multiselect,
   },
+  emits: ['hideAddressForm'],
   data() {
     return {
       address: {
-        firstname: "",
-        lastname: "",
-        telephone: "",
-        street0: "",
-        street1: "",
-        country_id: "",
-        city: "",
-        postcode: "",
-        region: "",
-        region_id: "",
-        company: "",
+        firstname: '',
+        lastname: '',
+        telephone: '',
+        street0: '',
+        street1: '',
+        country_id: '',
+        city: '',
+        postcode: '',
+        region: '',
+        region_id: '',
+        company: '',
       },
       countries,
       billingAndShippingAddressTheSame: true,
@@ -165,7 +166,7 @@ export default {
   computed: {
     newBillingAddress() {
       if (this.$store.state.newBillingAddress !== null) {
-        return this.$store.getters.addressByType("newBillingAddress");
+        return this.$store.getters.addressByType('newBillingAddress');
       } else {
         return null;
       }
@@ -185,9 +186,9 @@ export default {
     saveAddress() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.$emit("hideAddressForm");
-        this.$store.commit("setAddress", {
-          type: "newBillingAddress",
+        this.$emit('hideAddressForm');
+        this.$store.commit('setAddress', {
+          type: 'newBillingAddress',
           address: this.address,
         });
       }

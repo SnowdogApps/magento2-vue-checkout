@@ -4,9 +4,9 @@
     <div v-if="paymentMethods.length">
       <div v-for="method in paymentMethods" :key="method.id">
         <input
+          :id="method.code"
           v-model="$v.selectedPaymentMethod.$model"
           :value="method"
-          :id="method.code"
           type="radio"
           name="payment-method"
           @change="setSelectedPaymentMethod($event.target.value)"
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -51,18 +51,18 @@ export default {
       return !this.$v.selectedPaymentMethod.$invalid;
     },
   },
-  watch: {
-    ready(val) {
-      this.$emit("ready", val);
-    },
-  },
+  // watch: {
+  //   ready(val) {
+  //     this.$emit("ready", val);
+  //   },
+  // },
   methods: {
     touch() {
       this.$v.selectedPaymentMethod.$touch();
     },
-    setSelectedPaymentMethod(val) {
-      this.$store.commit("setItem", {
-        item: "selectedPaymentMethod",
+    setSelectedPaymentMethod() {
+      this.$store.commit('setItem', {
+        item: 'selectedPaymentMethod',
         value: this.selectedPaymentMethod,
       });
     },

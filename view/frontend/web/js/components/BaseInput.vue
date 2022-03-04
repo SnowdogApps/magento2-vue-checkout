@@ -4,14 +4,14 @@
       {{ label }}
     </label>
     <input
-      :type="type"
       :id="name"
+      :type="type"
       :name="name"
       :readonly="readOnly"
       :value="value"
       @input="$emit('input', $event.target.value)"
     />
-    <template v-if="validation">
+    <!-- <template v-if="validation">
       <span
         v-for="(value, key, index) in validation.$params"
         v-if="validation.$error && !validation[key]"
@@ -19,7 +19,7 @@
       >
         {{ errorNotification[key] }}
       </span>
-    </template>
+    </template> -->
   </div>
 </template>
 
@@ -36,12 +36,12 @@ export default {
     },
     type: {
       type: String,
-      default: "text",
+      default: 'text',
     },
     validateType: {
       type: String,
       required: false,
-      default: "",
+      default: '',
     },
     value: {
       type: String,
@@ -57,11 +57,12 @@ export default {
       default: () => {},
     },
   },
+  emits: ['input'],
   data() {
     return {
       errorNotification: {
-        required: "This field is required!",
-        email: "Please enter a valid email address!",
+        required: 'This field is required!',
+        email: 'Please enter a valid email address!',
       },
     };
   },

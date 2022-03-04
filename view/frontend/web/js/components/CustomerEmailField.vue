@@ -18,7 +18,7 @@
 export default {
   data() {
     return {
-      email: "",
+      email: '',
       emailAvailable: false,
     };
   },
@@ -37,9 +37,9 @@ export default {
     //   return !this.$v.email.$invalid
     // },
     emailAvailabilityMessage() {
-      if (this.email !== "" && !this.$v.email.$error) {
+      if (this.email !== '') {
         if (this.emailAvailable) {
-          return `You can create an account after checkout.`;
+          return 'You can create an account after checkout.';
         } else {
           return `
             You already have an account with us.
@@ -57,10 +57,7 @@ export default {
   //   }
   // },
   created() {
-    if (
-      this.customerData !== null &&
-      this.customerData.hasOwnProperty("email")
-    ) {
+    if (this.customerData !== null && this.customerData.email) {
       this.email = this.customerData.email;
     }
   },
@@ -70,26 +67,26 @@ export default {
     // },
     async checkIsEmailAvailable() {
       const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
         data: JSON.stringify({
           customerEmail: this.email,
         }),
-        url: "/rest/V1/customers/isEmailAvailable",
+        url: '/rest/V1/customers/isEmailAvailable',
       };
 
       try {
         const { data } = await this.axios(options);
         this.emailAvailable = data;
-      } catch {
-        console.error("Looks like there was a problem: \n", error);
+      } catch (error) {
+        console.error('Looks like there was a problem: \n', error);
       }
 
       // this.$store.commit('setItem', {
-      //   item: 'customer',
+      //   item: 'customer',`
       //   value: {
       //     email: this.email
       //   }

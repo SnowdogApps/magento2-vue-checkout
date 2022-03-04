@@ -26,7 +26,7 @@ export default {
   computed: {
     step() {
       // return this.$store.state.step
-      return "shipping";
+      return 'shipping';
     },
   },
 };
