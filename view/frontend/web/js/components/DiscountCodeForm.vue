@@ -24,7 +24,10 @@
           text="Remove Discount"
           @click="removeDiscount"
         />
-        <p v-if="error" class="discount__form-error">
+        <p
+          v-if="error"
+          class="discount__form-error"
+        >
           {{ error }}
         </p>
       </form>

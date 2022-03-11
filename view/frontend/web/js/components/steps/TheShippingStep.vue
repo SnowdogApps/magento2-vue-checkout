@@ -1,76 +1,79 @@
 <template>
-  <section v-if="step === 'shipping'" class="shipping-address">
+  <section
+    v-if="step === 'shipping'"
+    class="shipping-address"
+  >
     <h2>Shipping address</h2>
-    <form>
-      <CustomerEmailField v-if="!isCustomerLoggedIn" ref="customerEmail" />
-      <!-- <ShippingAddressForm
+    <form @submit.prevent="goToNextStep">
+      <CustomerEmailField
+        v-if="!isCustomerLoggedIn"
+        ref="customerEmail"
+        @valid="status => isCustomerEmailValid = status"
+      />
+      <ShippingAddressForm
         ref="shippingsAddressForm"
-        @ready="isReady => shippingAddressReadyToSubmit = isReady"
-      /> -->
+        @valid="status => isShippingAddressValid = status"
+      />
+      <BaseButton type="submit">
+        Next Step
+      </BaseButton>
     </form>
     <!-- <ShippingMethods
       ref="shippingsMethods"
       @ready="isReady => shippingMethodsReadyToSubmit = isReady"
     /> -->
-    <FormKit type="button" @click="goToNextStep()"> Next Step </FormKit>
   </section>
 </template>
 
 <script>
-// import BaseButton from '../BaseButton.vue'
+import BaseButton from '../BaseButton.vue'
 import CustomerEmailField from '../CustomerEmailField.vue'
-// import ShippingAddressForm from '../ShippingAddressForm.vue'
+import ShippingAddressForm from '../ShippingAddressForm.vue'
 // import ShippingMethods from '../ShippingMethods.vue'
+
+import { mapState } from 'pinia'
+import { useStore } from '@/store/index.js'
 
 export default {
   components: {
-    // BaseButton,
-    CustomerEmailField
-    // ShippingAddressForm,
+    BaseButton,
+    CustomerEmailField,
+    ShippingAddressForm
     // ShippingMethods
   },
   data() {
     return {
-      customerEmailReadyToSubmit: false,
+      isCustomerEmailValid: false,
+      isShippingAddressValid: false,
       shippingMethodsReadyToSubmit: false,
-      shippingAddressReadyToSubmit: false,
       loader: false
     }
   },
   computed: {
-    step() {
-      return 'shipping'
-      // return this.$store.state.step
-    },
-    isCustomerLoggedIn() {
-      return false
-      // return this.$store.getters.isCustomerLoggedIn
-    }
+    ...mapState(useStore, ['isCustomerLoggedIn']),
+    ...mapState(useStore, ['step'])
   },
   methods: {
     goToNextStep() {
-      if (!this.isCustomerLoggedIn) {
-        this.$refs.customerEmail.touch()
-      }
+        if (!this.isCustomerLoggedIn) {
+          this.$refs.customerEmail.validate()
+        }
 
-      this.$refs.shippingsAddressForm.touch()
-      this.$refs.shippingsMethods.touch()
-
-      if (
-        !this.shippingAddressReadyToSubmit ||
-        !this.shippingMethodsReadyToSubmit ||
-        (!this.isCustomerLoggedIn && !this.customerEmailReadyToSubmit)
-      ) {
-        return
-      }
-
-      this.loader = true
-
-      this.$store.dispatch('setShippinInformation').then(() => {
-        this.loader = false
-      })
-
-      this.$store.dispatch('getTotals')
+        this.$refs.shippingsAddressForm.validate()
+        console.log(this.isShippingAddressValid)
+        // this.$refs.shippingsMethods.touch()
+        // if (
+        //   !this.shippingAddressReadyToSubmit ||
+        //   !this.isShippingAddressValid ||
+        //   (!this.isCustomerLoggedIn && !this.isCustomerEmailValid)
+        // ) {
+        //   return
+        // }
+        // this.loader = true
+        // this.$store.dispatch('setShippinInformation').then(() => {
+        //   this.loader = false
+        // })
+        // this.$store.dispatch('getTotals')
     }
   }
 }

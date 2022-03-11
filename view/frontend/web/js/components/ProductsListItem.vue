@@ -15,9 +15,14 @@
     </span>
 
     <div class="products__handler">
-      <p class="products__information">Product details:</p>
+      <p class="products__information">
+        Product details:
+      </p>
 
-      <template v-for="detail in JSON.parse(product.options)" :key="detail.id">
+      <template
+        v-for="detail in JSON.parse(product.options)"
+        :key="detail.id"
+      >
         <span class="products__detail">
           {{ detail.label }}:
           <strong>

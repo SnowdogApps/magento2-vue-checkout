@@ -5,7 +5,9 @@
       Your order number is: {{ orderId }}.
     </template>
     <p>We'll email you an order confirmation with details and tracking info.</p>
-    <a href="/"> Continue shopping </a>
+    <a href="/">
+      Continue shopping
+    </a>
   </section>
 </template>
 

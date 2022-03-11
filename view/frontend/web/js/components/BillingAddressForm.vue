@@ -31,7 +31,9 @@
       name="street1"
     />
     <div>
-      <label for="country"> Select Country </label>
+      <label for="country">
+        Select Country
+      </label>
       <multiselect
         id="country"
         v-model="$v.address.country_id.$model"
@@ -68,7 +70,9 @@
       name="region"
     />
     <div v-if="regions.length">
-      <label for="region_id"> Select State/Province </label>
+      <label for="region_id">
+        Select State/Province
+      </label>
       <multiselect
         id="region_id"
         v-model="$v.address.region_id.$model"
@@ -86,8 +90,15 @@
         This field is required!
       </span>
     </div>
-    <BaseInput v-model="address.company" label="Company" name="company" />
-    <BaseButton text="Save Address" @click="saveAddress" />
+    <BaseInput
+      v-model="address.company"
+      label="Company"
+      name="company"
+    />
+    <BaseButton
+      text="Save Address"
+      @click="saveAddress"
+    />
   </form>
 </template>
 

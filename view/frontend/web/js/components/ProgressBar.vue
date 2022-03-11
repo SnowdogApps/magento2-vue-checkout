@@ -1,33 +1,34 @@
 <template>
-  <div v-if="step !== 'success'" class="v-progress-bar">
-    <h1>
-      <span
-        :class="[
-          'vprogress-bar__item',
-          { 'v-progress-bar__item--active': step === 'shipping' }
-        ]"
-      >
-        Shipping Step </span
-      >/
-      <span
-        :class="[
-          'v-progress-bar__item',
-          { 'v-progress-bar__item--active': step === 'payment' }
-        ]"
-      >
-        Review & Payments Step
-      </span>
-    </h1>
-  </div>
+  <h1
+    v-if="step !== 'success'"
+    class="v-progress-bar"
+  >
+    <span
+      :class="[
+        'v-progress-bar__item',
+        { 'v-progress-bar__item--active': step === 'shipping' }
+      ]"
+    >
+      Shipping Step </span>/
+
+    <span
+      :class="[
+        'v-progress-bar__item',
+        { 'v-progress-bar__item--active': step === 'payment' }
+      ]"
+    >
+      Review & Payments Step
+    </span>
+  </h1>
 </template>
 
 <script>
 import { mapState } from 'pinia'
-import store from '@/store/index.js'
+import { useStore } from '@/store/index.js'
 
 export default {
   computed: {
-    ...mapState(store, ['step'])
+    ...mapState(useStore, ['step'])
   }
 }
 </script>

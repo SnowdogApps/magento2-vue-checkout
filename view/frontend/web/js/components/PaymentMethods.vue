@@ -2,7 +2,10 @@
   <form>
     <h2>Payment methods</h2>
     <div v-if="paymentMethods.length">
-      <div v-for="method in paymentMethods" :key="method.id">
+      <div
+        v-for="method in paymentMethods"
+        :key="method.id"
+      >
         <input
           :id="method.code"
           v-model="$v.selectedPaymentMethod.$model"
@@ -10,7 +13,7 @@
           type="radio"
           name="payment-method"
           @change="setSelectedPaymentMethod($event.target.value)"
-        />
+        >
         <label :for="method.code">
           {{ method.title }}
         </label>

@@ -7,8 +7,11 @@
       :checked="value"
       type="checkbox"
       @change="$emit('input', $event.target.checked)"
-    />
-    <label :class="labelClass" :for="id">
+    >
+    <label
+      :class="labelClass"
+      :for="id"
+    >
       {{ text }}
     </label>
   </div>

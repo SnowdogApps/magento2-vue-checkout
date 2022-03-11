@@ -1,70 +1,77 @@
 <template>
-  <FormKit
-    v-model="email"
+  <BaseInput
+    id="email"
+    v-model="v$.email.$model"
     type="email"
     label="Email address"
-    validation="required|email"
+    :validation="v$.email"
     placeholder="Email"
     @input="checkIsEmailAvailable"
   />
-  <span v-if="emailAvailabilityMessage" v-html="emailAvailabilityMessage" />
-  <hr />
+  <span
+    v-if="isEmailValid"
+    v-html="emailAvailabilityMessage"
+  />
 </template>
 
 <script>
-// import axios from './../utils/checkout-axios.js'
-// import { required, email } from 'vuelidate/lib/validators'
+import { useStore } from '@/store/index.js'
+import { mapState } from 'pinia'
+import BaseInput from './BaseInput.vue'
+
+import useVuelidate from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
 export default {
+  emits: ['valid'],
+  setup () {
+    return { v$: useVuelidate() }
+  },
+  components: {
+    BaseInput
+  },
   data() {
     return {
       email: '',
-      emailAvailable: false
+      isEmailAvailable: false
     }
   },
-  // validations: {
-  //   email: {
-  //     required,
-  //     email
-  //   }
-  // },
+  validations: {
+    email: {
+      required,
+      email
+    }
+  },
   computed: {
-    customerData() {
-      return null
-      // return this.$store.state.customer
+    ...mapState(useStore, ['customer']),
+    isEmailValid () {
+      return !this.v$.email?.$invalid
     },
-    // ready () {
-    //   return !this.$v.email.$invalid
-    // },
     emailAvailabilityMessage() {
-      if (this.email !== '') {
-        if (this.emailAvailable) {
-          return 'You can create an account after checkout.'
-        } else {
-          return `
-            You already have an account with us.
-            Sign in <a href="/customer/account/login/">here</a> or continue as guest.
-          `
-        }
+      if (this.isEmailAvailable) {
+        return 'You can create an account after checkout.'
       } else {
-        return false
+        return `
+          You already have an account with us.
+          Sign in <a href="/customer/account/login/">here</a> or continue as guest.
+        `
       }
     }
   },
-  // watch: {
-  //   ready (val) {
-  //     this.$emit('ready', val)
-  //   }
-  // },
+  watch: {
+    isEmailValid (val) {
+      this.$emit('valid', val)
+    }
+  },
   created() {
-    if (this.customerData !== null && this.customerData.email) {
-      this.email = this.customerData.email
+    if (this.customer !== null && this.customer.email) {
+      this.email = this.customer.email
     }
   },
   methods: {
-    // touch () {
-    //   this.$v.email.$touch()
-    // },
+    validate () {
+      this.v$.email.$touch()
+    },
     async checkIsEmailAvailable() {
       const options = {
         method: 'POST',
@@ -80,17 +87,11 @@ export default {
 
       try {
         const { data } = await this.axios(options)
-        this.emailAvailable = data
+        this.isEmailAvailable = data
+        useStore().customer = { emai: this.email }
       } catch (error) {
         console.error('Looks like there was a problem: \n', error)
       }
-
-      // this.$store.commit('setItem', {
-      //   item: 'customer',`
-      //   value: {
-      //     email: this.email
-      //   }
-      // })
     }
   }
 }

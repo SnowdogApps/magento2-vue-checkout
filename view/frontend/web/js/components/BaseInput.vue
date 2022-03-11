@@ -1,25 +1,24 @@
 <template>
-  <div :class="['input', { 'input--error': validation && validation.$error }]">
-    <label :for="name">
+  <div class="v-input">
+    <label :for="id">
       {{ label }}
     </label>
     <input
-      :id="name"
-      :type="type"
-      :name="name"
-      :readonly="readOnly"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
-    />
-    <!-- <template v-if="validation">
+      v-bind="$attrs"
+      :id="id"
+      type="text"
+      class="v-input__field"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+    >
+    <template v-if="validation && validation.$error">
       <span
-        v-for="(value, key, index) in validation.$params"
-        v-if="validation.$error && !validation[key]"
-        :key="index"
+        v-for="error in validation.$errors"
+        :key="error.$uid"
       >
-        {{ errorNotification[key] }}
+        {{ error.$message }}
       </span>
-    </template> -->
+    </template>
   </div>
 </template>
 
@@ -30,34 +29,21 @@ export default {
       type: String,
       required: true
     },
-    name: {
+    id: {
       type: String,
       required: true
     },
-    type: {
+    modelValue: {
       type: String,
-      default: 'text'
-    },
-    validateType: {
-      type: String,
-      required: false,
       default: ''
-    },
-    value: {
-      type: String,
-      required: true
-    },
-    readOnly: {
-      type: Boolean,
-      default: false
     },
     validation: {
       type: Object,
       required: false,
-      default: () => {}
+      default: () => { }
     }
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   data() {
     return {
       errorNotification: {
@@ -69,17 +55,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.input {
-  &--error {
-    & > input {
-      border-color: red;
-    }
+<style scoped>
+.v-input {
+  display: flex;
+  flex-direction: column;
+}
 
-    & .input__message {
-      display: block;
-      color: red;
-    }
-  }
+.v-input__field {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
 }
 </style>

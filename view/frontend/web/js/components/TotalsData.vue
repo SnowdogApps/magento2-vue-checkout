@@ -1,5 +1,8 @@
 <template>
-  <section v-if="step === 'payment'" class="totals">
+  <section
+    v-if="step === 'payment'"
+    class="totals"
+  >
     <h2>Order Summary</h2>
 
     <p class="totals__item">

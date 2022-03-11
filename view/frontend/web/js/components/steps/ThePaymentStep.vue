@@ -1,5 +1,8 @@
 <template>
-  <section v-if="step === 'payment'" class="billing-address">
+  <section
+    v-if="step === 'payment'"
+    class="billing-address"
+  >
     <h2>Billing Address</h2>
     <BaseCheckbox
       id="billing-address-same-as-shipping-address"
@@ -17,14 +20,20 @@
     <div v-else>
       <template v-if="editBillingAddress">
         <BillingAddressForm @hide-address-form="editBillingAddress = false" />
-        <BaseButton text="Cancel" @click="toggleBillingAddress()" />
+        <BaseButton
+          text="Cancel"
+          @click="toggleBillingAddress()"
+        />
       </template>
       <div v-else>
         <AddressData
           v-if="newBillingAddress !== null"
           :address="newBillingAddress"
         />
-        <BaseButton text="Edit Address" @click="editAddress" />
+        <BaseButton
+          text="Edit Address"
+          @click="editAddress"
+        />
       </div>
     </div>
     <PaymentMethods
@@ -38,7 +47,10 @@
       text="Place order"
       @click="placeOrder"
     />
-    <BaseButton text="Back" @click="changeStep('shipping')" />
+    <BaseButton
+      text="Back"
+      @click="changeStep('shipping')"
+    />
   </section>
 </template>
 

@@ -1,7 +1,10 @@
 <template>
   <form>
     <h2>Shipping methods</h2>
-    <div v-if="shippingMethods.length" data-testid="shipping-methods">
+    <div
+      v-if="shippingMethods.length"
+      data-testid="shipping-methods"
+    >
       <!-- v-if="method.available" -->
       <div
         v-for="method in shippingMethods"
@@ -16,7 +19,7 @@
           type="radio"
           name="shipping-method"
           @change="setSelectedShippingMethod($event.target.value)"
-        />
+        >
         <label :for="method.method_code">
           <span class="label__text">
             {{ method.carrier_title }} - {{ method.method_title }}
@@ -30,7 +33,7 @@
       <span
         v-if="
           $v.selectedShippingMethod.$error &&
-          !$v.selectedShippingMethod.required
+            !$v.selectedShippingMethod.required
         "
       >
         This field is required!
