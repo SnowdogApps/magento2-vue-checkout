@@ -145,9 +145,6 @@ export default {
   },
   computed: {
     ...mapState(useStore, ['getAddressByType', 'getRegionsByCountryId']),
-    isAddressValid () {
-      return !this.v$.address?.$invalid
-    },
     regions() {
       return this.getRegionsByCountryId(this.address.country_id)
     },
@@ -156,15 +153,12 @@ export default {
     }
   },
   watch: {
-    isAddressValid(val) {
-      this.$emit('valid', val)
-    },
     'address.country_id'() {
       this.updateShippingMethods(this.address.country_id)
     },
     address: {
       handler() {
-        if (this.isAddressValid) {
+        if (!this.v$.address?.$invalid) {
           useStore().shippingAddress = this.address
         }
       },
@@ -177,10 +171,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useStore, ['updateShippingMethods']),
-    validate () {
-      this.v$.address.$touch()
-    }
+    ...mapActions(useStore, ['updateShippingMethods'])
   }
 }
 </script>

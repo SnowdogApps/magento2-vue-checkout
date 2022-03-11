@@ -9,17 +9,16 @@
       <div
         v-for="method in shippingMethods"
         :key="method.method_code"
-        data-testid="shipping-method"
       >
-        <input
+        <!-- <input
           :id="method.method_code"
-          v-model="$v.selectedShippingMethod.$model"
+          v-model="$v.selectedMethod.$model"
           :value="method"
           :data-testid="`method-radiobutton-${method.method_code}`"
           type="radio"
           name="shipping-method"
           @change="setSelectedShippingMethod($event.target.value)"
-        >
+        > -->
         <label :for="method.method_code">
           <span class="label__text">
             {{ method.carrier_title }} - {{ method.method_title }}
@@ -30,14 +29,14 @@
           </span> -->
         </label>
       </div>
-      <span
+      <!-- <span
         v-if="
           $v.selectedShippingMethod.$error &&
             !$v.selectedShippingMethod.required
         "
       >
         This field is required!
-      </span>
+      </span> -->
     </div>
     <div v-else>
       <p>In this country we don't handle any shipping methods.</p>
@@ -46,29 +45,30 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+import { mapState } from 'pinia'
+import { useStore } from '@/store/index.js'
 
 export default {
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data() {
     return {
-      selectedShippingMethod: null
+      selectedMethod: null
     }
   },
   validations: {
-    selectedShippingMethod: {
+    selectedShippingMethodModel: {
       required
     }
   },
   computed: {
-    currentShippingMethod() {
-      return this.$store.state.selectedShippingMethod
-    },
-    shippingMethods() {
-      return this.$store.state.shippingMethods
-    },
-    ready() {
-      return !this.$v.selectedShippingMethod.$invalid
-    }
+    ...mapState(useStore, ['selectedShippingMethod', 'shippingMethods'])
+    // ready() {
+    //   return !this.$v.selectedShippingMethod.$invalid
+    // }
   },
   // watch: {
   //   ready(val) {
@@ -76,18 +76,18 @@ export default {
   //   },
   // },
   created() {
-    this.selectedShippingMethod = this.currentShippingMethod
-  },
-  methods: {
-    touch() {
-      this.$v.selectedShippingMethod.$touch()
-    },
-    setSelectedShippingMethod() {
-      this.$store.commit('setItem', {
-        item: 'selectedShippingMethod',
-        value: this.selectedShippingMethod
-      })
-    }
+    this.selectedMethod = this.selectedShippingMethod
   }
+  // methods: {
+  //   touch() {
+  //     this.$v.selectedShippingMethod.$touch()
+  //   },
+  //   setSelectedShippingMethod() {
+  //     this.$store.commit('setItem', {
+  //       item: 'selectedShippingMethod',
+  //       value: this.selectedShippingMethod
+  //     })
+  //   }
+  // }
 }
 </script>

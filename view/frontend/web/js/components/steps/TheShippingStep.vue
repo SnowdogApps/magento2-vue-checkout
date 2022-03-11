@@ -5,23 +5,13 @@
   >
     <h2>Shipping address</h2>
     <form @submit.prevent="goToNextStep">
-      <CustomerEmailField
-        v-if="!isCustomerLoggedIn"
-        ref="customerEmail"
-        @valid="status => isCustomerEmailValid = status"
-      />
-      <ShippingAddressForm
-        ref="shippingsAddressForm"
-        @valid="status => isShippingAddressValid = status"
-      />
+      <CustomerEmailField v-if="!isCustomerLoggedIn" />
+      <ShippingAddressForm />
       <BaseButton type="submit">
         Next Step
       </BaseButton>
     </form>
-    <!-- <ShippingMethods
-      ref="shippingsMethods"
-      @ready="isReady => shippingMethodsReadyToSubmit = isReady"
-    /> -->
+    <ShippingMethods />
   </section>
 </template>
 
@@ -29,17 +19,20 @@
 import BaseButton from '../BaseButton.vue'
 import CustomerEmailField from '../CustomerEmailField.vue'
 import ShippingAddressForm from '../ShippingAddressForm.vue'
-// import ShippingMethods from '../ShippingMethods.vue'
+import ShippingMethods from '../ShippingMethods.vue'
+import useVuelidate from '@vuelidate/core'
+
 
 import { mapState } from 'pinia'
 import { useStore } from '@/store/index.js'
 
 export default {
+  setup: () => ({ v$: useVuelidate() }),
   components: {
     BaseButton,
     CustomerEmailField,
-    ShippingAddressForm
-    // ShippingMethods
+    ShippingAddressForm,
+    ShippingMethods
   },
   data() {
     return {
@@ -54,26 +47,26 @@ export default {
     ...mapState(useStore, ['step'])
   },
   methods: {
-    goToNextStep() {
-        if (!this.isCustomerLoggedIn) {
-          this.$refs.customerEmail.validate()
-        }
+    async goToNextStep() {
+      const result = await this.v$.$validate()
+      console.log(result)
+      if (result) {
+        console.log(result)
+      }
 
-        this.$refs.shippingsAddressForm.validate()
-        console.log(this.isShippingAddressValid)
-        // this.$refs.shippingsMethods.touch()
-        // if (
-        //   !this.shippingAddressReadyToSubmit ||
-        //   !this.isShippingAddressValid ||
-        //   (!this.isCustomerLoggedIn && !this.isCustomerEmailValid)
-        // ) {
-        //   return
-        // }
-        // this.loader = true
-        // this.$store.dispatch('setShippinInformation').then(() => {
-        //   this.loader = false
-        // })
-        // this.$store.dispatch('getTotals')
+      // this.$refs.shippingsMethods.touch()
+      // if (
+      //   !this.shippingAddressReadyToSubmit ||
+      //   !this.isShippingAddressValid ||
+      //   (!this.isCustomerLoggedIn && !this.isCustomerEmailValid)
+      // ) {
+      //   return
+      // }
+      // this.loader = true
+      // this.$store.dispatch('setShippinInformation').then(() => {
+      //   this.loader = false
+      // })
+      // this.$store.dispatch('getTotals')
     }
   }
 }

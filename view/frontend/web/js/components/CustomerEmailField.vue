@@ -58,20 +58,12 @@ export default {
       }
     }
   },
-  watch: {
-    isEmailValid (val) {
-      this.$emit('valid', val)
-    }
-  },
   created() {
     if (this.customer !== null && this.customer.email) {
       this.email = this.customer.email
     }
   },
   methods: {
-    validate () {
-      this.v$.email.$touch()
-    },
     async checkIsEmailAvailable() {
       const options = {
         method: 'POST',
