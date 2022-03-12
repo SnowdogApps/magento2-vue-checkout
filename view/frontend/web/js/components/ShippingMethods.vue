@@ -1,93 +1,75 @@
 <template>
-  <form>
-    <h2>Shipping methods</h2>
-    <div
-      v-if="shippingMethods.length"
-      data-testid="shipping-methods"
-    >
-      <!-- v-if="method.available" -->
-      <div
-        v-for="method in shippingMethods"
-        :key="method.method_code"
-      >
-        <!-- <input
-          :id="method.method_code"
-          v-model="$v.selectedMethod.$model"
-          :value="method"
-          :data-testid="`method-radiobutton-${method.method_code}`"
-          type="radio"
-          name="shipping-method"
-          @change="setSelectedShippingMethod($event.target.value)"
-        > -->
-        <label :for="method.method_code">
-          <span class="label__text">
-            {{ method.carrier_title }} - {{ method.method_title }}
-          </span>
-
-          <!-- <span class="label__price">
-            {{ method.price_incl_tax | currency }}
-          </span> -->
-        </label>
-      </div>
-      <!-- <span
-        v-if="
-          $v.selectedShippingMethod.$error &&
-            !$v.selectedShippingMethod.required
-        "
-      >
-        This field is required!
-      </span> -->
-    </div>
-    <div v-else>
-      <p>In this country we don't handle any shipping methods.</p>
-    </div>
-  </form>
+  <h2>Shipping methods</h2>
+  <div
+    v-if="shippingMethods.length"
+    data-testid="shipping-methods"
+  >
+    <BaseRadioGroup
+      v-model="v$.selectedMethod.$model"
+      :validation="v$.selectedMethod"
+      name="shipping-method"
+      label-key="method_title"
+      id-key="carrier_code"
+      :options="shippingMethods"
+      @update:model-value="setSelectedShippingMethod"
+    />
+  </div>
+  <div v-else>
+    <p>In this country we don't handle any shipping methods.</p>
+  </div>
 </template>
 
 <script>
+import BaseRadioGroup from './BaseRadioGroup.vue'
+
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { mapState } from 'pinia'
 import { useStore } from '@/store/index.js'
 
 export default {
+  emits: ['valid'],
   setup () {
     return { v$: useVuelidate() }
   },
+  components: {
+    BaseRadioGroup
+  },
   data() {
     return {
-      selectedMethod: null
+      selectedMethod: {}
     }
   },
   validations: {
-    selectedShippingMethodModel: {
+    selectedMethod: {
       required
     }
   },
   computed: {
-    ...mapState(useStore, ['selectedShippingMethod', 'shippingMethods'])
-    // ready() {
-    //   return !this.$v.selectedShippingMethod.$invalid
-    // }
+    ...mapState(useStore, ['selectedShippingMethod', 'shippingMethods']),
+    isValid () {
+      return !this.v$.selectedMethod?.$invalid
+    }
   },
-  // watch: {
-  //   ready(val) {
-  //     this.$emit("ready", val);
-  //   },
-  // },
+  watch: {
+    isValid (val) {
+      this.$emit('valid', val)
+    }
+  },
   created() {
     this.selectedMethod = this.selectedShippingMethod
+  },
+  methods: {
+    validate() {
+      this.v$.selectedMethod.$touch()
+    },
+    reset () {
+      this.v$.selectedMethod.$model = {}
+      this.v$.selectedMethod.$reset()
+    },
+    setSelectedShippingMethod() {
+      useStore().selectedShippingMethod = this.selectedMethod
+    }
   }
-  // methods: {
-  //   touch() {
-  //     this.$v.selectedShippingMethod.$touch()
-  //   },
-  //   setSelectedShippingMethod() {
-  //     this.$store.commit('setItem', {
-  //       item: 'selectedShippingMethod',
-  //       value: this.selectedShippingMethod
-  //     })
-  //   }
-  // }
 }
 </script>

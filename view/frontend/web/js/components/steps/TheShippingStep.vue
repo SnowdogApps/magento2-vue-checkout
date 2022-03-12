@@ -6,12 +6,18 @@
     <h2>Shipping address</h2>
     <form @submit.prevent="goToNextStep">
       <CustomerEmailField v-if="!isCustomerLoggedIn" />
-      <ShippingAddressForm />
-      <BaseButton type="submit">
-        Next Step
-      </BaseButton>
+      <ShippingAddressForm @update-country="refreshShippingComponent" />
     </form>
-    <ShippingMethods />
+    <ShippingMethods
+      ref="shippingsMethods"
+      @valid="status => isShippingMethodValid = status"
+    />
+    <BaseButton
+      type="button"
+      @click="goToNextStep"
+    >
+      Next Step
+    </BaseButton>
   </section>
 </template>
 
@@ -38,7 +44,7 @@ export default {
     return {
       isCustomerEmailValid: false,
       isShippingAddressValid: false,
-      shippingMethodsReadyToSubmit: false,
+      isShippingMethodValid: false,
       loader: false
     }
   },
@@ -47,26 +53,22 @@ export default {
     ...mapState(useStore, ['step'])
   },
   methods: {
+    refreshShippingComponent () {
+      // TODO: add loader for main button
+      this.$refs.shippingsMethods.reset()
+    },
     async goToNextStep() {
-      const result = await this.v$.$validate()
-      console.log(result)
-      if (result) {
-        console.log(result)
-      }
+      const isFormValid = await this.v$.$validate()
+       await this.$refs.shippingsMethods.validate()
 
-      // this.$refs.shippingsMethods.touch()
-      // if (
-      //   !this.shippingAddressReadyToSubmit ||
-      //   !this.isShippingAddressValid ||
-      //   (!this.isCustomerLoggedIn && !this.isCustomerEmailValid)
-      // ) {
-      //   return
-      // }
-      // this.loader = true
-      // this.$store.dispatch('setShippinInformation').then(() => {
-      //   this.loader = false
-      // })
-      // this.$store.dispatch('getTotals')
+      if (isFormValid & this.isShippingMethodValid) {
+        console.log('elo')
+        // this.loader = true
+        // this.$store.dispatch('setShippinInformation').then(() => {
+        //   this.loader = false
+        // })
+        // this.$store.dispatch('getTotals')
+      }
     }
   }
 }

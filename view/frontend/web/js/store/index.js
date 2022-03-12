@@ -44,7 +44,7 @@ export const useStore = defineStore('checkout', {
     step: 'shipping',
     orderId: null,
     shippingMethods: [],
-    selectedShippingMethod: null,
+    selectedShippingMethod: {},
     selectedPaymentMethod: null,
     shippingAddress: null,
     billingAddress: null,

@@ -82,7 +82,7 @@ import { mapState, mapActions } from 'pinia'
 import { useStore } from '@/store/index.js'
 
 export default {
-  emits: ['valid'],
+  emits: ['updateCountry'],
   setup () {
     return { v$: useVuelidate() }
   },
@@ -155,6 +155,7 @@ export default {
   watch: {
     'address.country_id'() {
       this.updateShippingMethods(this.address.country_id)
+      this.$emit('updateCountry')
     },
     address: {
       handler() {
@@ -172,6 +173,12 @@ export default {
   },
   methods: {
     ...mapActions(useStore, ['updateShippingMethods'])
+    // reset () {
+    //   this.v$.address.country_id.$reset()
+    //    this.v$.address.country_id.$touch()
+    //     this.v$.address.country_id.$commit()
+    //   console.log('reset')
+    // }
   }
 }
 </script>
