@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import { useStore } from '@/store/index.js'
+import { mapState, mapActions } from 'pinia'
+
 import TheShippingStep from './components/steps/TheShippingStep.vue'
 // import ThePaymentStep from './components/steps/ThePaymentStep.vue'
 // import TheSuccessStep from './components/steps/TheSuccessStep.vue'
@@ -25,16 +28,17 @@ export default {
     ProgressBar
   },
   computed: {
-    isCustomerLoggedIn() {
-      return false
-      // return this.$store.getters.isCustomerLoggedIn
+    ...mapState(useStore, ['isCustomerLoggedIn'])
+  },
+  mounted () {
+    // TODO: check config.customerData object
+    if (this.isCustomerLoggedIn) {
+      this.fetchCustomerData()
     }
+  },
+  methods: {
+    ...mapActions(useStore, ['fetchCustomerData'])
   }
-  // mounted () {
-  //   if (this.isCustomerLoggedIn) {
-  //     this.$store.dispatch('getCustomerData')
-  //   }
-  // }
 }
 </script>
 

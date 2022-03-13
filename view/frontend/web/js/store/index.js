@@ -102,6 +102,23 @@ export const useStore = defineStore('checkout', {
       } catch (error) {
         console.error('Looks like there was a problem: \n', error)
       }
+    },
+    async fetchCustomerData() {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        url: '/rest/V1/customers/me'
+      }
+
+      try {
+        const { data } = await axios(options)
+        this.customer = data
+      } catch (error) {
+        console.error('Looks like there was a problem: \n', error)
+      }
     }
   }
 })
