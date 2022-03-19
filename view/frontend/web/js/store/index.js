@@ -119,6 +119,58 @@ export const useStore = defineStore('checkout', {
       } catch (error) {
         console.error('Looks like there was a problem: \n', error)
       }
+    },
+    async setShippinInformation() {
+      let url = `/rest/V1/guest-carts/${this.getCartId}/shipping-information`
+      if (this.isCustomerLoggedIn) {
+        url = '/rest/V1/carts/mine/shipping-information'
+      }
+
+      const shippingInformation = {
+        addressInformation: {
+          shipping_method_code: this.selectedShippingMethod.method_code,
+          shipping_carrier_code: this.selectedShippingMethod.carrier_code
+        }
+      }
+
+      this.billingAddress = this.shippingAddress
+      const shippingAddress = { ...this.shippingAddress }
+
+      // Parse streed data format
+      shippingAddress.street = [shippingAddress.street0, shippingAddress.street1]
+      delete shippingAddress.street0
+      delete shippingAddress.street1
+
+      // Set region data
+      if (this.getRegionsByCountryId(shippingAddress.country_id).length) {
+        shippingAddress.region_id = this.shippingAddress.region_id
+        delete shippingAddress.region
+      } else {
+        delete shippingAddress.region_id
+      }
+
+      shippingInformation.addressInformation.shipping_address = shippingAddress
+      // Copy shipping address to billing address (can't send empty object)
+      shippingInformation.addressInformation.billing_address = shippingAddress
+
+      const options = {
+        method: 'POST',
+        data: JSON.stringify(shippingInformation),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        url
+      }
+
+      try {
+        const { data } = await axios(options)
+        this.paymentMethods = data.payment_methods
+        this.totals = data.totals
+        this.step = 'payment'
+      } catch (error) {
+        console.error('Looks like there was a problem: \n', error)
+      }
     }
   }
 })

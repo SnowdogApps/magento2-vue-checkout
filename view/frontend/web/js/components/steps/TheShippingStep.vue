@@ -6,10 +6,10 @@
     <h2>Shipping address</h2>
     <form @submit.prevent="goToNextStep">
       <CustomerEmailField v-if="!isCustomerLoggedIn" />
-      <ShippingAddressForm @update-country="refreshShippingComponent" />
+      <ShippingAddressForm @update-country="resetShippingMethodsValidation" />
     </form>
     <ShippingMethods
-      ref="shippingsMethods"
+      ref="shippingMethods"
       @valid="status => isShippingMethodValid = status"
     />
     <BaseButton
@@ -28,8 +28,7 @@ import ShippingAddressForm from '../ShippingAddressForm.vue'
 import ShippingMethods from '../ShippingMethods.vue'
 import useVuelidate from '@vuelidate/core'
 
-
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 import { useStore } from '@/store/index.js'
 
 export default {
@@ -53,21 +52,21 @@ export default {
     ...mapState(useStore, ['step'])
   },
   methods: {
-    refreshShippingComponent () {
-      // TODO: add loader for main button
-      this.$refs.shippingsMethods.reset()
+    ...mapActions(useStore, ['setShippinInformation']),
+    resetShippingMethodsValidation () {
+      // TODO: add loader
+      this.$refs.shippingMethods.reset()
     },
     async goToNextStep() {
       const isFormValid = await this.v$.$validate()
-       await this.$refs.shippingsMethods.validate()
+       await this.$refs.shippingMethods.validate()
 
       if (isFormValid & this.isShippingMethodValid) {
-        console.log('elo')
+        // TODO: add loader
         // this.loader = true
-        // this.$store.dispatch('setShippinInformation').then(() => {
-        //   this.loader = false
-        // })
-        // this.$store.dispatch('getTotals')
+        await this.setShippinInformation()
+        // TODO: add loader
+        // this.loader = false
       }
     }
   }
